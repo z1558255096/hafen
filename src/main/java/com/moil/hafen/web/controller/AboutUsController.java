@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
+ * 关于我们控制器
+ *
  * @author 8129
+ * @date 2023/12/03
  */
 @Slf4j
 @RestController
@@ -31,7 +34,13 @@ public class AboutUsController extends BaseController {
     private AboutUsService aboutUsService;
 
 
-
+    /**
+     * 管理后台-修改关于我们信息
+     *
+     * @param aboutUs 关于我们
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改关于我们信息")
     public Result update(AboutUs aboutUs) throws FebsException {
@@ -43,6 +52,12 @@ public class AboutUsController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 获取关于我们详情(管理后台+小程序)
+     *
+     * @return {@link Result}<{@link AboutUs}>
+     */
     @GetMapping
     @ApiOperation("获取关于我们详情")
     public Result<AboutUs> detail() {
