@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>荣誉资质管理系统</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="/css/animate.min.css" rel="stylesheet">
+    <link href="/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/css/plugins/layui/css/layui.css?v=4.1.0" rel="stylesheet">
+    <style>
+        .bootstrap-table .fixed-table-container .fixed-table-body {
+            overflow-x: unset;
+            overflow-y: unset;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="example">
+                            <div class="btn-group  form-horizontal">
+                                <div class="col-sm-12">
+                                    <div class="col-sm-3">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon">项目名称：</span>
+                                            <input id="search-projectName" type="text" placeholder="请输入" class="form-control">
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-sm-3">-->
+                                        <!--<div class="input-group m-b">-->
+                                            <!--<span class="input-group-addon">荣誉类型：</span>-->
+                                            <!--<select class="form-control m-b" id="search-honorType">-->
+                                                <!--<option value="">全部</option>-->
+                                                <!--<option value="企业">企业</option>-->
+                                                <!--<option value="个人">个人</option>-->
+                                            <!--</select>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="col-sm-3">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon">项目类型：</span>
+                                            <select class="form-control m-b" id="search-projectType">
+                                                <option value="">全部</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon">项目状态：</span>
+                                            <select class="form-control m-b" id="search-projectStatus">
+                                                <option value="">全部</option>
+                                                <option value="待开始">待开始</option>
+                                                <option value="进行中">进行中</option>
+                                                <option value="已完结-成功">已完结-成功</option>
+                                                <option value="已完结-失败">已完结-失败</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon">负责人：</span>
+                                            <input id="search-director" type="text" placeholder="请输入" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            <!--</div>-->
+                            <!--<div class="btn-group  form-horizontal">-->
+                                <div class="col-sm-12">
+
+                                    <div class="col-sm-3">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon">创建日期：</span>
+                                            <input type="text" readonly class="layui-input form-control" id="search-createTime" placeholder=" - ">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="input-group m-b">
+                                            <span class="input-group-addon">完结日期：</span>
+                                            <input type="text" readonly class="layui-input form-control" id="search-finishTime" placeholder=" - ">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3" id="search-div">
+                                        <a onclick="searchTable()" class="btn btn-success col-sm-5" style="margin-right: 10px;">搜索</a>
+                                        <a onclick="reset()" class="btn btn-default col-sm-5">重置</a>
+                                    </div>
+                                </div>
+                            <!--</div>-->
+                                <div class="col-sm-12">
+                                    <div class="col-sm-1">
+                                        <div class="input-group m-b" id="add-div">
+                                            <a onclick="showModal('新增项目');" class="btn btn-success ">新增项目</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-10"></div>
+                                    <div class="col-sm-1">
+                                        <div class="input-group m-b">
+                                            <a onclick="exportExcel();" class="btn btn-success ">导出列表</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="/*overflow: auto;height: 500px; */">
+                                <table id="tableFromData" data-mobile-responsive="true">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Basic -->
+    </div>
+<!--    <div class="modal-backdrop in" id="mask-div" onclick="hideModal()"></div>-->
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/js/content.min.js?v=1.0.0"></script>
+    <script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <!--<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>-->
+    <script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<!--    <script type="text/javascript" src="/js/plugins/layer-v3.5.1/layer/layer.js"></script>-->
+    <script type="text/javascript" src="/css/plugins/layui/layui.js"></script>
+    <!--<script src="/js/plugins/cascader/cascader.js?css=true"></script>-->
+    <script>
+        var btn_permiss = localStorage.getItem("honor-btn");
+        if(btn_permiss&&btn_permiss.indexOf('project:add')>-1){
+            $('#add-div').show();
+        }else{
+            $('#add-div').hide();
+        }
+        function showModal(title) {
+            $('#finishTimeDiv').hide();
+            layer.open({
+                title: [title, 'font-size:18px;'],
+                offset: '100px',
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                content: $('#layer-content'),
+                area: '45%',
+            });
+
+            cleanValue();
+            layui.laydate.render({
+                elem: '#finishTime'
+            });
+        }
+        layui.use('laydate', function(){
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#search-createTime' //指定元素
+                ,format: 'yyyy-MM-dd'
+                ,range: true
+            });
+            laydate.render({
+                elem: '#search-finishTime' //指定元素
+                ,format: 'yyyy-MM-dd'
+                ,range: true
+            });
+        });
+
+        function reset(){
+            $('#search-projectName').val('');
+            $('#search-projectType').val('');
+            $('#search-projectStatus').val('');
+            $('#search-director').val('');
+            $('#search-createTime').val('');
+            $('#search-finishTime').val('');
+            searchTable();
+        }
+        function searchTable(){
+            $("#tableFromData").bootstrapTable('refreshOptions',{pageNumber:1});
+            var projectName = $('#search-projectName').val();
+            var projectType = $('#search-projectType').val();
+            var projectStatus = $('#search-projectStatus').val();
+            var director = $('#search-director').val();
+            var createTime = $('#search-createTime').val();
+            var finishTime = $('#search-finishTime').val();
+            $('#tableFromData').bootstrapTable('refresh',{query:{projectName:projectName,projectType:projectType,projectStatus:projectStatus,
+                    director:director,createTimeFrom:createTime.split(' - ')[0],createTimeTo:createTime.split(' - ')[1],
+                    finishTimeFrom:finishTime.split(' - ')[0],finishTimeTo:finishTime.split(' - ')[1]}});
+        }
+        if(btn_permiss&&btn_permiss.indexOf('project:list')>-1){
+            loadDataTable();
+            $('#search-div').show()
+        }else{
+            $('#search-div').hide()
+        }
+        function loadDataTable(){
+            $("#tableFromData").bootstrapTable({
+                url: '/projectInfo?sortField=modifyTime&sortOrder=descend',
+                method: 'get',
+                dataType: 'json',
+                search: false,
+                pagination: true,
+                sidePagination:'server',//指定服务器端分页
+                pageSize:10,//单页记录数
+                pageList:[10,20,30,40],//分页步进值
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                iconSize: "outline",
+                queryParams:function(params){
+                    var honorName = $('#search-honorName').val();
+                    var honorType = $('#search-honorType').val();
+                    var honorCategory = $('#search-honorCategory').val();
+                    var honorOrganization = $('#search-honorOrganization').val();
+                    var honorLevel = $('#search-honorLevel').val();
+                    var honorGrade = $('#search-honorGrade').val();
+                    var getDate = $('#search-getDate').val();
+                    var statusName = $('#search-status').val();
+                    var applicant = $('#search-applicant').val();
+                    var maintainer = $('#search-maintainer').val();
+                    params.honorName = honorName;
+                    params.honorType = honorType;
+                    params.categoryId = honorCategory;
+                    params.statusStr = statusName;
+                    params.honorOrganization = honorOrganization;
+                    params.honorLevel = honorLevel;
+                    params.honorGrade = honorGrade;
+                    params.getDateStr = getDate;
+                    params.applicant = applicant;
+                    params.maintainer = maintainer;
+                    return params;
+                },
+                // toolbar: "#tableFromDataToolbar",
+                icons: {
+                    refresh: "glyphicon-repeat",
+                    toggle: "glyphicon-list-alt",
+                    columns: "glyphicon-list"
+                },
+                columns: [{
+                    field: 'serialNumber',
+                    title: '项目编号',
+                    align: 'center'
+                },{
+                    field: 'projectName',
+                    title: '项目名称',
+                    align: 'center'
+                },{
+                    field: 'projectType',
+                    title: '项目类型',
+                    align: 'center'
+                },{
+                    field: 'organization',
+                    title: '所属公司/个人',
+                    align: 'center'
+                },{
+                    field: 'projectStatus',
+                    title: '项目状态',
+                    align: 'center'
+                },{
+                    field: 'director',
+                    title: '负责人',
+                    align: 'center'
+                },{
+                    field: 'description',
+                    title: '描述',
+                    align: 'center'
+                },{
+                    field: 'createTime',
+                    title: '创建日期',
+                    align: 'center'
+                },{
+                    field: 'finishTime',
+                    title: '完结日期',
+                    align: 'center'
+                }, {
+                    field: 'id',
+                    title: '操作',
+                    align: 'center',
+                    formatter:function(value,row,index){
+                        var detailHtml = '';
+                        if(btn_permiss&&btn_permiss.indexOf('project:detail')>-1){
+                            detailHtml = '<a onclick="openPage('+value+')" class="font-bold">详情</a>&nbsp;';
+                        }
+                        var followHtml = '';
+                        if(btn_permiss&&btn_permiss.indexOf('project:follow')>-1){
+                            followHtml = '<a onclick="showProjectProgressRecordModal('+value+',\''+row.projectName+'\')" class="font-bold">跟进</a>&nbsp;';
+                        }
+                        var editHtml = '';
+                        if(btn_permiss&&btn_permiss.indexOf('project:edit')>-1){
+                            editHtml = '<a onclick="view('+value+',\''+row.projectName+'\',\''+row.projectType+'\',\''+row.director
+                                +'\',\''+row.organization+'\',\''+row.projectStatus+'\',\''+row.description+'\',\''+row.finishTime+'\')" class="font-bold">编辑</a>&nbsp;';
+                        }
+                        var delHtml = '';
+                        if(btn_permiss&&btn_permiss.indexOf('project:del')>-1){
+                            delHtml = '<a style="color:#E33737" onclick="del('+value+')">删除</a>';
+                        }
+                        var htm = detailHtml + followHtml + editHtml + delHtml ;
+                        return htm;
+                    }
+                }]
+            })
+        }
+
+        function openPage(id) {
+            layer.open({
+                type: 2,
+                offset: 'rt',
+                title: '项目详情',
+                // anim 特效 0-平滑放大 1-从上掉落 2-从底部往上滑入 3-从左滑入 4-从左翻转 5-渐显 6-抖动
+                anim: 0,
+                area: ['100%', '100%'], //宽高
+                content: "edit.html?id="+id,
+                cancel: function(index, layero){
+                    
+                }
+            });
+        }
+
+        function changeStatus(id, status) {
+            var text = '作废';
+            if(status==0){
+                text = '激活';
+            }
+            layer.confirm('是否'+text+'该条记录？', {
+                btn: [text,'取消'] //按钮
+            }, function(){
+                changeStatusRecord(id, status);
+            }, function(){
+                layer.msg('已取消', {icon: 1});
+            });
+        }
+
+        function changeStatusRecord(id,status) {
+            $.ajax({
+                url:"/projectInfo/changeStatus/"+id,
+                type:"PUT",
+                data:{status:status},
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('操作成功', {icon: 1});
+                        $('#tableFromData').bootstrapTable('refresh');
+                    }else{
+                        alert("操作失败，失败原因："+result.message);
+                    }
+                }
+            });
+        }
+
+        function del(id) {
+            layer.confirm('删除后不可恢复！请谨慎操作', {
+                icon: 0,
+                title:'❗删除确认',
+                btn: ['删除','取消'] //按钮
+            }, function(){
+                delRecord(id);
+            }, function(){
+                layer.msg('已取消', {icon: 1});
+            });
+        }
+        function delRecord(id){
+            $.ajax({
+                url:"/projectInfo/"+id,
+                type:"DELETE",
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('删除成功', {icon: 1});
+                        $('#tableFromData').bootstrapTable('refresh');
+                    }else{
+                        alert("删除失败，失败原因："+result.message);
+                    }
+                }
+            });
+        }
+
+        
+        function view(id,projectName,projectType,director,organization,projectStatus,description,finishTime) {
+            showModal("编辑项目");
+            $('#id').val(id);
+            $('#projectName').val(projectName);
+            $('#projectType').val(projectType);
+            $('#director').val(director);
+            $('#organization').val(organization);
+            $('#projectStatus').val(projectStatus);
+            $('#description').val(description);
+            changeProjectView(projectStatus)
+            $('#finishTime').val(finishTime);
+        }
+
+
+        function changeProjectViewHtml(){
+            var status = $('#projectStatus').val();
+            changeProjectView(status);
+        }
+        function changeProjectView(status) {
+            if(status.indexOf('已完结')>=0){
+                $('#finishTimeDiv').show()
+            }else {
+                $('#finishTimeDiv').hide();
+            }
+        }
+
+        function cleanValue(){
+            $('#id').val(0);
+            $('#projectName').val('');
+            $('#projectType').val('');
+            $('#director').val('');
+            $('#organization').val('');
+            $('#projectStatus').val('待开始');
+            $('#description').val('');
+            $('#finishTime').val('');
+        }
+
+        loadDict('honorOrganization','organization');
+        loadDict('projectType','projectType');
+        loadDict('projectType','search-projectType');
+        function loadDict(fieldKey,id) {
+            $.ajax({
+                url:"/dict/listForSelect",
+                type:"GET",
+                data:{fieldKey:fieldKey},
+                success:function (result) {
+                    if(result.code==200){
+                        result.result.forEach(item => {
+                            var option = '<option value="'+item.name+'">'+item.name+'</option>';
+                        $('#'+id).append(option);
+                    })
+
+                    }
+                }
+            });
+        }
+
+        function exportExcel() {
+            var url = '/projectInfo/export?';
+            var projectName = $('#search-projectName').val();
+            var projectType = $('#search-projectType').val();
+            var projectStatus = $('#search-projectStatus').val();
+            var director = $('#search-director').val();
+            var createTime = $('#search-createTime').val();
+            var finishTime = $('#search-finishTime').val();
+            url+="&projectName="+projectName+"&projectType="+projectType+"&projectStatus="+projectStatus
+                +"&director="+director+"&createTimeFrom="+createTime.split(' - ')[0]+"&createTimeTo="+createTime.split(' - ')[1]
+                +"&finishTimeFrom="+finishTime.split(' - ')[0]+"&finishTimeTo="+finishTime.split(' - ')[1];
+            window.location.href=url;
+
+        }
+        function save() {
+            var projectName = $('#projectName').val();
+            if(!projectName){
+                layer.msg('项目名称为必填项', {icon: 2});
+                return;
+            }
+            var projectType = $('#projectType').val();
+            if(!projectType){
+                layer.msg('项目类型为必填项', {icon: 2});
+                return;
+            }
+            var director= $('#director').val();
+            var organization = $('#organization').val();
+            var projectStatus = $('#projectStatus').val();
+            var description = $('#description').val();
+            var finishTime = $('#finishTime').val();
+            var id = $('#id').val();
+            if(projectStatus.indexOf('已完结')>-1&&!finishTime){
+                layer.msg('完结日期为必填项', {icon: 2});
+                return;
+            }
+            var data = {'projectName':projectName,'projectType':projectType,'director':director,'organization':organization,
+                'projectStatus':projectStatus,'description':description,finishTime:finishTime};
+            var method = 'POST';
+            if(id>0){
+                data['id'] = id;
+                method = 'PUT';
+            }
+            $.ajax({
+                url:"/projectInfo",
+                type:method,
+                data:data,
+                success:function (result) {
+                    if(result.code==200){
+                        layer.closeAll();
+                        layer.msg('保存成功', {icon: 1});
+                        $('#tableFromData').bootstrapTable('refresh');
+                    }else{
+                        alert("保存失败，失败原因："+result.message);
+                    }
+                }
+            });
+        }
+
+        function showProjectProgressRecordModal(recordId,recordProjectName) {
+            layer.open({
+                title: ['添加跟进记录', 'font-size:18px;'],
+                offset: '100px',
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                content: $('#layer-content-2'),
+                area: '45%',
+            });
+            $('#recordId').val(recordId)
+            $('#recordProjectName').html(recordProjectName)
+
+        }
+        function savProjectProgressRecord() {
+            debugger;
+            var projectNode = $('#projectNodeRecord').val();
+            var content= $('#content').val();
+            var recordId = $('#recordId').val();
+            var data = {'content':content,'projectNode':projectNode,'projectId':recordId};
+            var method = 'POST';
+            $.ajax({
+                url:"/projectProgressRecord",
+                type:method,
+                data:data,
+                success:function (result) {
+                    if(result.code==200){
+                        layer.closeAll();
+                        layer.msg('保存成功', {icon: 1});
+                        $('#tableFromData1').bootstrapTable('refresh');
+                    }else{
+                        alert("保存失败，失败原因："+result.message);
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+<div id="layer-content" style="display: none">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label"><code>*</code>项目名称</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="id" value="0">
+                            <input type="text" id="projectName" placeholder="输入项目名称" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label"><code>*</code>项目类型</label>
+                        <div class="col-sm-8">
+                            <select id="projectType" class="form-control">
+                                <option value=""> </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">负责人</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="director" placeholder="输入负责人" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">所属单位/个人</label>
+                        <div class="col-sm-8">
+                            <select id="organization" class="form-control">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label"><code>*</code>项目状态</label>
+                        <div class="col-sm-8">
+                            <select id="projectStatus" class="form-control" onchange="changeProjectViewHtml()">
+                                <option value="待开始">待开始</option>
+                                <option value="进行中">进行中</option>
+                                <option value="已完结-成功">已完结-成功</option>
+                                <option value="已完结-失败">已完结-失败</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="finishTimeDiv">
+                        <label class="col-sm-2 control-label"><code>*</code>完结日期</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly id="finishTime" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">项目描述</label>
+                        <div class="col-sm-8">
+                            <textarea id="description" placeholder="输入项目名称" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <button class="btn btn-primary"  onclick="save()">保存内容</button>
+                            <button class="btn btn-white" onclick="layer.closeAll();">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="layer-content-2" style="display: none">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">项目名称</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="recordId" value="0">
+                            <p class="form-control-static" id="recordProjectName"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">项目节点</label>
+                        <div class="col-sm-8">
+                            <select id="projectNodeRecord" class="form-control">
+                                <option value=""></option>
+                                <option value="材料准备阶段">材料准备阶段</option>
+                                <option value="材料提交阶段">材料提交阶段</option>
+                                <option value="材料审核阶段">材料审核阶段</option>
+                                <option value="立项答辩阶段">立项答辩阶段</option>
+                                <option value="合同签订阶段">合同签订阶段</option>
+                                <option value="项目实施阶段">项目实施阶段</option>
+                                <option value="项目验收阶段">项目验收阶段</option>
+                                <option value="验收答辩阶段">验收答辩阶段</option>
+                                <option value="项目最终结果">项目最终结果</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">说明内容</label>
+                        <div class="col-sm-8">
+                            <textarea type="text" id="content" placeholder="请输入" class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <button class="btn btn-primary"  onclick="savProjectProgressRecord()">保存</button>
+                            <button class="btn btn-white" onclick="layer.closeAll();">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

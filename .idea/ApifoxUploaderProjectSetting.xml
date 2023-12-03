@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ApifoxUploaderProjectSetting">
+    <option name="apifoxAccessToken" value="APS-hdttuIGwg5T7K2HPElwDFH9KVZE3muMh" />
+    <option name="apifoxApiOverwriteMode" value="覆盖所有字段" />
+    <option name="apifoxProjectIds">
+      <array>
+        <option value="qbiz-pay-merchant-app:1977524" />
+        <option value="qbiz-pay-admin-backend:2780360" />
+        <option value="qbiz-pay-openapi:2063536" />
+        <option value="qbiz-pay-bd-h5:2223353" />
+        <option value="qbiz-pay-agent-admin:2927196" />
+      </array>
+    </option>
+    <option name="yapiTokens" value="" />
+  </component>
+</project>

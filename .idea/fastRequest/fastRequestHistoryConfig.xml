@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="fastRequestHistoryConfig">
+    <option name="historyList">
+      <list>
+        <ResponseHistory>
+          <option name="className" value="com.moil.hafen.system.controller.UserController" />
+          <option name="enableEnv" value="dev" />
+          <option name="enableProject" value="HaFen" />
+          <option name="method" value="checkUserName" />
+          <option name="methodType" value="GET" />
+          <option name="paramGroup">
+            <ParamGroupCollection>
+              <option name="className" value="com.moil.hafen.system.controller.UserController" />
+              <option name="method" value="checkUserName" />
+              <option name="methodDescription" value="checkUserName" />
+              <option name="multipartKeyValueListJson" value="[]" />
+              <option name="originUrl" value="/user/check/{username}" />
+              <option name="pathParamsKeyValueListJson" value="[{&quot;comment&quot;:&quot;&quot;,&quot;customFlag&quot;:2,&quot;enabled&quot;:true,&quot;key&quot;:&quot;username&quot;,&quot;type&quot;:&quot;String&quot;,&quot;value&quot;:&quot;username_zjjrk&quot;}]" />
+              <option name="returnDocument" value="&quot;No comment,Type =Boolean&quot;" />
+              <option name="url" value="/user/check/username_zjjrk" />
+              <option name="urlEncodedKeyValueListJson" value="[]" />
+              <option name="urlParamsKeyValueListJson" value="[]" />
+            </ParamGroupCollection>
+          </option>
+          <option name="requestInfo" value="Request Url: http://localhost:8100/user/check/username_zjjrk&#13;&#10;Request Headers: &#13;&#10;    Accept: application/json,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8&#13;&#10;    User-Agent: Restful Fast Request/2023.2.2.4&#13;&#10;    Accept-Encoding: gzip, deflate&#13;&#10;Request Body: &#13;&#10;    null&#13;&#10;" />
+          <option name="response" value="ConnectException: Connection refused: no further information" />
+          <option name="url" value="/user/check/username_zjjrk" />
+        </ResponseHistory>
+      </list>
+    </option>
+  </component>
+</project>

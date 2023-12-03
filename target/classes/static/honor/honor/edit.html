@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>荣誉资质管理系统</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="/css/animate.min.css" rel="stylesheet">
+    <link href="/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/css/plugins/layui/css/layui.css?v=4.1.0" rel="stylesheet">
+    <style>
+        .layui-upload-img{width: 92px;height: 92px;}
+        .hr-line-dashed{border-top:1px dashed rgb(74 82 90)}
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 style="font-weight: 800">丨资源信息</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <label class="col-sm-1 control-label"><code>*</code>资源分类</label>
+                                <div class="col-sm-2">
+                                    <input id="honorCategory" class="form-control m-b"/>
+                                </div>
+
+                                <label class="col-sm-1 control-label"><code>*</code>资源全称</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="honorName" placeholder="请输入荣誉资质全称" class="form-control"  required="true" aria-required="true">
+                                </div>
+                                <label class="col-sm-1 control-label">资源别名/简称</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="honorAlias" placeholder="请输入别名/简称" class="form-control"  required="true" aria-required="true">
+                                </div>
+                                <!--<label class="col-sm-1 control-label"><code>*</code>类型</label>-->
+
+                                <!--<div class="col-sm-2" style="padding-right: 0px;">-->
+                                    <!--<fieldset>-->
+                                        <!--<div class="radio radio-info radio-inline">-->
+                                            <!--<input type="radio" id="honorTypeRadio1" value="企业" name="honorType">-->
+                                            <!--<label for="honorTypeRadio1"> 企业 </label>-->
+                                        <!--</div>-->
+                                        <!--<div class="radio radio-info radio-inline">-->
+                                            <!--<input type="radio" id="honorTypeRadio2" value="个人" name="honorType">-->
+                                            <!--<label for="honorTypeRadio2">个人 </label>-->
+                                        <!--</div>-->
+                                    <!--</fieldset>-->
+                                <!--</div>-->
+                                <label class="col-sm-1 control-label"><code>*</code>所属单位/个人</label>
+
+                                <div class="col-sm-2">
+                                    <select class="form-control m-b" id="honorOrganization">
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+
+                                <label class="col-sm-1 control-label"><code>*</code>区域级别</label>
+
+                                <div class="col-sm-2">
+                                    <select class="form-control m-b" id="honorLevel">
+
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 control-label"><code>*</code>重要程度</label>
+
+                                <div class="col-sm-2">
+                                    <select class="form-control m-b" id="honorGrade">
+
+                                    </select>
+                                </div>
+
+                                <label class="col-sm-1 control-label"><code>*</code>获取时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" readonly id="getDate" class="form-control">
+                                </div>
+
+                                <label class="col-sm-1 control-label">是否长期有效</label>
+                                <div class="col-sm-2">
+                                    <fieldset>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="validStatusRadio1" value="0" name="validStatus" onclick="switchValidStatus(0)">
+                                            <label for="validStatusRadio1"> 非长期有效 </label>
+                                        </div>
+                                        <div class="radio radio-info radio-inline">
+                                            <input type="radio" id="validStatusRadio2" value="1" name="validStatus" onclick="switchValidStatus(1)">
+                                            <label for="validStatusRadio2">长期有效 </label>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div id="expireDateDiv" style="display: none">
+                                <div class="form-group" >
+                                    <label class="col-sm-1 control-label"><code>*</code>到期时间</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" readonly id="expireDate" class="form-control">
+                                    </div>
+                                    <label class="col-sm-1 control-label">下一次复评时间</label>
+
+                                    <div class="col-sm-2">
+                                        <input type="text" readonly id="auditDate" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group" >
+                                <label class="col-sm-1 control-label">评选部门</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="appraiseDept" placeholder="请输入" class="form-control"  required="true" aria-required="true">
+                                </div>
+
+                                <label class="col-sm-1 control-label" style="padding-left: 0;">评选部门联系人</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="appraiseDeptContactPerson" placeholder="请输入" class="form-control"  required="true" aria-required="true">
+                                </div>
+
+                                <label class="col-sm-1 control-label" style="padding-left: 0;">评选部门联系人职位</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="appraiseDeptContactPersonPosition" placeholder="请输入" class="form-control"  required="true" aria-required="true">
+                                </div>
+
+                                <label class="col-sm-1 control-label" style="padding-left: 0;">评选部门联系方式</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="appraiseDeptContact" placeholder="请输入" class="form-control"  required="true" aria-required="true">
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-1 control-label"><code>*</code>颁发部门</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="issuingDept" placeholder="请输入" class="form-control"  required="true" aria-required="true">
+                                </div>
+
+                                <label class="col-sm-1 control-label" style="padding-left: 0;">颁发部门联系人</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="issuingDeptContactPerson" class="form-control">
+                                </div>
+
+                                <label class="col-sm-1 control-label" style="padding-left: 0;">颁发部门联系人职位</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="issuingDeptContactPersonPosition" class="form-control">
+                                </div>
+
+                                <label class="col-sm-1 control-label" style="padding-left: 0;">颁发部门联系方式</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="issuingDeptContact" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group" >
+                                <label class="col-sm-1 control-label"><code>*</code>申请部门</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="applicantDept" class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label"><code>*</code>申请人</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="applicant" class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label"><code>*</code>维护部门</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="maintainerDept" class="form-control">
+                                </div>
+                                <label class="col-sm-1 control-label">维护人</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="maintainer" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group" >
+                                <label class="col-sm-1 control-label"><code>*</code>用途</label>
+                                <div class="col-sm-11">
+                                    <textarea class="form-control" id="purpose" placeholder="这里输入用途" autofocus></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group" >
+                                <label class="col-sm-1 control-label">备注</label>
+                                <div class="col-sm-11">
+                                    <textarea class="form-control" id="remark" placeholder="这里输入备注" autofocus></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5 style="font-weight: 800">丨电子档案</h5>
+                            <div class="col-sm-2">
+                                <a onclick="showModal('上传档案',1);" class="btn btn-info btn-xs ">+上传档案</a>
+                            </div>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="example">
+                                    <table id="tableFromData" data-mobile-responsive="true">
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+                        <div class="form-horizontal">
+                            <div class="form-group" >
+                                <div class="col-sm-12 col-sm-offset-5">
+                                    <button class="btn btn-success"  onclick="save();">保存</button>
+                                    <button class="btn btn-default" onclick="openPage()">取消</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Basic -->
+    </div>
+<!--    <div class="modal-backdrop in" id="mask-div" onclick="hideModal()"></div>-->
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/js/content.min.js?v=1.0.0"></script>
+    <script src="/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
+    <!--<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>-->
+    <script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<!--    <script type="text/javascript" src="/js/plugins/layer-v3.5.1/layer/layer.js"></script>-->
+    <script type="text/javascript" src="/css/plugins/layui/layui.js"></script>
+    <script src="/js/plugins/cascader/cascader.js?css=true"></script>
+    <script>
+        var honorCategoryCascader;
+        var option = [];
+        loadCategory()
+        function loadCategory() {
+            $.ajax({
+                url:"/category/listForSelect",
+                type:"GET",
+                async : false,
+                success:function (result) {
+                    if(result.code==200){
+                        option = result.result;
+                    }
+                }
+            });
+        }
+        loadDict('honorOrganization');
+        loadDict('honorLevel');
+        loadDict('honorGrade');
+        function loadDict(id) {
+            $.ajax({
+                url:"/dict/listForSelect",
+                type:"GET",
+                async : false,
+                data:{fieldKey:id},
+                success:function (result) {
+                    if(result.code==200){
+                        result.result.forEach(item => {
+                            var option = '<option value="'+item.name+'">'+item.name+'</option>';
+                        $('#'+id).append(option);
+                    })
+
+                    }
+                }
+            });
+        }
+
+        var id = getUrlParams("id");
+        var uuid = getUrlParams("uuid");
+        function switchValidStatus(status) {
+            if(status==1){
+                $('#expireDateDiv').hide();
+            }else {
+                $('#expireDateDiv').show();
+            }
+        }
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#getDate'
+        });
+        laydate.render({
+            elem: '#expireDate'
+        });
+        laydate.render({
+            elem: '#auditDate'
+        });
+        layui.use(['upload', 'element', 'layer'], function(){
+            var $ = layui.jquery
+                ,upload = layui.upload
+                ,element = layui.element
+                ,layer = layui.layer;
+
+            //常规使用 - 普通图片上传
+            var uploadInst = upload.render({
+                elem: '#test1'
+                ,accept: 'file'
+                ,url: '/file' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+                ,before: function(obj){
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function(index, file, result){
+                        $('#archivesFileName').text(file.name);
+                    });
+
+                    element.progress('demo', '0%'); //进度条复位
+                    layer.msg('上传中', {icon: 16, time: 0});
+                }
+                ,done: function(res){
+                    if(res.code==200){
+                        //上传成功的一些操作
+                        $('#demoText').html(''); //置空上传失败的状态
+                        $('#fileId').val(res.result.id);
+                    }else{
+                        return layer.msg('上传失败', {icon: 2});
+                    }
+
+
+                }
+                ,error: function(){
+                    //演示失败状态，并实现重传
+                    var demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function(){
+                        uploadInst.upload();
+                    });
+                }
+                //进度条
+                ,progress: function(n, elem, e){
+                    element.progress('demo', n + '%'); //可配合 layui 进度条元素使用
+                    if(n == 100){
+                        layer.msg('上传完毕', {icon: 1});
+                    }
+                }
+            });
+        });
+        if(id&&id>0){
+            $.get("/honorManage/"+id, function(data){
+                if(data.code==200){
+                    var result = data.result;
+                    $('#honorName').val(result.honorName);
+                    $('#honorAlias').val(result.honorAlias);
+                    // $("input[name='honorType'][value="+result.honorType+"]").prop("checked",true);
+                    // $('#honorCategory').val(result.honorCategory);
+
+                    layui.use('layCascader', function () {
+                        var layCascader = layui.layCascader;
+                        honorCategoryCascader = layCascader({
+                            elem: '#honorCategory',
+                            value: result.categoryId,
+                            options: option,
+                            props: {
+                                expandTrigger: 'hover'
+                            }
+                        });
+                    });
+
+
+                    $('#honorOrganization').val(result.honorOrganization);
+                    $('#honorLevel').val(result.honorLevel);
+                    $('#honorGrade').val(result.honorGrade);
+                    $('#appraiseDept').val(result.appraiseDept);
+                    $('#appraiseDeptContact').val(result.appraiseDeptContact);
+                    $('#issuingDept').val(result.issuingDept);
+                    $('#issuingDeptContact').val(result.issuingDeptContact);
+                    $('#getDate').val(result.getDate);
+                    $("input[name='validStatus'][value="+result.validStatus+"]").prop("checked",true);
+                    $('#expireDate').val(result.expireDate);
+                    $('#auditDate').val(result.auditDate);
+                    $('#applicantDept').val(result.applicantDept);
+                    $('#applicant').val(result.applicant);
+                    $('#maintainerDept').val(result.maintainerDept);
+                    $('#maintainer').val(result.maintainer);
+                    $('#purpose').val(result.purpose);
+                    $('#remark').val(result.remark);
+                    switchValidStatus(result.validStatus);
+                    $('#appraiseDeptContactPerson').val(result.appraiseDeptContactPerson);
+                    $('#appraiseDeptContactPersonPosition').val(result.appraiseDeptContactPersonPosition);
+                    $('#issuingDeptContactPerson').val(result.issuingDeptContactPerson);
+                    $('#issuingDeptContactPersonPosition').val(result.issuingDeptContactPersonPosition);
+
+                }
+
+            });
+        }else{
+            layui.use('layCascader', function () {
+                var layCascader = layui.layCascader;
+                honorCategoryCascader = layCascader({
+                    elem: '#honorCategory',
+                    options: option,
+                    props: {
+                        expandTrigger: 'hover'
+                    }
+                });
+            });
+        }
+
+        function save(){
+            var honorName = $('#honorName').val();
+            if(!honorName){
+                layer.msg("资源全称为必填项", {icon: 2});
+                return
+            }
+            var honorAlias = $('#honorAlias').val();
+            // var honorType = $("input[name='honorType']:checked").val();
+            var honorCategory = honorCategoryCascader.getCheckedNodes().label;
+            var categoryId = honorCategoryCascader.getCheckedValues();
+            if(!categoryId){
+                layer.msg("资源分类为必填项", {icon: 2});
+                return
+            }
+            var honorOrganization = $('#honorOrganization').val();
+            if(!honorOrganization){
+                layer.msg("所属单位/个人为必填项", {icon: 2});
+                return
+            }
+            var honorLevel = $('#honorLevel').val();
+            if(!honorLevel){
+                layer.msg("区域级别为必填项", {icon: 2});
+                return
+            }
+            var honorGrade = $('#honorGrade').val();
+            if(!honorGrade){
+                layer.msg("重要程度为必填项", {icon: 2});
+                return
+            }
+            var appraiseDept = $('#appraiseDept').val();
+            var appraiseDeptContact = $('#appraiseDeptContact').val();
+            var issuingDept = $('#issuingDept').val();
+            if(!issuingDept){
+                layer.msg("颁发部门为必填项", {icon: 2});
+                return
+            }
+            var issuingDeptContact = $('#issuingDeptContact').val();
+            var getDate = $('#getDate').val();
+            if(!getDate){
+                layer.msg("获取时间为必填项", {icon: 2});
+                return
+            }
+            var validStatus = $("input[name='validStatus']:checked").val();
+            var expireDate = $('#expireDate').val();
+            if(validStatus==0){
+                if(!expireDate){
+                    layer.msg("到期时间为必填项", {icon: 2});
+                    return
+                }
+            }
+            var auditDate = $('#auditDate').val();
+            var applicantDept = $('#applicantDept').val();
+            if(!applicantDept){
+                layer.msg("申请部门为必填项", {icon: 2});
+                return
+            }
+            var applicant = $('#applicant').val();
+            if(!applicant){
+                layer.msg("申请人为必填项", {icon: 2});
+                return
+            }
+            var maintainerDept = $('#maintainerDept').val();
+            if(!maintainerDept){
+                layer.msg("维护部门为必填项", {icon: 2});
+                return
+            }
+            var maintainer = $('#maintainer').val();
+            var purpose = $('#purpose').val();
+            if(!purpose){
+                layer.msg("用途为必填项", {icon: 2});
+                return
+            }
+            var remark = $('#remark').val();
+
+            var appraiseDeptContactPerson = $('#appraiseDeptContactPerson').val();
+            var appraiseDeptContactPersonPosition = $('#appraiseDeptContactPersonPosition').val();
+            var issuingDeptContactPerson = $('#issuingDeptContactPerson').val();
+            var issuingDeptContactPersonPosition = $('#issuingDeptContactPersonPosition').val();
+
+            var data = {};
+            data['honorName']=honorName;
+            data['honorAlias']=honorAlias;
+            // data['honorType']=honorType;
+            data['honorCategory']=honorCategory;
+            data['categoryId']=categoryId;
+            data['honorOrganization']=honorOrganization;
+            data['honorLevel']=honorLevel;
+            data['honorGrade']=honorGrade;
+            data['appraiseDept']=appraiseDept;
+            data['appraiseDeptContact']=appraiseDeptContact;
+            data['issuingDept']=issuingDept;
+            data['issuingDeptContact']=issuingDeptContact;
+            data['getDate']=getDate;
+            data['validStatus']=validStatus;
+            data['expireDate']=expireDate;
+            data['auditDate']=auditDate;
+            data['applicantDept']=applicantDept;
+            data['applicant']=applicant;
+            data['maintainerDept']=maintainerDept;
+            data['maintainer']=maintainer;
+            data['purpose']=purpose;
+            data['remark']=remark;
+            data['appraiseDeptContactPerson']=appraiseDeptContactPerson;
+            data['appraiseDeptContactPersonPosition']=appraiseDeptContactPersonPosition;
+            data['issuingDeptContactPerson']=issuingDeptContactPerson;
+            data['issuingDeptContactPersonPosition']=issuingDeptContactPersonPosition;
+            var method;
+            if(id&&id>0){
+                data['id']=id;
+                method = 'PUT';
+            }else {
+                method = 'POST';
+                data['serialId']=uuid;
+            }
+
+            $.ajax({
+                url:"/honorManage",
+                type:method,
+                data:data,
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('操作成功', {icon: 1});
+                        openPage();
+                    }else{
+                        layer.msg("操作失败，失败原因："+result.message, {icon: 2});
+                    }
+                }
+            });
+        }
+        function openPage(){
+            // window.location.href="list.html";
+            window.parent.$('#tableFromData').bootstrapTable('refresh');
+            parent.layer.closeAll();
+        }
+        $("#tableFromData").bootstrapTable({
+            url: '/homePage?limit=10&honorId='+uuid+'&sortField=createTime&sortOrder=descend',
+            method: 'get',
+            dataType: 'json',
+            search: false,
+            pagination: true,
+            sidePagination:'server',//指定服务器端分页
+            pageSize:5,//单页记录数
+            pageList:[10,20,30,40],//分页步进值
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            iconSize: "outline",
+            toolbar: "#tableFromDataToolbar",
+            icons: {
+                refresh: "glyphicon-repeat",
+                toggle: "glyphicon-list-alt",
+                columns: "glyphicon-list"
+            },
+            columns: [{
+                field: '',
+                title: '序号',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            },{
+                field: 'archivesName',
+                title: '名称',
+                align: 'center'
+            },{
+                field: 'serialNumber',
+                title: '编号',
+                align: 'center'
+            },{
+                field: 'storageLocation',
+                title: '原件存放位置',
+                align: 'center'
+            },{
+                field: 'fileId',
+                title: '链接',
+                align: 'center',
+                formatter: function (value, row, index) {
+                    var url = "http://"+window.location.host+"/file/"+value;
+                    return '<a href="'+url+'" target="blank" style="text-decoration: underline;color: #0000CC;">'+url+'</a>';
+                }
+            },{
+                field: 'remark',
+                title: '备注',
+                align: 'center'
+            }, {
+                field: 'id',
+                title: '操作',
+                align: 'center',
+                formatter:function(value,row,index){
+                    var htm = '<a onclick="view('+value+',\''+row.archivesName+'\',\''+row.serialNumber+'\',\''+row.storageLocation+'\',\''+row.archivesUrl+'\',\''+row.archivesFileName+'\',\''+row.remark+'\')">编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '<a onclick="del('+value+')">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;';
+                    return htm;
+                }
+            }]
+        })
+
+        function del(id) {
+            layer.confirm('是否删除该条记录？', {
+                btn: ['删除','取消'] //按钮
+            }, function(){
+                delRecord(id);
+            }, function(){
+                layer.msg('已取消', {icon: 1});
+            });
+        }
+        function delRecord(id){
+            $.ajax({
+                url:"/homePage/"+id,
+                type:"DELETE",
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('删除成功', {icon: 1});
+                        $('#tableFromData').bootstrapTable('refresh');
+                    }else{
+                        layer.msg("删除失败，失败原因："+result.message, {icon: 2});
+                    }
+                }
+            });
+        }
+        function saveArchives() {
+            var archivesId = $('#archivesId').val();
+            var archivesName = $('#archivesName').val();
+            var serialNumber = $('#serialNumber').val();
+            var storageLocation = $('#storageLocation').val();
+            var fileId = $('#fileId').val();
+            var archivesFileName = $('#archivesFileName').text();
+            var archives_remark = $('#archives_remark').val();
+            if(!archivesName){
+                layer.msg('名称为必填项', {icon: 2});
+                return
+            }
+            if(!storageLocation){
+                layer.msg('原件存放位置为必填项', {icon: 2});
+                return
+            }
+            if(!fileId){
+                layer.msg('请上传文件', {icon: 2});
+                return
+            }
+            var data = {};
+            data['archivesName'] = archivesName;
+            data['serialNumber'] = serialNumber;
+            data['storageLocation'] = storageLocation;
+            data['fileId'] = fileId;
+            data['archivesFileName'] = archivesFileName;
+            data['remark'] = archives_remark;
+
+            var method;
+            if(archivesId&&archivesId>0){
+                method = "PUT";
+                data['id'] = archivesId;
+            }else{
+                method = "POST";
+                data['honorId'] = uuid;
+            }
+            $.ajax({
+                url:"/homePage",
+                type:method,
+                data:data,
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('操作成功', {icon: 1});
+                        $('#tableFromData').bootstrapTable('refresh');
+                        layer.closeAll();
+                    }else{
+                        layer.msg("操作失败，失败原因："+result.message, {icon: 2});
+                    }
+                }
+            });
+        }
+        function view(id,archivesName,serialNumber,storageLocation,fileId,archivesFileName,remark){
+            var text = '编辑档案';
+            showModal(text)
+            $('#archivesId').val(id)
+            $('#archivesName').val(archivesName);
+            $('#serialNumber').val(serialNumber);
+            $('#storageLocation').val(storageLocation);
+            $('#fileId').val(fileId);
+            $('#archivesFileName').text(archivesFileName);
+            $('#archives_remark').val(remark);
+        }
+        function showModal(title){
+            layer.open({
+                title: [title, 'font-size:18px;'],
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                content:$('#layer-content'),
+                area: ['40%', '630px']
+            });
+            cleanValue();
+        }
+        function closeLayer(){
+            layer.closeAll();
+        }
+        function cleanValue(){
+            $('#archivesId').val('0')
+            $('#archivesName').val('');
+            $('#serialNumber').val('');
+            $('#storageLocation').val('');
+            $('#fileId').val('');
+            $('#archivesFileName').text('');
+            $('#archives_remark').val('');
+        }
+        function getUrlParams(key) {
+            var url = window.location.search.substr(1);
+            if (url == '') {
+                return false;
+            }
+            var paramsArr = url.split('&');
+            for (var i = 0; i < paramsArr.length; i++) {
+                var combina = paramsArr[i].split("=");
+                if (combina[0] == key) {
+                    return combina[1];
+                }
+            }
+            return false;
+        }
+
+
+
+
+
+    </script>
+
+</body>
+<div id="layer-content" style="display: none">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">*名称</label>
+                        <div class="col-sm-6">
+                            <input type="hidden" id="archivesId">
+                            <input type="text" id="archivesName" placeholder="请输入名称" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="serialNumber" placeholder="请输入编号" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">*原件存放位置</label>
+                        <div class="col-sm-6">
+                            <input type="text" id="storageLocation" placeholder="请输入原件存放位置" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">上传文件</label>
+                        <div class="col-sm-10">
+                            <div class="layui-upload">
+                                <button type="button" class="layui-btn" id="test1">上传文件</button>
+                                <div class="layui-upload-list">
+                                    <p id="demoText"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label"></label>
+                        <div class="col-sm-10">
+                            <input type="hidden" id="fileId">
+                            <p class="form-control-static" id="archivesFileName"></p>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" id="archives_remark" placeholder="这里输入备注" autofocus></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary"  onclick="saveArchives()">保存内容</button>
+                            <button class="btn btn-white" onclick="closeLayer();">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

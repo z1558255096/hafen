@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>荣誉资质管理系统</title>
+
+    <link rel="shortcut icon" href="favicon.ico"> <link href="/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="/css/animate.min.css" rel="stylesheet">
+    <link href="/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/css/plugins/layui/css/layui.css?v=4.1.0" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="example">
+                            <div class="btn-group  form-horizontal">
+                                <div class="col-sm-1">
+                                    <div class="input-group m-b">
+                                        <a onclick="showModal('添加一级分类');" class="btn btn-success ">新建一级分类</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="tableFromData" data-mobile-responsive="true">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Basic -->
+    </div>
+<!--    <div class="modal-backdrop in" id="mask-div" onclick="hideModal()"></div>-->
+    <script src="/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="/js/content.min.js?v=1.0.0"></script>
+    <script src="/js/plugins/bootstrap-table/bootstrap-table.js"></script>
+    <!--<script src="/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>-->
+    <script src="/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+<!--    <script type="text/javascript" src="/js/plugins/layer-v3.5.1/layer/layer.js"></script>-->
+    <script type="text/javascript" src="/css/plugins/layui/layui.js"></script>
+    <script>
+        function showModal(title){
+            layer.open({
+                title: [title, 'font-size:18px;'],
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                content:$('#layer-content'),
+                area: ['35%', '340px']
+            });
+            cleanValue();
+        }
+        function closeLayer(){
+            layer.closeAll();
+        }
+        function cleanValue(){
+            $('#id').val('0')
+            $('#name').val('')
+            $('#remark').val('')
+        }
+
+        function save(){
+            var name = $('#name').val();
+            var remark = $('#remark').val();
+            var data = {name:name,remark:remark};
+            var id = $('#id').val();
+            var method;
+            if(id&&id>0){
+                data['id']=id;
+                method='PUT';
+            }else {
+                method='POST';
+            }
+            $.ajax({
+                url:"/category",
+                type:method,
+                data:data,
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('新建成功', {icon: 1});
+                        $('#tableFromData').bootstrapTable('refresh');
+                        closeLayer();
+                    }else{
+                        layer.msg("新建失败，失败原因："+result.message, {icon: 2});
+                    }
+                }
+            });
+        }
+
+
+        $("#tableFromData").bootstrapTable({
+            url: '/category?sortField=modifyTime&sortOrder=descend',
+            method: 'get',
+            dataType: 'json',
+            search: false,
+            pagination: true,
+            sidePagination:'server',//指定服务器端分页
+            pageSize:10,//单页记录数
+            pageList:[10,20,30,40],//分页步进值
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            iconSize: "outline",
+            // toolbar: "#tableFromDataToolbar",
+            icons: {
+                refresh: "glyphicon-repeat",
+                toggle: "glyphicon-list-alt",
+                columns: "glyphicon-list"
+            },
+            columns: [{
+                field: 'name',
+                title: '一级分类',
+                align: 'center'
+            },{
+                field: 'childName',
+                title: '二级分类',
+                align: 'center'
+            },{
+                field: 'remark',
+                title: '描述',
+                align: 'center'
+            }, {
+                field: 'id',
+                title: '操作',
+                align: 'center',
+                formatter:function(value,row,index){
+                    var htm = '<button class="btn btn-success btn-sm" onclick="edit('+value+')">编辑</button>&nbsp;&nbsp;'+
+                        '<button class="btn btn-success btn-sm" onclick="editData('+value+',\''+row.name+'\')">设置子分类</button>&nbsp;&nbsp;'+
+                        '<button class="btn btn-sm" onclick="del('+value+')">删除</button>';
+                    return htm;
+                }
+            }]
+        })
+
+
+        function del(id) {
+            layer.confirm('删除后不可恢复！请谨慎操作？', {icon: 0, title:'❗删除确认',btn: ['删除','取消']}
+            , function(){
+                delRecord(id);
+            }, function(){
+                layer.msg('已取消', {icon: 1});
+            });
+        }
+        function delRecord(id){
+            $.ajax({
+                url:"/category/"+id,
+                type:"DELETE",
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('删除成功', {icon: 1});
+                        $('#tableFromData1').bootstrapTable('refresh');
+                        $('#tableFromData').bootstrapTable('refresh');
+                    }else{
+                        layer.msg("删除失败，失败原因："+result.message, {icon: 2});
+                    }
+                }
+            });
+        }
+        function edit(id) {
+            showModal('添加一级分类')
+            $('#id').val(id)
+            $.ajax({
+                url:"/category/"+id,
+                type:'GET',
+                success:function (result) {
+                    if(result.code==200){
+                        $('#name').val(result.result.name)
+                        $('#remark').val(result.result.remark)
+                    }
+                }
+            });
+
+        }
+
+        function editData(id, name) {
+            $('#parent_name').text(name);
+            layer.open({
+                title: ['设置子分类', 'font-size:18px;'],
+                offset: '100px',
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                content:$('#layer-content-1'),
+                area: '35%',
+            });
+            loadTable(id);
+            $('#parentId').val(id);
+        }
+
+
+
+        function loadTable(parentId) {
+            $("#tableFromData1").bootstrapTable('destroy'); //加载前先销毁
+            $("#tableFromData1").bootstrapTable({
+                url: '/category/list?parentId='+parentId+'&sortField=modifyTime&sortOrder=descend',
+                method: 'get',
+                dataType: 'json',
+                search: false,
+                // pagination: true,
+                sidePagination:'server',//指定服务器端分页
+                // pageSize:10,//单页记录数
+                // pageList:[10,20,30,40],//分页步进值
+                showRefresh: false,
+                showToggle: false,
+                showColumns: false,
+                iconSize: "outline",
+                // toolbar: "#tableFromDataToolbar",
+                icons: {
+                    refresh: "glyphicon-repeat",
+                    toggle: "glyphicon-list-alt",
+                    columns: "glyphicon-list"
+                },
+                columns: [{
+                    field: 'name',
+                    title: '二级分类名称',
+                    align: 'center'
+                },{
+                    field: 'remark',
+                    title: '描述',
+                    align: 'center'
+                }, {
+                    field: 'id',
+                    title: '操作',
+                    align: 'center',
+                    width: 100,
+                    formatter:function(value,row,index){
+                        var htm = '<button class="btn btn-success btn-xs" onclick="viewShujuxiang('+value+',\''+row.name+'\')">编辑</button> &nbsp;'+
+                            '<button class="btn btn-xs" onclick="del('+value+')">删除</button>';
+                        return htm;
+
+                    }
+                }]
+            })
+        }
+
+        function viewShujuxiang(id, name) {
+            openShujuxiang(id, '编辑二级分类')
+            $('#childId').val(id);
+            $.ajax({
+                url:"/category/"+id,
+                type:'GET',
+                success:function (result) {
+                    if(result.code==200){
+                        $('#childName').val(result.result.name)
+                        $('#childRemark').val(result.result.remark)
+                    }
+                }
+            });
+
+        }
+        function openShujuxiang(id, text) {
+            layer.open({
+                title: [text, 'font-size:18px;'],
+                offset: '250px',
+                type: 1,
+                skin: 'layui-layer-demo', //样式类名
+                closeBtn: 1, //不显示关闭按钮
+                anim: 2,
+                shadeClose: true, //开启遮罩关闭
+                content:$('#layer-content-2'),
+                area: '40%',
+            });
+            $('#childName').val('');
+            $('#childId').val(0);
+            $('#childRemark').val('');
+
+        }
+        function saveData1() {
+            var index = layer.index;
+            var name = $('#childName').val();
+            var remark = $('#childRemark').val();
+            var parentId = $('#parentId').val();
+            var id = $('#childId').val();
+            var method;
+            var data = {name:name,parentId:parentId,level:2,remark:remark};
+            if(id&&id>0){
+                data["id"] = id;
+                method = "PUT";
+            }else {
+                method = "POST";
+            }
+            $.ajax({
+                url:"/category",
+                type:method,
+                data:data,
+                success:function (result) {
+                    if(result.code==200){
+                        layer.msg('添加成功', {icon: 1});
+                        $('#tableFromData1').bootstrapTable('refresh');
+                        $('#tableFromData').bootstrapTable('refresh');
+                        layer.close(index);
+                    }else{
+                        layer.msg("添加失败，失败原因："+result.message, {icon: 2});
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+
+
+<div id="layer-content" style="display: none">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">分类名称</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="id">
+                            <input type="text" id="name" placeholder="输入分类名称" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">描述</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="remark" placeholder="这里输入描述" autofocus></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-3">
+                            <button class="btn btn-primary"  onclick="save()">保存内容</button>
+                            <button class="btn btn-white" onclick="closeLayer();">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="layer-content-1" style="display: none">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">一级分类</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="parentId">
+                            <p class="form-control-static" id="parent_name"></p>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div style="height: 24px">
+                            <button style="float: right" class="btn btn-success btn-xs" onclick="openShujuxiang(0,'添加二级分类')">添加二级分类</button>
+                        </div>
+                        <table id="tableFromData1" data-mobile-responsive="true">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="layer-content-2" style="display: none">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="form-horizontal">
+                    <div class="form-group" >
+                        <label class="col-sm-2 control-label">二级分类名称</label>
+                        <div class="col-sm-8">
+                            <input type="hidden" id="childId">
+                            <input type="text" id="childName" placeholder="输入二级分类名称" class="form-control">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">描述</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="childRemark" placeholder="这里输入描述" autofocus></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <button class="btn btn-primary"  onclick="saveData1()">保存内容</button>
+                            <button class="btn btn-white" onclick="layer.close(layer.index)">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

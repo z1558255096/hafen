@@ -1,0 +1,136 @@
+server:
+  port: 8100
+
+spring:
+  datasource:
+    dynamic:
+      # 是否开启 SQL日志输出，生产环境建议关闭，有性能损耗
+      p6spy: true
+      hikari:
+        connection-timeout: 30000
+        max-lifetime: 1800000
+        max-pool-size: 15
+        min-idle: 5
+        connection-test-query: select 1
+        pool-name: FebsHikariCP
+      # 配置默认数据源
+      primary: primary
+      datasource:
+        # 数据源-1，名称为 primary
+        primary:
+          username: code_public
+          password: Ikd1OKslzmzk
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://127.0.0.1:3306/honor_manage?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false
+        # 数据源-2，名称为 test
+#        test:
+#          username: root
+#          password: 123456
+#          driver-class-name: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://127.0.0.1:3306/febs_test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+  aop:
+    proxy-target-class: true
+
+  messages:
+    encoding: utf-8
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 5
+    password:
+    jedis:
+      pool:
+        min-idle: 8
+        max-idle: 500
+        max-active: 2000
+        max-wait: 10000
+    timeout: 0
+
+  mvc:
+    view:
+      prefix: /
+      suffix: .html
+  thymeleaf:
+    mode: HTML
+    encoding: utf-8
+    cache: false
+  servlet:
+    multipart:
+      max-file-size: 5000MB
+      max-request-size: 5000MB
+      enabled: true
+
+#mybatis plus 设置
+mybatis-plus:
+  type-aliases-package: com.moil.hafen.system.domain
+  mapper-locations: classpath:mapper/*/*.xml
+  configuration:
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭 mybatis-plus的 banner
+    banner: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ['httptrace', 'metrics']
+
+
+febs:
+  # 是否异步记录用户操作日志
+  openAopLog: true
+  # 单次最大批量入库数量
+  max:
+    batch:
+      insert:
+        num: 1000
+  shiro:
+    # 后端免认证接口 url
+    anonUrl:  /projectInfo/export,/oauth,/file/**,/honorManage/export,/login,/logout/**,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/doc.html/**,/favicon.ico,/css/**,/js/**,/fonts/**,/img/**,/login.html,/honor/**
+    # token有效期，单位秒
+    jwtTimeOut: 86400
+  # Swagger相关配置
+  swagger:
+    basePackage: com.moil.hafen
+    title: FEBS VUE API
+    description: FEBS VUE API Document.
+    version: 2.0
+    author: test
+    url: https://adyun.com
+    email: test@adyun.com
+    license: Apache 2.0
+    licenseUrl: https://www.apache.org/licenses/LICENSE-2.0.html
+
+swagger:
+  basic:
+    enable: true
+    username: ENC(8HTyHRbchMgI95xi/HS/Dg==)
+    password: ENC(M/0yhBLWf70Scks1j7t2aEoba3GNKHw3)
+task:
+  pool:
+    corePoolSize: 5
+    maxPoolSize: 5
+    keepAliveSeconds: 300
+    queueCapacity: 1000
+
+oss:
+  config:
+    accessKeyId: LTAI5tCUE1a62zpVpSRRJhec
+    accessKeySecret: Dzyat2b62iLM6450QeaEp16D3nqESF
+    bucketName: pshonor
+    domain: https://pshonor.oss-cn-hangzhou.aliyuncs.com
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    prefix: honor
+
+url:
+  ip:
+    whiteList: 127.0.0.1/32,122.224.234.7/32
+tmp:
+  file:
+    path: /data/jar_base/educ/tmp_file

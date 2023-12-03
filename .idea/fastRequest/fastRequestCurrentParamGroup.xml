@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="fastRequestCurrentParamGroup">
+    <option name="className" value="com.moil.hafen.web.controller.AboutUsController" />
+    <option name="filePath" value="" />
+    <option name="method" value="detail" />
+    <option name="methodDescription" value="获取关于我们详情" />
+    <option name="module" value="HaFen" />
+    <option name="originUrl" value="/aboutUs/" />
+    <option name="returnDocument" value="{&quot;success&quot;:&quot;成功标志&quot;,&quot;message&quot;:&quot;返回处理消息&quot;,&quot;code&quot;:&quot;返回代码&quot;,&quot;result&quot;:{&quot;id&quot;:&quot;No comment,Type =Number&quot;,&quot;content&quot;:&quot;No comment,Type =String&quot;},&quot;timestamp&quot;:&quot;时间戳&quot;}" />
+    <option name="url" value="/aboutUs/" />
+  </component>
+</project>
