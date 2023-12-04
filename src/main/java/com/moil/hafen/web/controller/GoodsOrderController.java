@@ -21,12 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台——商城——商品订单订单管理
+ *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"goodsOrderOrder"})
-@Api(tags = "商品订单订单管理")
+@Api(tags = "管理后台—商城—商品订单管理")
 public class GoodsOrderController extends BaseController {
 
     private String message;
@@ -35,6 +37,14 @@ public class GoodsOrderController extends BaseController {
     private GoodsOrderService goodsOrderService;
 
 
+    /**
+     * 创建订单
+     *
+     * @param order 商品订单信息
+     *
+     * @return {@link Result}<{@link GoodsOrder}>
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping("/createOrder")
     @ApiOperation("创建订单")
     public Result<GoodsOrder> createOrder(GoodsOrder order) throws FebsException {
@@ -46,6 +56,18 @@ public class GoodsOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 通过ID对商品订单售后
+     *
+     * @param orderId               订单id
+     * @param afterSalesType        售后服务类型
+     * @param afterSalesReason      售后原因
+     * @param afterSalesCertificate 售后证书
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/afterSales/{orderId}")
     @ApiOperation("通过ID对商品订单售后")
     public Result afterSales(@PathVariable Integer orderId,int afterSalesType, String afterSalesReason, String afterSalesCertificate) throws FebsException {
@@ -58,6 +80,16 @@ public class GoodsOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 通过ID对商品订单售后物流订单
+     *
+     * @param orderId     订单id
+     * @param logisticsSn 物流sn
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/updateAfterSalesLogisticsSn/{orderId}")
     @ApiOperation("通过ID对商品订单售后物流订单")
     public Result updateAfterSalesLogisticsSn(@PathVariable Integer orderId,String logisticsSn) throws FebsException {
@@ -70,6 +102,15 @@ public class GoodsOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 通过ID对商品订单确认收货
+     *
+     * @param orderId 订单id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/confirmReceipt/{orderId}")
     @ApiOperation("通过ID对商品订单确认收货")
     public Result confirmReceipt(@PathVariable Integer orderId) throws FebsException {
@@ -82,12 +123,29 @@ public class GoodsOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 获取商品订单物流轨迹
+     *
+     * @param orderId 订单id
+     *
+     * @return {@link Result}
+     */
     @GetMapping("/goodsOrderLogistics/{orderId}")
     @ApiOperation("获取商品订单物流轨迹")
     public Result goodsOrderLogistics(@PathVariable Integer orderId) {
         List<GoodsOrderLogistics> list = this.goodsOrderService.getGoodsOrderLogistics(orderId);
         return Result.OK(list);
     }
+
+    /**
+     * 获取商品订单列表（分页）
+     *
+     * @param request    要求
+     * @param goodsOrder 货物订单
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取商品订单列表（分页）")
     public Map<String, Object> page(QueryRequest request, GoodsOrder goodsOrder) {
@@ -95,6 +153,13 @@ public class GoodsOrderController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 通过ID获取商品订单详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link GoodsOrder}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品订单详情")
     public Result<GoodsOrder> detail(@PathVariable Integer id) {
@@ -102,6 +167,16 @@ public class GoodsOrderController extends BaseController {
         return Result.OK(goodsOrder);
     }
 
+    /**
+     * 通过ID对商品订单发货
+     *
+     * @param id           id
+     * @param logisticsSn  物流sn
+     * @param deliveryCode 交货代码
+     *
+     * @return {@link Result}<{@link GoodsOrder}>
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/delivery")
     @ApiOperation("通过ID对商品订单发货")
     public Result<GoodsOrder> delivery(@PathVariable Integer id,String logisticsSn, String deliveryCode) throws FebsException {
@@ -115,6 +190,16 @@ public class GoodsOrderController extends BaseController {
         }
     }
 
+    /**
+     * 通过ID对商品订单售后审核
+     *
+     * @param id     id
+     * @param status 100待审核 101拒绝 102待寄出 103退货待收货 104换货待收货 200已退款 201以换货
+     * @param reason 原因
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/afterSalesApproval")
     @ApiOperation("通过ID对商品订单售后审核")
     public Result afterSalesApproval(@PathVariable Integer id,String status, String reason) throws FebsException {
@@ -127,6 +212,15 @@ public class GoodsOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 通过ID对商品订单退款
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/refund")
     @ApiOperation("通过ID对商品订单退款")
     public Result refund(@PathVariable Integer id) throws FebsException {
@@ -141,6 +235,13 @@ public class GoodsOrderController extends BaseController {
     }
 
 
+    /**
+     * 导出订单列表
+     *
+     * @param goodsOrder 货物订单
+     *
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出订单列表")
     public void export(GoodsOrder goodsOrder, HttpServletResponse response) throws FebsException {

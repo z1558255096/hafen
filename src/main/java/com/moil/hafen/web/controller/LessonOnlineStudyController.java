@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.Date;
 
+/**
+ * 用户小程序-在线课程列表管理
+ *
+ * @author song
+ */
 @Slf4j
 @RestController
 @RequestMapping({"lessonOnlineStudy"})
@@ -29,6 +34,14 @@ public class LessonOnlineStudyController extends BaseController {
     @Resource
     private LessonOnlineStudyService lessonOnlineStudyService;
 
+    /**
+     * 添加在线学习记录列表
+     *
+     * @param lessonOnlineStudy 课程在线学习
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加在线学习记录列表")
     public Result add(LessonOnlineStudy lessonOnlineStudy) throws FebsException {

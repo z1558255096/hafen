@@ -22,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"goodsRecommend"})
-@Api(tags = "商品推荐管理")
+@Api(tags = "管理后台—营销管理—首页管理-商品推荐管理")
 public class GoodsRecommendController extends BaseController {
 
     private String message;
@@ -30,6 +30,14 @@ public class GoodsRecommendController extends BaseController {
     @Resource
     private GoodsRecommendService goodsRecommendService;
 
+    /**
+     * 获取商品推荐列表（分页）
+     *
+     * @param request        要求
+     * @param goodsRecommend 商品推荐
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取商品推荐列表（分页）")
     public Map<String, Object> page(QueryRequest request, GoodsRecommend goodsRecommend) {
@@ -37,6 +45,14 @@ public class GoodsRecommendController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加商品推荐信息
+     *
+     * @param goodsRecommend 商品推荐
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加商品推荐信息")
     public Result add(GoodsRecommend goodsRecommend) throws FebsException {
@@ -50,6 +66,14 @@ public class GoodsRecommendController extends BaseController {
         }
     }
 
+    /**
+     * 删除商品推荐信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除商品推荐信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -62,6 +86,14 @@ public class GoodsRecommendController extends BaseController {
         }
     }
 
+    /**
+     * 修改商品推荐信息
+     *
+     * @param goodsRecommend 商品推荐
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改商品推荐信息")
     public Result update(GoodsRecommend goodsRecommend) throws FebsException {
@@ -73,6 +105,16 @@ public class GoodsRecommendController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 修改商品推荐上下架信息
+     *
+     * @param id     id
+     * @param status 0上架 1下架
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("修改商品推荐上下架信息")
     public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
@@ -87,6 +129,14 @@ public class GoodsRecommendController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取商品推荐详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link GoodsRecommend}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品推荐详情")
     public Result<GoodsRecommend> detail(@PathVariable Integer id) {

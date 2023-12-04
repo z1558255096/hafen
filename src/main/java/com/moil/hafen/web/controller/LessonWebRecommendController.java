@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 管理后台-课程微官网管理
  * @author 8129
  */
 @Slf4j
@@ -29,6 +30,13 @@ public class LessonWebRecommendController extends BaseController {
     @Resource
     private LessonWebRecommendService lessonWebRecommendService;
 
+    /**
+     * 获取课程微官网推荐信息列表
+     *
+     * @param campusId 校园id
+     *
+     * @return {@link Result}<{@link List}<{@link LessonWebRecommend}>>
+     */
     @GetMapping
     @ApiOperation("获取课程微官网推荐信息列表")
     public Result<List<LessonWebRecommend>> list(Integer campusId) {
@@ -37,6 +45,14 @@ public class LessonWebRecommendController extends BaseController {
         return Result.OK(list);
     }
 
+    /**
+     * 添加课程微官网推荐信息信息
+     *
+     * @param lessonWebRecommend 课程网络推荐
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加课程微官网推荐信息信息")
     public Result add(LessonWebRecommend lessonWebRecommend) throws FebsException {
@@ -51,6 +67,14 @@ public class LessonWebRecommendController extends BaseController {
         }
     }
 
+    /**
+     * 删除课程微官网推荐信息信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除课程微官网推荐信息信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -63,6 +87,14 @@ public class LessonWebRecommendController extends BaseController {
         }
     }
 
+    /**
+     * 修改课程微官网推荐信息信息
+     *
+     * @param lessonWebRecommend 课程网络推荐
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改课程微官网推荐信息信息")
     public Result update(LessonWebRecommend lessonWebRecommend) throws FebsException {
@@ -75,6 +107,14 @@ public class LessonWebRecommendController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取课程微官网推荐信息详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonWebRecommend}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取课程微官网推荐信息详情")
     public Result<LessonWebRecommend> detail(@PathVariable Integer id) {

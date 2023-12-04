@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"hafenCoinUse"})
-@Api(tags = "哈奋币规则-使用")
+@Api(tags = "管理后台—内部管理—基础规则管理—哈奋币规则-使用")
 public class HafenCoinUseController extends BaseController {
 
     private String message;
@@ -31,6 +31,14 @@ public class HafenCoinUseController extends BaseController {
     @Resource
     private HafenCoinUseService hafenCoinUseService;
 
+    /**
+     * 获取哈奋币规则列表（分页）
+     *
+     * @param request      要求
+     * @param hafenCoinUse 港口硬币使用
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取哈奋币规则列表（分页）")
     public Map<String, Object> page(QueryRequest request, HafenCoinUse hafenCoinUse) {
@@ -38,6 +46,14 @@ public class HafenCoinUseController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 修改哈奋币规则信息
+     *
+     * @param hafenCoinUse 港口硬币使用
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改哈奋币规则信息")
     public Result update(HafenCoinUse hafenCoinUse) throws FebsException {
@@ -50,14 +66,28 @@ public class HafenCoinUseController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取哈奋币规则详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link HafenCoinUse}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取哈奋币规则详情")
     public Result<HafenCoinUse> detail(@PathVariable Integer id) {
         return Result.OK(this.hafenCoinUseService.getById(id));
     }
+
+    /**
+     * 获取哈奋币规则列表
+     *
+     * @return {@link Result}
+     */
     @GetMapping("/list")
     @ApiOperation("获取哈奋币规则列表")
-    public Result list(HafenCoinUse hafenCoinUse) {
+    public Result list() {
         List<HafenCoinUse> list = this.hafenCoinUseService.list();
         return Result.OK(list);
     }

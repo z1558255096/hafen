@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台-科技营-线上课程列表-新增章节
+ *
  * @author 8129
  */
 @Slf4j
@@ -36,6 +38,14 @@ public class LessonOnlineChapterController extends BaseController {
     @Resource
     private LessonOnlineStudyService lessonOnlineStudyService;
 
+    /**
+     * 获取在线课程章节列表（分页）
+     *
+     * @param request             要求
+     * @param lessonOnlineChapter 在线课程章节
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取在线课程章节列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonOnlineChapter lessonOnlineChapter) {
@@ -43,6 +53,14 @@ public class LessonOnlineChapterController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加在线课程章节信息
+     *
+     * @param lessonOnlineChapter 在线课程章节
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加在线课程章节信息")
     public Result add(LessonOnlineChapter lessonOnlineChapter) throws FebsException {
@@ -66,6 +84,14 @@ public class LessonOnlineChapterController extends BaseController {
         }
     }
 
+    /**
+     * 删除在线课程章节信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除在线课程章节信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -81,6 +107,14 @@ public class LessonOnlineChapterController extends BaseController {
         }
     }
 
+    /**
+     * 修改在线课程章节信息
+     *
+     * @param lessonOnlineChapter 在线课程章节
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改在线课程章节信息")
     public Result update(LessonOnlineChapter lessonOnlineChapter) throws FebsException {
@@ -93,6 +127,16 @@ public class LessonOnlineChapterController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架在线课程章节
+     *
+     * @param id     id
+     * @param status 地位
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架在线课程章节")
     public Result changeStatus(@PathVariable Integer id,Integer status) throws FebsException {
@@ -107,6 +151,16 @@ public class LessonOnlineChapterController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 更新排序--sortStr 操作字符（down---下移，up---上移）
+     *
+     * @param id      id
+     * @param sortStr 排序str
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/updateSort")
     @ApiOperation("更新排序--sortStr 操作字符（down---下移，up---上移）")
     public Result updateSort(@PathVariable Integer id,String sortStr) throws FebsException {
@@ -119,11 +173,27 @@ public class LessonOnlineChapterController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取在线课程章节详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonOnlineChapter}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取在线课程章节详情")
     public Result<LessonOnlineChapter> detail(@PathVariable Integer id) {
         return Result.OK(this.lessonOnlineChapterService.getById(id));
     }
+
+    /**
+     * 小程序通过课程ID获取在线课程章节列表
+     *
+     * @param lessonId 课程id
+     *
+     * @return {@link Result}<{@link List}<{@link LessonOnlineChapter}>>
+     */
     @GetMapping("/{lessonId}/getMiniChapter")
     @ApiOperation("小程序通过课程ID获取在线课程章节列表")
     public Result<List<LessonOnlineChapter>> getMiniChapter(@PathVariable Integer lessonId) {

@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 管理后台-科技营-线下课程管理
+ *
+ * @author song
+ */
 @Slf4j
 @RestController
 @RequestMapping({"lessonOfflineStudentRecord"})

@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"hafenCoin"})
-@Api(tags = "哈奋币管理")
+@Api(tags = "小程序-哈奋币管理")
 public class HafenCoinController extends BaseController {
 
     private String message;
@@ -31,6 +31,14 @@ public class HafenCoinController extends BaseController {
     @Resource
     private HafenCoinService hafenCoinService;
 
+    /**
+     * 获取哈奋币列表（分页）
+     *
+     * @param request   要求
+     * @param hafenCoin 港湾币
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取哈奋币列表（分页）")
     public Map<String, Object> page(QueryRequest request, HafenCoin hafenCoin) {
@@ -38,6 +46,14 @@ public class HafenCoinController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加哈奋币信息
+     *
+     * @param hafenCoin 港湾币
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加哈奋币信息")
     public Result add(HafenCoin hafenCoin) throws FebsException {
@@ -51,6 +67,14 @@ public class HafenCoinController extends BaseController {
         }
     }
 
+    /**
+     * 删除哈奋币信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除哈奋币信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -63,12 +87,24 @@ public class HafenCoinController extends BaseController {
         }
     }
 
+    /**
+     * 通过ID获取哈奋币详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link HafenCoin}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取哈奋币详情")
     public Result<HafenCoin> detail(@PathVariable Integer id) {
         return Result.OK(this.hafenCoinService.getById(id));
     }
 
+    /**
+     * 获取我的哈奋币列表（分页）
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping("/myCoin")
     @ApiOperation("获取我的哈奋币列表（分页）")
     public Map<String, Object> myCoin(QueryRequest request) {

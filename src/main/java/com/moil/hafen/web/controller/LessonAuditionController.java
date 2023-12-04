@@ -29,7 +29,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"lessonAudition"})
-@Api(tags = "试听日程管理")
+@Api(tags = "管理后台—科技营—试听日程管理")
 public class LessonAuditionController extends BaseController {
 
     private String message;
@@ -39,6 +39,14 @@ public class LessonAuditionController extends BaseController {
     @Resource
     private LessonOfflineService lessonOfflineService;
 
+    /**
+     * 获取试听日程列表（分页）
+     *
+     * @param request        要求
+     * @param lessonAudition 试听课
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取试听日程列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonAudition lessonAudition) {
@@ -46,6 +54,14 @@ public class LessonAuditionController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加试听日程信息
+     *
+     * @param lessonAudition 试听课
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加试听日程信息")
     public Result add(LessonAudition lessonAudition) throws FebsException {
@@ -56,7 +72,7 @@ public class LessonAuditionController extends BaseController {
             lessonAudition.setClassDateTime(DateUtil.string2Date(classDateTime, DateUtil.FULL_TIME_SPLIT_PATTERN));
             LessonOffline lessonOffline = lessonOfflineService.getById(lessonAudition.getLessonId());
             lessonAudition.setType(lessonOffline.getType());
-            lessonAudition.setClassTime(lessonAudition.getClassStartTime()+" ~ " + lessonAudition.getClassEndTime());
+            lessonAudition.setClassTime(lessonAudition.getClassStartTime() + " ~ " + lessonAudition.getClassEndTime());
             this.lessonAuditionService.addLessonAudition(lessonAudition);
             return Result.OK();
         } catch (Exception e) {
@@ -66,6 +82,14 @@ public class LessonAuditionController extends BaseController {
         }
     }
 
+    /**
+     * 删除试听日程信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除试听日程信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -78,6 +102,14 @@ public class LessonAuditionController extends BaseController {
         }
     }
 
+    /**
+     * 修改试听日程信息
+     *
+     * @param lessonAudition 试听课
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改试听日程信息")
     public Result update(LessonAudition lessonAudition) throws FebsException {
@@ -87,7 +119,7 @@ public class LessonAuditionController extends BaseController {
             lessonAudition.setClassDateTime(DateUtil.string2Date(classDateTime, DateUtil.FULL_TIME_SPLIT_PATTERN));
             LessonOffline lessonOffline = lessonOfflineService.getById(lessonAudition.getLessonId());
             lessonAudition.setType(lessonOffline.getType());
-            lessonAudition.setClassTime(lessonAudition.getClassStartTime()+" ~ " + lessonAudition.getClassEndTime());
+            lessonAudition.setClassTime(lessonAudition.getClassStartTime() + " ~ " + lessonAudition.getClassEndTime());
             return Result.OK(this.lessonAuditionService.updateById(lessonAudition));
         } catch (Exception e) {
             message = "修改试听日程信息失败";
@@ -95,9 +127,19 @@ public class LessonAuditionController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架试听日程
+     *
+     * @param id     id
+     * @param status 地位
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架试听日程")
-    public Result changeStatus(@PathVariable Integer id,Integer status) throws FebsException {
+    public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
         try {
             LessonAudition lessonAudition = lessonAuditionService.getById(id);
             lessonAudition.setStatus(status);
@@ -109,11 +151,27 @@ public class LessonAuditionController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取试听日程详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonAudition}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取试听日程详情")
     public Result<LessonAudition> detail(@PathVariable Integer id) {
         return Result.OK(this.lessonAuditionService.getById(id));
     }
+
+    /**
+     * 导出试听日程列表
+     *
+     * @param lessonAudition 试听课
+     *
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出试听日程列表")
     public void export(LessonAudition lessonAudition, HttpServletResponse response) throws FebsException {
@@ -132,13 +190,30 @@ public class LessonAuditionController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 获取试听日程列表（分页）-小程序
+     *
+     * @param type     类型
+     * @param date     日期
+     * @param campusId 校园id
+     *
+     * @return {@link Result}<{@link Map}<{@link String},{@link List}<{@link LessonAudition}>>>
+     */
     @GetMapping("/getAudition")
     @ApiOperation("获取试听日程列表（分页）")
-    public Result<Map<String,List<LessonAudition>>> getAuditionList(int type,String date,int campusId) {
-        Map<String,List<LessonAudition>> result = this.lessonAuditionService.getAuditionList(type, date, campusId);
+    public Result<Map<String, List<LessonAudition>>> getAuditionList(int type, String date, int campusId) {
+        Map<String, List<LessonAudition>> result = this.lessonAuditionService.getAuditionList(type, date, campusId);
         return Result.OK(result);
     }
 
+    /**
+     * 获取我的试听日程列表 - 小程序
+     *
+     * @param request 要求
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping("/getMyAudition")
     @ApiOperation("获取我的试听日程列表")
     public Map<String, Object> getMyAudition(QueryRequest request) {
