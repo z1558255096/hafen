@@ -30,7 +30,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"customer"})
-@Api(tags = "用户管理管理")
+@Api(tags = "用户管理管理 - 管理后台")
 public class CustomerController extends BaseController {
 
     private String message;

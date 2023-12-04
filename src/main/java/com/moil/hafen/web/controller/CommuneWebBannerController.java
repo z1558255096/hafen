@@ -28,6 +28,11 @@ public class CommuneWebBannerController extends BaseController {
     @Resource
     private CommuneWebBannerService communeWebBannerService;
 
+    /**
+     * 获取公社微官网banner列表 - 管理后台/小程序
+     *
+     * @return {@link Result}<{@link List}<{@link CommuneWebBanner}>>
+     */
     @GetMapping
     @ApiOperation("获取公社微官网banner列表")
     public Result<List<CommuneWebBanner>> list() {
@@ -36,6 +41,13 @@ public class CommuneWebBannerController extends BaseController {
         return Result.OK(list);
     }
 
+    /**
+     * 添加公社微官网banner信息 - 管理后台
+     *
+     * @param communeWebBanner 社区网络横幅
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加公社微官网banner信息")
     public Result add(CommuneWebBanner communeWebBanner) throws FebsException {
@@ -50,6 +62,13 @@ public class CommuneWebBannerController extends BaseController {
         }
     }
 
+    /**
+     * 删除公社微官网banner信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除公社微官网banner信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -62,6 +81,13 @@ public class CommuneWebBannerController extends BaseController {
         }
     }
 
+    /**
+     * 修改公社微官网banner信息 - 管理后台
+     *
+     * @param communeWebBanner 社区网络横幅
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改公社微官网banner信息")
     public Result update(CommuneWebBanner communeWebBanner) throws FebsException {
@@ -74,6 +100,13 @@ public class CommuneWebBannerController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取公社微官网banner详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link CommuneWebBanner}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取公社微官网banner详情")
     public Result<CommuneWebBanner> detail(@PathVariable Integer id) {

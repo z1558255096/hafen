@@ -28,6 +28,11 @@ public class CommuneRefundRulesController extends BaseController {
     @Resource
     private CommuneRefundRulesService communeRefundRulesService;
 
+    /**
+     * 获取公社退款规则列表 - 管理后台/小程序
+     *
+     * @return {@link Result}
+     */
     @GetMapping
     @ApiOperation("获取公社退款规则列表")
     public Result list() {
@@ -35,6 +40,13 @@ public class CommuneRefundRulesController extends BaseController {
         return Result.OK(list);
     }
 
+    /**
+     * 添加公社退款规则信息 - 管理后台
+     *
+     * @param communeRefundRules 社区退款规则
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加公社退款规则信息")
     public Result add(CommuneRefundRules communeRefundRules) throws FebsException {
@@ -49,6 +61,13 @@ public class CommuneRefundRulesController extends BaseController {
         }
     }
 
+    /**
+     * 删除公社退款规则信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除公社退款规则信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -61,6 +80,13 @@ public class CommuneRefundRulesController extends BaseController {
         }
     }
 
+    /**
+     * 修改公社退款规则信息 - 管理后台
+     *
+     * @param communeRefundRules 社区退款规则
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改公社退款规则信息")
     public Result update(CommuneRefundRules communeRefundRules) throws FebsException {
@@ -73,6 +99,13 @@ public class CommuneRefundRulesController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取公社退款规则详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link CommuneRefundRules}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取公社退款规则详情")
     public Result<CommuneRefundRules> detail(@PathVariable Integer id) {

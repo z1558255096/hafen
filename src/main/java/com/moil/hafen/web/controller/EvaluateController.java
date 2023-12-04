@@ -23,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"evaluate"})
-@Api(tags = "评论管理")
+@Api(tags = "评论管理 - 管理后台/小程序")
 public class EvaluateController extends BaseController {
 
     private String message;

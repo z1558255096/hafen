@@ -29,6 +29,14 @@ public class CouponCustomerController extends BaseController {
     private CouponCustomerService couponCustomerService;
 
 
+    /**
+     * 手动发放优惠券 - 管理后台
+     *
+     * @param couponId    优惠券id
+     * @param customerIds 客户id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("手动发放优惠券")
     public Result add(Integer couponId, List<Integer> customerIds) throws FebsException {
@@ -42,6 +50,12 @@ public class CouponCustomerController extends BaseController {
         }
     }
 
+    /**
+     * 查询是否有未使用的优惠券 - 小程序
+     *
+     * @param couponId 优惠券id
+     * @return {@link Result}
+     */
     @GetMapping("/{couponId}/getUnUseCount")
     @ApiOperation("查询是否有未使用的优惠券")
     public Result getUnUseCount(@PathVariable Integer couponId) {

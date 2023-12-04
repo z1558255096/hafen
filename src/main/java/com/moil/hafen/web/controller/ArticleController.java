@@ -30,6 +30,13 @@ public class ArticleController extends BaseController {
     @Resource
     private ArticleService articleService;
 
+    /**
+     * 获取文章列表（分页）（管理后台+小程序）
+     *
+     * @param request 要求
+     * @param article 文章
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取文章列表（分页）")
     public Map<String, Object> page(QueryRequest request, Article article) {
@@ -37,6 +44,13 @@ public class ArticleController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     *  添加文章信息 管理后台
+     *
+     * @param article 文章
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加文章信息")
     public Result add(Article article) throws FebsException {
@@ -54,6 +68,13 @@ public class ArticleController extends BaseController {
         }
     }
 
+    /**
+     * 删除文章信息 （管理后台）
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除文章信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -69,6 +90,13 @@ public class ArticleController extends BaseController {
         }
     }
 
+    /**
+     * 修改文章信息 （管理后台）
+     *
+     * @param article 文章
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改文章信息")
     public Result update(Article article) throws FebsException {
@@ -81,6 +109,15 @@ public class ArticleController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架文章 （管理后台）
+     *
+     * @param id     id
+     * @param status 地位
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架文章")
     public Result changeStatus(@PathVariable Integer id,Integer status) throws FebsException {
@@ -95,6 +132,13 @@ public class ArticleController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取文章详情 （管理后台+小程序）
+     *
+     * @param id id
+     * @return {@link Result}<{@link Article}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取文章详情")
     public Result<Article> detail(@PathVariable Integer id) {

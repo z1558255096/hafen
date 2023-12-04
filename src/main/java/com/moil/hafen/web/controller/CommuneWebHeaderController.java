@@ -29,7 +29,13 @@ public class CommuneWebHeaderController extends BaseController {
     private CommuneWebHeaderService communeWebHeaderService;
 
 
-
+    /**
+     * 获取公社微官网头部信息列表 - 管理后台/小程序
+     *
+     * @param communeWebHeader 社区web标头
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改公社微官网头部信息信息")
     public Result update(CommuneWebHeader communeWebHeader) throws FebsException {
@@ -42,6 +48,13 @@ public class CommuneWebHeaderController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取公社微官网头部信息详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link CommuneWebHeader}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取公社微官网头部信息详情")
     public Result<CommuneWebHeader> detail(@PathVariable Integer id) {

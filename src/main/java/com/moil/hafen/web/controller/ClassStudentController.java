@@ -42,6 +42,13 @@ public class ClassStudentController extends BaseController {
     @Resource
     private ClassInfoService classInfoService;
 
+    /**
+     * 获取班级学员列表（分页） - 管理后台
+     *
+     * @param request      要求
+     * @param classStudent 班上学生
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取班级学员列表（分页）")
     public Map<String, Object> page(QueryRequest request, ClassStudent classStudent) {
@@ -49,6 +56,13 @@ public class ClassStudentController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加班级学员信息 - 管理后台
+     *
+     * @param classStudent 班上学生
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加班级学员信息")
     public Result add(ClassStudent classStudent) throws FebsException {
@@ -67,6 +81,11 @@ public class ClassStudentController extends BaseController {
         }
     }
 
+    /**
+     *  保存班级学员 - 管理后台
+     *
+     * @param classStudent 班上学生
+     */
     private void saveScheduleStudent(ClassStudent classStudent){
         int classInfoId = classStudent.getClassId();
         ClassInfo classInfo = classInfoService.getById(classInfoId);
@@ -80,6 +99,13 @@ public class ClassStudentController extends BaseController {
         classScheduleStudentService.saveBatch(list);
     }
 
+    /**
+     * 移出班级学员信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("移出班级学员信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -95,6 +121,13 @@ public class ClassStudentController extends BaseController {
         }
     }
 
+    /**
+     * 修改班级学员信息 - 管理后台/班级学员
+     *
+     * @param classStudent 班上学生
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改班级学员信息")
     public Result update(ClassStudent classStudent) throws FebsException {
@@ -112,6 +145,13 @@ public class ClassStudentController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取班级学员详情 （管理后台/小程序）
+     *
+     * @param id id
+     * @return {@link Result}<{@link ClassStudent}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取班级学员详情")
     public Result<ClassStudent> detail(@PathVariable Integer id) {

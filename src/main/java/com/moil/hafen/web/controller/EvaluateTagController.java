@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"evaluateTag"})
-@Api(tags = "课堂点评评价体系管理")
+@Api(tags = "课堂点评评价体系管理 - 管理后台/小程序")
 public class EvaluateTagController extends BaseController {
 
     private String message;

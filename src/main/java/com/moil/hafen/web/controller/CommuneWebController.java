@@ -27,6 +27,11 @@ public class CommuneWebController extends BaseController {
     @Resource
     private CommuneWebService communeWebService;
 
+    /**
+     * 获取公社微官网 - 管理后台/小程序
+     *
+     * @return {@link Result}<{@link CommuneWebVo}>
+     */
     @GetMapping
     @ApiOperation("获取公社微官网")
     public Result<CommuneWebVo> index() {

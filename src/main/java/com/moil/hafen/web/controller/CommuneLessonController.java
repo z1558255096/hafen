@@ -37,6 +37,13 @@ public class CommuneLessonController extends BaseController {
     @Resource
     private CommuneLessonAdvanceService communeLessonAdvanceService;
 
+    /**
+     * 获取公社课程列表（分页） - 管理后台
+     *
+     * @param request       要求
+     * @param communeLesson 社区课程
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取公社课程列表（分页）")
     public Map<String, Object> page(QueryRequest request, CommuneLesson communeLesson) {
@@ -44,6 +51,13 @@ public class CommuneLessonController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加公社课程信息 - 管理后台
+     *
+     * @param communeLesson 社区课程
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加公社课程信息")
     public Result add(CommuneLesson communeLesson) throws FebsException {
@@ -60,6 +74,13 @@ public class CommuneLessonController extends BaseController {
         }
     }
 
+    /**
+     * 删除公社课程信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除公社课程信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -71,6 +92,15 @@ public class CommuneLessonController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架公社课程 - 管理后台
+     *
+     * @param id     id
+     * @param status 地位
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架公社课程")
     public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
@@ -86,6 +116,14 @@ public class CommuneLessonController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 修改公社课程信息 - 管理后台
+     *
+     * @param communeLesson 社区课程
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改公社课程信息")
     public Result update(CommuneLesson communeLesson) throws FebsException {
@@ -109,12 +147,24 @@ public class CommuneLessonController extends BaseController {
         }
         communeLessonAdvanceService.saveBatch(communeLessonAdvanceList);
     }
+
+    /**
+     * 通过ID获取公社课程详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link CommuneLesson}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取公社课程详情")
     public Result<CommuneLesson> detail(@PathVariable Integer id) {
         return Result.OK(this.communeLessonService.detail(id));
     }
 
+    /**
+     * 获取公社课程列表--小程序
+     *
+     * @return {@link Result}<{@link TreeMap}<{@link String}, {@link List}<{@link CommuneLesson}>>>
+     */
     @GetMapping("/miniList")
     @ApiOperation("获取公社课程列表--小程序")
     public Result<TreeMap<String, List<CommuneLesson>>> miniList() {

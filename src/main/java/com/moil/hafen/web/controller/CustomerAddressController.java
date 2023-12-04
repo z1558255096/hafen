@@ -32,6 +32,13 @@ public class CustomerAddressController extends BaseController {
     @Resource
     private CustomerAddressService customerAddressService;
 
+    /**
+     * 获取用户收货列表（分页） - 管理后台/小程序
+     *
+     * @param request         要求
+     * @param customerAddress 客户地址
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取用户收货列表（分页）")
     public Map<String, Object> customerAddressList(QueryRequest request, CustomerAddress customerAddress) {
@@ -39,6 +46,13 @@ public class CustomerAddressController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加用户收货信息 - 管理后台/小程序
+     *
+     * @param customerAddress 客户地址
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加用户收货信息")
     public Result addCustomerAddress(CustomerAddress customerAddress) throws FebsException {
@@ -54,6 +68,13 @@ public class CustomerAddressController extends BaseController {
         }
     }
 
+    /**
+     * 删除用户收货信息 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除用户收货信息")
     public Result deleteCustomerAddress(@PathVariable Integer id) throws FebsException {
@@ -66,6 +87,13 @@ public class CustomerAddressController extends BaseController {
         }
     }
 
+    /**
+     * 修改用户收货信息 - 管理后台/小程序
+     *
+     * @param customerAddress 客户地址
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改用户收货信息")
     public Result updateCustomerAddress(CustomerAddress customerAddress) throws FebsException {
@@ -78,6 +106,14 @@ public class CustomerAddressController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 设置用户默认收货地址 - 小程序
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/default")
     @ApiOperation("设置用户默认收货地址")
     public Result defaultCustomerAddress(@PathVariable Integer id) throws FebsException {
@@ -96,6 +132,13 @@ public class CustomerAddressController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取用户收货详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link CustomerAddress}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取用户收货详情")
     public Result<CustomerAddress> detail(@PathVariable Integer id) {
