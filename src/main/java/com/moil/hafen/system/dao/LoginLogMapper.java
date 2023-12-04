@@ -12,7 +12,7 @@ public interface LoginLogMapper extends BaseMapper<LoginLog> {
 
     /**
      * 获取系统总访问次数
-     *
+     * 111
      * @return Long
      */
     Long findTotalVisitCount();
