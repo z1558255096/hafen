@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * 管理后台-科技营-线下课程管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -35,6 +37,14 @@ public class LessonOfflineController extends BaseController {
     @Resource
     private LessonOfflineService lessonOfflineService;
 
+    /**
+     * 获取线下课程列表（分页）
+     *
+     * @param request       要求
+     * @param lessonOffline 课程离线
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取线下课程列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonOffline lessonOffline) {
@@ -42,6 +52,14 @@ public class LessonOfflineController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加线下课程信息
+     *
+     * @param lessonOffline 课程离线
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加线下课程信息")
     public Result add(LessonOffline lessonOffline) throws FebsException {
@@ -55,6 +73,14 @@ public class LessonOfflineController extends BaseController {
         }
     }
 
+    /**
+     * 删除线下课程信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除线下课程信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -70,6 +96,14 @@ public class LessonOfflineController extends BaseController {
         }
     }
 
+    /**
+     * 修改线下课程信息
+     *
+     * @param lessonOffline 课程离线
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改线下课程信息")
     public Result update(LessonOffline lessonOffline) throws FebsException {
@@ -82,9 +116,19 @@ public class LessonOfflineController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架线下课程
+     *
+     * @param id     id
+     * @param status 地位
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架线下课程")
-    public Result changeStatus(@PathVariable Integer id,Integer status) throws FebsException {
+    public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
         try {
             LessonOffline lessonOffline = lessonOfflineService.getById(id);
             lessonOffline.setStatus(status);
@@ -96,11 +140,28 @@ public class LessonOfflineController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取线下课程详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonOffline}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取线下课程详情")
     public Result<LessonOffline> detail(@PathVariable Integer id) {
         return Result.OK(this.lessonOfflineService.detail(id));
     }
+
+    /**
+     * 导出线下课程
+     *
+     * @param lessonOffline 课程离线
+     * @param response      回答
+     *
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出线下课程")
     public void export(LessonOffline lessonOffline, HttpServletResponse response) throws FebsException {
@@ -120,6 +181,14 @@ public class LessonOfflineController extends BaseController {
         }
     }
 
+    /**
+     * 获取线下课程列表--小程序
+     *
+     * @param type     类型
+     * @param campusId 校园id
+     *
+     * @return {@link Result}<{@link TreeMap}<{@link String}, {@link List}<{@link LessonOffline}>>>
+     */
     @GetMapping("/miniList")
     @ApiOperation("获取线下课程列表--小程序")
     public Result<TreeMap<String, List<LessonOffline>>> miniList(int type, int campusId) {

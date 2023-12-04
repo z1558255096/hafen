@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台-科技营-线下课程订单订单管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -35,6 +37,14 @@ public class LessonOfflineOrderController extends BaseController {
     private LessonOfflineOrderService lessonOfflineOrderService;
 
 
+    /**
+     * 创建订单
+     *
+     * @param order 顺序
+     *
+     * @return {@link Result}<{@link LessonOfflineOrder}>
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping("/createOrder")
     @ApiOperation("创建订单")
     public Result<LessonOfflineOrder> createOrder(LessonOfflineOrder order) throws FebsException {
@@ -46,6 +56,15 @@ public class LessonOfflineOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 修改订单信息
+     *
+     * @param lessonOfflineOrder 课程离线顺序
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改订单信息")
     public Result update(LessonOfflineOrder lessonOfflineOrder) throws FebsException {
@@ -58,6 +77,16 @@ public class LessonOfflineOrderController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID对商品订单售后
+     *
+     * @param orderId          订单id
+     * @param afterSalesReason 售后原因
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/afterSales/{orderId}")
     @ApiOperation("通过ID对商品订单售后")
     public Result afterSales(@PathVariable Integer orderId, String afterSalesReason) throws FebsException {
@@ -71,6 +100,14 @@ public class LessonOfflineOrderController extends BaseController {
         }
     }
 
+    /**
+     * 获取商品订单列表（分页）
+     *
+     * @param request            要求
+     * @param lessonOfflineOrder 课程离线顺序
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取商品订单列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonOfflineOrder lessonOfflineOrder) {
@@ -78,6 +115,13 @@ public class LessonOfflineOrderController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 通过ID获取商品订单详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonOfflineOrder}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品订单详情")
     public Result<LessonOfflineOrder> detail(@PathVariable Integer id) {
@@ -85,6 +129,14 @@ public class LessonOfflineOrderController extends BaseController {
         return Result.OK(lessonOfflineOrder);
     }
 
+    /**
+     * 通过ID对商品订单退款
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/refund")
     @ApiOperation("通过ID对商品订单退款")
     public Result refund(@PathVariable Integer id) throws FebsException {
@@ -99,6 +151,14 @@ public class LessonOfflineOrderController extends BaseController {
     }
 
 
+    /**
+     * 导出订单列表
+     *
+     * @param lessonOfflineOrder 课程离线顺序
+     * @param response           回答
+     *
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出订单列表")
     public void export(LessonOfflineOrder lessonOfflineOrder, HttpServletResponse response) throws FebsException {

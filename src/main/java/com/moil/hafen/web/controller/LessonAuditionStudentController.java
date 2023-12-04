@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 用户小程序-个人中心-我的试听
+ *
  * @author 8129
  */
 @Slf4j
@@ -33,6 +35,14 @@ public class LessonAuditionStudentController extends BaseController {
     @Resource
     private StudentService studentService;
 
+    /**
+     * 获取试听学员列表（分页）
+     *
+     * @param request               要求
+     * @param lessonAuditionStudent 试听学生
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取试听学员列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonAuditionStudent lessonAuditionStudent) {
@@ -40,6 +50,15 @@ public class LessonAuditionStudentController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 预约试听
+     *
+     * @param auditionId 试听id
+     * @param studentIds 学生ID
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping("/{auditionId}/reservation")
     @ApiOperation("预约试听")
     public Result reservation(@PathVariable Integer auditionId, List<Integer> studentIds) throws FebsException {
@@ -53,6 +72,15 @@ public class LessonAuditionStudentController extends BaseController {
         }
     }
 
+    /**
+     * 取消试听
+     *
+     * @param auditionId 试听id
+     * @param studentIds 学生ID
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{auditionId}/cancel")
     @ApiOperation("取消试听")
     public Result cancel(@PathVariable Integer auditionId, List<Integer> studentIds) throws FebsException {

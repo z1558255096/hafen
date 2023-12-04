@@ -16,6 +16,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 管理后台-内部管理-校区管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -29,6 +31,13 @@ public class LessonWebEnvironController extends BaseController {
     @Resource
     private LessonWebEnvironService lessonWebEnvironService;
 
+    /**
+     * 获取课程微官网校区环境信息列表
+     *
+     * @param campusId 校园id
+     *
+     * @return {@link Result}<{@link List}<{@link LessonWebEnviron}>>
+     */
     @GetMapping
     @ApiOperation("获取课程微官网校区环境信息列表")
     public Result<List<LessonWebEnviron>> list(Integer campusId) {
@@ -37,6 +46,14 @@ public class LessonWebEnvironController extends BaseController {
         return Result.OK(list);
     }
 
+    /**
+     * 添加课程微官网校区环境信息信息
+     *
+     * @param lessonWebEnviron 课程网络环境
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加课程微官网校区环境信息信息")
     public Result add(LessonWebEnviron lessonWebEnviron) throws FebsException {
@@ -51,6 +68,14 @@ public class LessonWebEnvironController extends BaseController {
         }
     }
 
+    /**
+     * 删除课程微官网校区环境信息信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除课程微官网校区环境信息信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -63,6 +88,14 @@ public class LessonWebEnvironController extends BaseController {
         }
     }
 
+    /**
+     * 修改课程微官网校区环境信息信息
+     *
+     * @param lessonWebEnviron 课程网络环境
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改课程微官网校区环境信息信息")
     public Result update(LessonWebEnviron lessonWebEnviron) throws FebsException {
@@ -75,6 +108,14 @@ public class LessonWebEnvironController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取课程微官网校区环境信息详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonWebEnviron}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取课程微官网校区环境信息详情")
     public Result<LessonWebEnviron> detail(@PathVariable Integer id) {

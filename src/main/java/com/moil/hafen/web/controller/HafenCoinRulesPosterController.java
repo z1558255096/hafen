@@ -23,7 +23,7 @@ import java.util.Date;
 @Slf4j
 @RestController
 @RequestMapping({"hafenCoinRulesPoster"})
-@Api(tags = "哈奋币规则-海报")
+@Api(tags = "管理后台—内部管理—基础规则管理—哈奋币规则-海报")
 public class HafenCoinRulesPosterController extends BaseController {
 
     private String message;
@@ -31,6 +31,14 @@ public class HafenCoinRulesPosterController extends BaseController {
     @Resource
     private HafenCoinRulesPosterService hafenCoinRulesPosterService;
 
+    /**
+     * 修改哈奋币规则信息
+     *
+     * @param hafenCoinRulesPoster 哈芬币规则海报
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改哈奋币规则信息")
     public Result update(HafenCoinRulesPoster hafenCoinRulesPoster) throws FebsException {
@@ -43,6 +51,12 @@ public class HafenCoinRulesPosterController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 获取规则海报
+     *
+     * @return {@link Result}<{@link HafenCoinRulesPoster}>
+     */
     @GetMapping
     @ApiOperation("获取规则海报")
     public Result<HafenCoinRulesPoster> detail() {

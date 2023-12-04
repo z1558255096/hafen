@@ -18,12 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台-科技营-线下课程管理
+ *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"t_lesson_category"})
-@Api(tags = "课程类目管理")
+@Api(tags = "课程类别管理")
 public class LessonCategoryController extends BaseController {
 
     private String message;
@@ -31,6 +33,14 @@ public class LessonCategoryController extends BaseController {
     @Resource
     private LessonCategoryService lessonCategoryService;
 
+    /**
+     * 获取课程类目列表（分页）
+     *
+     * @param request        要求
+     * @param lessonCategory 课程类别
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取课程类目列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonCategory lessonCategory) {
@@ -38,6 +48,14 @@ public class LessonCategoryController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加课程类目信息
+     *
+     * @param lessonCategory 课程类别
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加课程类目信息")
     public Result add(LessonCategory lessonCategory) throws FebsException {
@@ -53,6 +71,14 @@ public class LessonCategoryController extends BaseController {
         }
     }
 
+    /**
+     * 删除课程类目信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除课程类目信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -69,6 +95,14 @@ public class LessonCategoryController extends BaseController {
         }
     }
 
+    /**
+     * 修改课程类目信息
+     *
+     * @param lessonCategory 课程类别
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改课程类目信息")
     public Result update(LessonCategory lessonCategory) throws FebsException {
@@ -81,11 +115,25 @@ public class LessonCategoryController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取课程类目详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonCategory}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取课程类目详情")
     public Result<LessonCategory> detail(@PathVariable Integer id) {
         return Result.OK(this.lessonCategoryService.getById(id));
     }
+
+    /**
+     * 获取课程类目列表
+     *
+     * @return {@link Result}
+     */
     @GetMapping("/list")
     @ApiOperation("获取课程类目列表")
     public Result list() {

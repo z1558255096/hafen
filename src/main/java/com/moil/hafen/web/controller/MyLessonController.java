@@ -15,6 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 用户小程序-微官网-课程列表
+ *
+ * @author song
+ */
 @Slf4j
 @RestController
 @RequestMapping({"myLesson"})
@@ -26,12 +31,23 @@ public class MyLessonController  extends BaseController {
     @Resource
     private MyLessonService myLessonService;
 
+    /**
+     * 获取我的在线课程列表
+     *
+     * @return {@link Result}<{@link List}<{@link MyLessonOnlineVo}>>
+     */
     @GetMapping("/myLessonOnline")
     @ApiOperation("获取我的在线课程列表")
     public Result<List<MyLessonOnlineVo>> myLessonOnline() {
         List<MyLessonOnlineVo> list = this.myLessonService.getMyLessonOnlineList();
         return Result.OK(list);
     }
+
+    /**
+     * 获取我的线下课程列表
+     *
+     * @return {@link Result}<{@link List}<{@link MyLessonOfflineVo}>>
+     */
     @GetMapping("/myLessonOffline")
     @ApiOperation("获取我的线下课程列表")
     public Result<List<MyLessonOfflineVo>> myLessonOffline() {

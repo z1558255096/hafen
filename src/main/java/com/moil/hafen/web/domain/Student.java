@@ -3,6 +3,7 @@ package com.moil.hafen.web.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,6 +11,7 @@ import java.util.Date;
 
 @Data
 @TableName("t_student")
+@ApiModel(value = "学生")
 public class Student implements Serializable {
     private static final long serialVersionUID = 4595146893031552786L;
     @TableId(value = "id", type = IdType.AUTO)

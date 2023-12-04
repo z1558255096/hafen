@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * 管理后台-营销管理-首页-课程推荐
+ *
  * @author 8129
  */
 @Slf4j
@@ -30,6 +32,14 @@ public class LessonRecommendController extends BaseController {
     @Resource
     private LessonRecommendService lessonRecommendService;
 
+    /**
+     * 获取课程推荐列表（分页）
+     *
+     * @param request         要求
+     * @param lessonRecommend 课程推荐
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取课程推荐列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonRecommend lessonRecommend) {
@@ -37,6 +47,14 @@ public class LessonRecommendController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加课程推荐信息
+     *
+     * @param lessonRecommend 课程推荐
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加课程推荐信息")
     public Result add(LessonRecommend lessonRecommend) throws FebsException {
@@ -50,6 +68,14 @@ public class LessonRecommendController extends BaseController {
         }
     }
 
+    /**
+     * 删除课程推荐信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除课程推荐信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -62,6 +88,14 @@ public class LessonRecommendController extends BaseController {
         }
     }
 
+    /**
+     * 修改课程推荐信息
+     *
+     * @param lessonRecommend 课程推荐
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改课程推荐信息")
     public Result update(LessonRecommend lessonRecommend) throws FebsException {
@@ -73,6 +107,16 @@ public class LessonRecommendController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 修改课程推荐上下架信息
+     *
+     * @param id     id
+     * @param status 地位
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("修改课程推荐上下架信息")
     public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
@@ -87,6 +131,14 @@ public class LessonRecommendController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取课程推荐详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link LessonRecommend}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取课程推荐详情")
     public Result<LessonRecommend> detail(@PathVariable Integer id) {

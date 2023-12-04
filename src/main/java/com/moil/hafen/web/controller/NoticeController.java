@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台-营销管理-首页管理-公告管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -33,6 +35,14 @@ public class NoticeController extends BaseController {
     @Resource
     private NoticeService noticeService;
 
+    /**
+     * 获取公告列表（分页）
+     *
+     * @param request 要求
+     * @param notice  注意
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取公告列表（分页）")
     public Map<String, Object> page(QueryRequest request, Notice notice) {
@@ -40,6 +50,14 @@ public class NoticeController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加公告信息
+     *
+     * @param notice 注意
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加公告信息")
     public Result add(Notice notice) throws FebsException {
@@ -58,6 +76,14 @@ public class NoticeController extends BaseController {
         }
     }
 
+    /**
+     * 删除公告信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除公告信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -73,6 +99,14 @@ public class NoticeController extends BaseController {
         }
     }
 
+    /**
+     * 修改公告信息
+     *
+     * @param notice 注意
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改公告信息")
     public Result update(Notice notice) throws FebsException {
@@ -85,6 +119,16 @@ public class NoticeController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 修改公告强提醒状态
+     *
+     * @param id     id
+     * @param status 地位
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeRemind")
     @ApiOperation("修改公告强提醒状态")
     public Result changeRemind(@PathVariable Integer id,Integer status) throws FebsException {
@@ -99,6 +143,16 @@ public class NoticeController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 修改公告首页展示状态
+     *
+     * @param id     id
+     * @param status 地位
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeShow")
     @ApiOperation("修改公告首页展示状态")
     public Result changeShow(@PathVariable Integer id,Integer status) throws FebsException {
@@ -113,6 +167,14 @@ public class NoticeController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取公告详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link Notice}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取公告详情")
     public Result<Notice> detail(@PathVariable Integer id) {

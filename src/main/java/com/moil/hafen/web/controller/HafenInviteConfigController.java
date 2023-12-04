@@ -21,14 +21,22 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"inviteConfig"})
-@Api(tags = "哈奋币规则-分销")
-public class InviteConfigController extends BaseController {
+@Api(tags = "管理后台—内部管理—基础规则管理—哈奋币规则-分销")
+public class HafenInviteConfigController extends BaseController {
 
     private String message;
 
     @Resource
     private InviteConfigService inviteConfigService;
 
+    /**
+     * 获取分销列表（分页）
+     *
+     * @param request      要求
+     * @param inviteConfig 邀请配置
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取分销列表（分页）")
     public Map<String, Object> page(QueryRequest request, InviteConfig inviteConfig) {

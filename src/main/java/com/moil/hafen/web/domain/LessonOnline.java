@@ -6,6 +6,7 @@ import com.alibaba.excel.annotation.write.style.HeadStyle;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import java.util.Date;
 @TableName("t_lesson_online")
 @HeadStyle(fillForegroundColor=52)
 @ExcelIgnoreUnannotated
+@ApiModel(value = "线上课程管理")
 public class LessonOnline implements Serializable {
     private static final long serialVersionUID = 8704438083236958889L;
     @TableId(value = "id", type = IdType.AUTO)

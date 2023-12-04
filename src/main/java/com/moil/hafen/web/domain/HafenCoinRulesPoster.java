@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +17,7 @@ public class HafenCoinRulesPoster implements Serializable {
     private static final long serialVersionUID = -9012951446694383399L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    @ApiModelProperty("海报名称")
     private String content;
     private Date createTime;
     private Date modifyTime;

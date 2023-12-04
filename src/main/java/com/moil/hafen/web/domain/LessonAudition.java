@@ -6,6 +6,8 @@ import com.alibaba.excel.annotation.write.style.HeadStyle;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -16,6 +18,7 @@ import java.util.List;
 @TableName("t_lesson_audition")
 @HeadStyle(fillForegroundColor=52)
 @ExcelIgnoreUnannotated
+@ApiModel(value = "试听课程")
 public class LessonAudition implements Serializable {
     private static final long serialVersionUID = 1719983841769611114L;
     @TableId(value = "id", type = IdType.AUTO)
@@ -24,19 +27,24 @@ public class LessonAudition implements Serializable {
     private String classDate;
     @ExcelProperty(value = "上课时间")
     private String classTime;
+    @ApiModelProperty(value = "上课开始时间")
     private String classStartTime;
+    @ApiModelProperty(value = "上课结束时间")
     private String classEndTime;
     private Date classDateTime;
+    @ApiModelProperty(value = "课程id")
     private Integer lessonId;
     @ExcelProperty(value = "课程名称")
     private transient String lessonName;
+    @ApiModelProperty(value = "课程分类")
     private transient String categoryName;
     @ExcelProperty(value = "上课教师")
     private String teacher;
+    @ApiModelProperty(value = "教师id")
     private Integer staffId;
     @ExcelProperty(value = "上课学员数量")
     private transient Integer studentCount;
-    @ExcelProperty(value = "预约状态")
+    @ExcelProperty(value = "预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间")
     private transient String reservationStatus;//预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间
 
     private Integer campusId;

@@ -19,12 +19,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台—商品管理—商品类目管理
+ *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"goodsCategory"})
-@Api(tags = "商品类目管理")
+@Api(tags = "管理后台—商品管理—商品类目管理")
 public class GoodsCategoryController extends BaseController {
 
     private String message;
@@ -39,6 +41,13 @@ public class GoodsCategoryController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加商品类目信息
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     * @see GoodsCategoryController#add(GoodsCategory)
+     */
     @PostMapping
     @ApiOperation("添加商品类目信息")
     public Result add(GoodsCategory goodsCategory) throws FebsException {
@@ -54,6 +63,14 @@ public class GoodsCategoryController extends BaseController {
         }
     }
 
+    /**
+     * 删除商品类目信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除商品类目信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -70,6 +87,14 @@ public class GoodsCategoryController extends BaseController {
         }
     }
 
+    /**
+     * 修改商品类目信息
+     *
+     * @param goodsCategory 商品类别
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改商品类目信息")
     public Result update(GoodsCategory goodsCategory) throws FebsException {
@@ -82,15 +107,29 @@ public class GoodsCategoryController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取商品类目详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link GoodsCategory}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品类目详情")
     public Result<GoodsCategory> detail(@PathVariable Integer id) {
         return Result.OK(this.goodsCategoryService.getById(id));
     }
+
+    /**
+     * 获取商品类目列表
+     *
+     * @return {@link Result}
+     */
     @GetMapping("/list")
     @ApiOperation("获取商品类目列表")
     public Result list() {
-        List<GoodsCategory> list = this.goodsCategoryService.list(new LambdaQueryWrapper<GoodsCategory>().eq(GoodsCategory::getDelFlag,0));
+        List<GoodsCategory> list = this.goodsCategoryService.list(new LambdaQueryWrapper<GoodsCategory>().eq(GoodsCategory::getDelFlag, 0));
         return Result.OK(list);
     }
 

@@ -21,12 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台——商城——商品管理
+ *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"goods"})
-@Api(tags = "商品管理")
+@Api(tags = "管理后台—商城—商品管理")
 public class GoodsController extends BaseController {
 
     private String message;
@@ -36,6 +38,14 @@ public class GoodsController extends BaseController {
     @Resource
     private GoodsSpecsService goodsSpecsService;
 
+    /**
+     * 获取商品列表（分页）
+     *
+     * @param request 要求
+     * @param goods   商品
+     *
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取商品列表（分页）")
     public Map<String, Object> page(QueryRequest request, Goods goods) {
@@ -43,6 +53,14 @@ public class GoodsController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加商品信息
+     *
+     * @param goods 商品
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加商品信息")
     public Result add(Goods goods) throws FebsException {
@@ -64,6 +82,14 @@ public class GoodsController extends BaseController {
         }
     }
 
+    /**
+     * 删除商品信息
+     *
+     * @param id id
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除商品信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -79,6 +105,16 @@ public class GoodsController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架商品信息
+     *
+     * @param id     id
+     * @param status 0上架 1下架
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架商品信息")
     public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
@@ -95,13 +131,21 @@ public class GoodsController extends BaseController {
         }
     }
 
+    /**
+     * 修改商品信息
+     *
+     * @param goods 商品
+     *
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改商品信息")
     public Result update(Goods goods) throws FebsException {
         try {
             goods.setModifyTime(new Date());
             this.goodsService.updateById(goods);
-            goodsSpecsService.remove(new LambdaUpdateWrapper<GoodsSpecs>().eq(GoodsSpecs::getGoodsId,goods.getId()));
+            goodsSpecsService.remove(new LambdaUpdateWrapper<GoodsSpecs>().eq(GoodsSpecs::getGoodsId, goods.getId()));
             List<GoodsSpecs> goodsSpecsList = goods.getGoodsSpecsList();
             for (GoodsSpecs goodsSpecs : goodsSpecsList) {
                 goodsSpecs.setGoodsId(goods.getId());
@@ -114,12 +158,26 @@ public class GoodsController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取商品详情
+     *
+     * @param id id
+     *
+     * @return {@link Result}<{@link Goods}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品详情")
     public Result<Goods> detail(@PathVariable Integer id) {
         Goods goods = this.goodsService.detail(id);
         return Result.OK(goods);
     }
+
+    /**
+     * 获取商品列表
+     *
+     * @return {@link Result}
+     */
     @GetMapping("/list")
     @ApiOperation("获取商品列表")
     public Result list() {

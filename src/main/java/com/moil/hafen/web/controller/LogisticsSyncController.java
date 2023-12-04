@@ -27,6 +27,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 快递100同步
+ *
  * @author 8129
  */
 @Slf4j
