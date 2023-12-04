@@ -18,6 +18,8 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
+ * 小程序-哈奋币管理
+ *
  * @author 8129
  */
 @Slf4j

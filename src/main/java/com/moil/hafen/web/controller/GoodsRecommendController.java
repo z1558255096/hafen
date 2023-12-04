@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * 管理后台—营销管理—首页管理-商品推荐管理
  * @author 8129
  */
 @Slf4j

@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
+ * 管理后台—内部管理—基础规则管理—哈奋币规则-分销
  * @author 8129
  */
 @Slf4j

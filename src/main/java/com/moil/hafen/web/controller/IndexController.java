@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+/**
+ * 小程序-首页
+ *
+ * @author song
+ */
 @Slf4j
 @RestController
 @RequestMapping({"index"})

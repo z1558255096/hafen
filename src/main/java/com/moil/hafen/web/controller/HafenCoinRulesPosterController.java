@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
+ * 管理后台—内部管理—基础规则管理—哈奋币规则-海报
  * @author 8129
  */
 @Slf4j
