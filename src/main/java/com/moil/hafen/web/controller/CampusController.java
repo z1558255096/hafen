@@ -34,6 +34,13 @@ public class CampusController extends BaseController {
     @Resource
     private CampusService campusService;
 
+    /**
+     * 获取校区列表（分页） -管理后台/小程序
+     *
+     * @param request 要求
+     * @param campus  校园
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取校区列表（分页）")
     public Map<String, Object> page(QueryRequest request, Campus campus) {
@@ -41,6 +48,13 @@ public class CampusController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加校区信息 -管理后台
+     *
+     * @param campus 校园
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加校区信息")
     public Result add(Campus campus) throws FebsException {
@@ -55,6 +69,13 @@ public class CampusController extends BaseController {
         }
     }
 
+    /**
+     * 删除校区信息 -管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除校区信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -67,6 +88,13 @@ public class CampusController extends BaseController {
         }
     }
 
+    /**
+     * 修改校区信息 -管理后台
+     *
+     * @param campus 校园
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改校区信息")
     public Result update(Campus campus) throws FebsException {
@@ -79,17 +107,39 @@ public class CampusController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取校区详情 （管理后台/小程序）
+     *
+     * @param id id
+     * @return {@link Result}<{@link Campus}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取校区详情")
     public Result<Campus> detail(@PathVariable Integer id) {
         return Result.OK(this.campusService.getById(id));
     }
+
+    /**
+     * 获取校区列表 （管理后台/小程序）
+     *
+     * @param campus 校园
+     * @return {@link Result}
+     */
     @GetMapping("/list")
     @ApiOperation("获取校区列表")
     public Result list(Campus campus) {
         List<Campus> list = this.campusService.getCampusList(campus);
         return Result.OK(list);
     }
+
+    /**
+     * 导出校区列表 （管理后台）
+     *
+     * @param campus   校园
+     * @param response 回答
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出校区列表")
     public void export(Campus campus, HttpServletResponse response) throws FebsException {

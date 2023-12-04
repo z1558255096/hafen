@@ -24,6 +24,12 @@ public class CampusWebController extends BaseController {
     @Resource
     private CampusWebService campusWebService;
 
+    /**
+     * 获取微官网信息 - 管理后台/小程序
+     *
+     * @param campusId 校园id
+     * @return {@link Result}
+     */
     @GetMapping
     @ApiOperation("获取微官网信息")
     public Result info(Integer campusId) {

@@ -26,7 +26,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"classInfo"})
-@Api(tags = "班级管理")
+@Api(tags = "科技营/体适能 班级管理")
 public class ClassInfoController extends BaseController {
 
     private String message;
@@ -34,6 +34,13 @@ public class ClassInfoController extends BaseController {
     @Resource
     private ClassInfoService classInfoService;
 
+    /**
+     *  获取班级列表（分页） - 管理后台
+     *
+     * @param request   要求
+     * @param classInfo 类信息
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取班级列表（分页）")
     public Map<String, Object> page(QueryRequest request, ClassInfo classInfo) {
@@ -41,6 +48,13 @@ public class ClassInfoController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     *  添加班级信息 - 管理后台
+     *
+     * @param classInfo 类信息
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加班级信息")
     public Result add(ClassInfo classInfo) throws FebsException {
@@ -55,6 +69,13 @@ public class ClassInfoController extends BaseController {
         }
     }
 
+    /**
+     * 删除班级信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除班级信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -67,6 +88,13 @@ public class ClassInfoController extends BaseController {
         }
     }
 
+    /**
+     * 修改班级信息 - 管理后台
+     *
+     * @param classInfo 类信息
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改班级信息")
     public Result update(ClassInfo classInfo) throws FebsException {
@@ -80,17 +108,39 @@ public class ClassInfoController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取班级详情 （管理后台/小程序）
+     *
+     * @param id id
+     * @return {@link Result}<{@link ClassInfo}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取班级详情")
     public Result<ClassInfo> detail(@PathVariable Integer id) {
         return Result.OK(this.classInfoService.getById(id));
     }
+
+    /**
+     * 获取班级列表（不分页） - 小程序
+     *
+     * @param classInfo 类信息
+     * @return {@link Result}
+     */
     @GetMapping("/list")
     @ApiOperation("获取班级列表")
     public Result list(ClassInfo classInfo) {
         List<ClassInfo> list = this.classInfoService.getClassInfoList(classInfo);
         return Result.OK(list);
     }
+
+    /**
+     * 导出班级列表 - 管理后台
+     *
+     * @param classInfo 类信息
+     * @param response  回答
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出班级列表")
     public void export(ClassInfo classInfo, HttpServletResponse response) throws FebsException {
