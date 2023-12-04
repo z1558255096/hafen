@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"customerBehavior"})
-@Api(tags = "我的收藏管理")
+@Api(tags = "我的收藏管理 - 小程序")
 public class CustomerBehaviorController extends BaseController {
 
     private String message;
@@ -29,6 +29,13 @@ public class CustomerBehaviorController extends BaseController {
     @Resource
     private CustomerBehaviorService customerBehaviorService;
 
+    /**
+     * 获取我的收藏列表（分页）
+     *
+     * @param request          要求
+     * @param customerBehavior 客户行为
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取我的收藏列表（分页）")
     public Map<String, Object> page(QueryRequest request, CustomerBehavior customerBehavior) {

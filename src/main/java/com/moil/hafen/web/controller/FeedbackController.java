@@ -25,7 +25,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("feedback")
-@Api(tags = "意见反馈管理")
+@Api(tags = "意见反馈管理 - 管理后台/小程序")
 public class FeedbackController extends BaseController {
 
     private String message;

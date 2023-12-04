@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping({"eventReminder"})
-@Api(tags = "家校设置-提醒规则")
+@Api(tags = "家校设置-提醒规则 - 管理后台")
 public class EventReminderController extends BaseController {
 
     private String message;

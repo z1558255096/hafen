@@ -31,6 +31,11 @@ public class CommuneRefundRulesConfigController extends BaseController {
     @Resource
     private CommuneRefundRulesConfigService communeRefundRulesConfigService;
 
+    /**
+     * 获取公社退款规则配置列表 - 管理后台/小程序
+     *
+     * @return {@link Result}
+     */
     @GetMapping
     @ApiOperation("获取公社退款规则配置列表")
     public Result list() {
@@ -38,6 +43,13 @@ public class CommuneRefundRulesConfigController extends BaseController {
         return Result.OK(list);
     }
 
+    /**
+     * 修改公社退款规则配置状态 - 管理后台
+     *
+     * @param communeRefundRulesConfig 社区退款规则配置
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改公社退款规则配置状态")
     public Result update(CommuneRefundRulesConfig communeRefundRulesConfig) throws FebsException {

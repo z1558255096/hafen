@@ -31,6 +31,13 @@ public class ClassScheduleController extends BaseController {
     @Resource
     private ClassScheduleService classScheduleService;
 
+    /**
+     * 获取班级日程列表（分页） - 管理后台
+     *
+     * @param request       要求
+     * @param classSchedule 课程表
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取班级日程列表（分页）")
     public Map<String, Object> page(QueryRequest request, ClassSchedule classSchedule) {
@@ -38,6 +45,13 @@ public class ClassScheduleController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加班级日程信息 - 管理后台
+     *
+     * @param classSchedule 课程表
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加班级日程信息")
     public Result add(ClassSchedule classSchedule) throws FebsException {
@@ -51,6 +65,13 @@ public class ClassScheduleController extends BaseController {
         }
     }
 
+    /**
+     * 删除班级日程信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除班级日程信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -63,6 +84,13 @@ public class ClassScheduleController extends BaseController {
         }
     }
 
+    /**
+     * 修改班级日程信息 - 管理后台
+     *
+     * @param classSchedule 课程表
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改班级日程信息")
     public Result update(ClassSchedule classSchedule) throws FebsException {
@@ -75,6 +103,15 @@ public class ClassScheduleController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上下架班级日程 - 管理后台
+     *
+     * @param id     id
+     * @param status 地位
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架班级日程")
     public Result changeStatus(@PathVariable Integer id,Integer status) throws FebsException {
@@ -89,13 +126,28 @@ public class ClassScheduleController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID获取班级日程详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link ClassSchedule}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取班级日程详情")
     public Result<ClassSchedule> detail(@PathVariable Integer id) {
         return Result.OK(this.classScheduleService.getById(id));
     }
+
+    /**
+     * 通过班级ID和开始时间获取班级日程详情 - 管理后台/小程序
+     *
+     * @param startTime 开始时间
+     * @param classId   类id
+     * @return {@link Result}
+     */
     @GetMapping("/getClassScheduleDate")
-    @ApiOperation("通过ID获取班级日程详情")
+    @ApiOperation("通过班级ID和开始时间获取班级日程详情")
     public Result getClassScheduleDate(String startTime,Integer classId) {
         List<Map<String,String>> list = this.classScheduleService.getClassScheduleDate(startTime,classId);
         return Result.OK(list);

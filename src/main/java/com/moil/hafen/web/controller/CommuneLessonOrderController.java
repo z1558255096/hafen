@@ -35,6 +35,13 @@ public class CommuneLessonOrderController extends BaseController {
     private CommuneLessonOrderService communeLessonOrderService;
 
 
+    /**
+     * 创建订单 - 小程序
+     *
+     * @param order 顺序
+     * @return {@link Result}<{@link CommuneLessonOrder}>
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping("/createOrder")
     @ApiOperation("创建订单")
     public Result<CommuneLessonOrder> createOrder(CommuneLessonOrder order) throws FebsException {
@@ -46,6 +53,14 @@ public class CommuneLessonOrderController extends BaseController {
             throw new FebsException(message);
         }
     }
+
+    /**
+     * 修改订单信息 - 小程序
+     *
+     * @param communeLessonOrder 社区课程顺序
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改订单信息")
     public Result update(CommuneLessonOrder communeLessonOrder) throws FebsException {
@@ -58,6 +73,15 @@ public class CommuneLessonOrderController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 通过ID对商品订单售后  管理后台/小程序
+     *
+     * @param orderId          订单id
+     * @param afterSalesReason 售后原因
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/afterSales/{orderId}")
     @ApiOperation("通过ID对商品订单售后")
     public Result afterSales(@PathVariable Integer orderId, String afterSalesReason) throws FebsException {
@@ -71,6 +95,13 @@ public class CommuneLessonOrderController extends BaseController {
         }
     }
 
+    /**
+     * 获取商品订单列表（分页） - 管理后台/小程序
+     *
+     * @param request            要求
+     * @param communeLessonOrder 社区课程顺序
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取商品订单列表（分页）")
     public Map<String, Object> page(QueryRequest request, CommuneLessonOrder communeLessonOrder) {
@@ -78,6 +109,12 @@ public class CommuneLessonOrderController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 通过ID获取订单详情 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link CommuneLessonOrder}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取订单详情")
     public Result<CommuneLessonOrder> detail(@PathVariable Integer id) {
@@ -85,6 +122,13 @@ public class CommuneLessonOrderController extends BaseController {
         return Result.OK(communeLessonOrder);
     }
 
+    /**
+     * 通过ID对订单退款 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/refund")
     @ApiOperation("通过ID对订单退款")
     public Result refund(@PathVariable Integer id) throws FebsException {
@@ -98,6 +142,13 @@ public class CommuneLessonOrderController extends BaseController {
         }
     }
 
+    /**
+     * 通过ID对订单核销 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/use")
     @ApiOperation("通过ID对订单核销")
     public Result use(@PathVariable Integer id) throws FebsException {
@@ -112,6 +163,13 @@ public class CommuneLessonOrderController extends BaseController {
     }
 
 
+    /**
+     * 导出订单列表 - 管理后台
+     *
+     * @param communeLessonOrder 社区课程顺序
+     * @param response           回答
+     * @throws FebsException FEBS系统内部异常
+     */
     @GetMapping("/export")
     @ApiOperation("导出订单列表")
     public void export(CommuneLessonOrder communeLessonOrder, HttpServletResponse response) throws FebsException {

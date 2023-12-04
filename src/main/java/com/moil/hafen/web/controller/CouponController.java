@@ -30,6 +30,13 @@ public class CouponController extends BaseController {
     @Resource
     private CouponService couponService;
 
+    /**
+     * 获取优惠券列表（分页） 管理后台/小程序
+     *
+     * @param request 要求
+     * @param coupon  息票
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping
     @ApiOperation("获取优惠券列表（分页）")
     public Map<String, Object> page(QueryRequest request, Coupon coupon) {
@@ -37,6 +44,13 @@ public class CouponController extends BaseController {
         return getDataTable(page);
     }
 
+    /**
+     * 添加优惠券信息 - 管理后台
+     *
+     * @param coupon 息票
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PostMapping
     @ApiOperation("添加优惠券信息")
     public Result add(Coupon coupon) throws FebsException {
@@ -50,6 +64,13 @@ public class CouponController extends BaseController {
         }
     }
 
+    /**
+     * 删除优惠券信息 - 管理后台
+     *
+     * @param id id
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @DeleteMapping("/{id}")
     @ApiOperation("删除优惠券信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
@@ -67,6 +88,15 @@ public class CouponController extends BaseController {
             return Result.error(message);
         }
     }
+
+    /**
+     * 上/下架优惠券信息 - 管理后台
+     *
+     * @param id     id
+     * @param status 地位
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上/下架优惠券信息")
     public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
@@ -82,6 +112,13 @@ public class CouponController extends BaseController {
         }
     }
 
+    /**
+     * 修改优惠券信息 - 管理后台
+     *
+     * @param coupon 息票
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
     @PutMapping
     @ApiOperation("修改优惠券信息")
     public Result update(Coupon coupon) throws FebsException {
@@ -95,12 +132,25 @@ public class CouponController extends BaseController {
         }
     }
 
+    /**
+     * 通过ID获取优惠券详情 - 管理后台/小程序
+     *
+     * @param id id
+     * @return {@link Result}<{@link Coupon}>
+     */
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取优惠券详情")
     public Result<Coupon> detail(@PathVariable Integer id) {
         return Result.OK(this.couponService.getById(id));
     }
 
+    /**
+     * 查询用户优惠券列表 - 管理后台/小程序
+     *
+     * @param request 要求
+     * @param status  地位
+     * @return {@link Map}<{@link String}, {@link Object}>
+     */
     @GetMapping("/getCouponByPage")
     @ApiOperation("查询用户优惠券列表")
     public Map<String, Object> getCouponByPage(QueryRequest request, int status) {
