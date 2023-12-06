@@ -12,6 +12,8 @@ import com.moil.hafen.system.domain.Role;
 import com.moil.hafen.system.domain.RoleMenu;
 import com.moil.hafen.system.service.RoleMenuServie;
 import com.moil.hafen.system.service.RoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -25,10 +27,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @Author 陈子杰
+ * @Description 内部管理-角色管理
+ * @Version 1.0.0
+ * @Date 2023/12/6 14:48
+ */
 @Slf4j
 @Validated
 @RestController
 @RequestMapping("/backend/role")
+@Api("内部管理-角色管理")
 public class RoleController extends BaseController {
 
     @Resource
@@ -38,7 +47,8 @@ public class RoleController extends BaseController {
 
     private String message;
 
-    @GetMapping
+    @GetMapping("list")
+    @ApiOperation("获取角色列表")
     public Map<String, Object> roleList(QueryRequest queryRequest, Role role) {
         return getDataTable(roleService.findRoles(role, queryRequest));
     }
@@ -47,6 +57,13 @@ public class RoleController extends BaseController {
     public boolean checkRoleName(@NotBlank(message = "{required}") @PathVariable String roleName) {
         Role result = this.roleService.findByName(roleName);
         return result == null;
+    }
+
+    @GetMapping("detail/{id}")
+    @ApiOperation("根据id获取角色详情")
+    @ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "int", paramType = "path")
+    public Result<Role> detail(@PathVariable("id") Integer id) {
+        return null;
     }
 
     @GetMapping("menu/{roleId}")
@@ -93,20 +110,21 @@ public class RoleController extends BaseController {
             return Result.error(message);
         }
     }
+
     @ApiOperation("新增角色菜单")
     @PostMapping("/{roleId}/addMenu")
     public Result addMenu(@RequestBody List<Tree> list, @PathVariable("roleId") int roleId) throws FebsException {
         try {
 
             roleMenuServie.remove(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleId, roleId));
-            if(CollectionUtils.isEmpty(list)){
+            if (CollectionUtils.isEmpty(list)) {
                 return Result.OK();
             }
             List<RoleMenu> roleMenuList = new ArrayList<>();
             for (Tree tree : list) {
-                getMenuId(tree,roleMenuList,roleId);
+                getMenuId(tree, roleMenuList, roleId);
             }
-            if(CollectionUtils.isNotEmpty(roleMenuList)){
+            if (CollectionUtils.isNotEmpty(roleMenuList)) {
                 roleMenuServie.saveBatch(roleMenuList);
             }
             return Result.OK();
@@ -117,19 +135,19 @@ public class RoleController extends BaseController {
         }
     }
 
-    private void getMenuId(Tree<Menu> tree, List<RoleMenu> list, int roleId){
-        if(tree == null){
+    private void getMenuId(Tree<Menu> tree, List<RoleMenu> list, int roleId) {
+        if (tree == null) {
             return;
         }
         RoleMenu roleMenu = new RoleMenu();
         roleMenu.setMenuId(Integer.parseInt(tree.getId()));
         roleMenu.setRoleId(roleId);
         list.add(roleMenu);
-        if(CollectionUtils.isEmpty(tree.getChildren())){
+        if (CollectionUtils.isEmpty(tree.getChildren())) {
             return;
         }
         for (Tree<Menu> child : tree.getChildren()) {
-            getMenuId(child,list,roleId);
+            getMenuId(child, list, roleId);
         }
 
     }

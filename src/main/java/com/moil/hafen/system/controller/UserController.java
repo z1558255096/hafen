@@ -15,6 +15,7 @@ import com.moil.hafen.system.domain.User;
 import com.moil.hafen.system.manager.UserManager;
 import com.moil.hafen.system.service.RoleService;
 import com.moil.hafen.system.service.UserService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -32,7 +33,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping({"/user","backend/user"})
+@RequestMapping("backend/user")
+@Api("管理后台-用户管理")
 public class UserController extends BaseController {
 
     private String message;

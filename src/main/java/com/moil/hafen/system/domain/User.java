@@ -8,6 +8,12 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @Author 陈子杰
+ * @Description 用户实体类
+ * @Version 1.0.0
+ * @Date 2023/12/06 09:08
+ */
 @Data
 @TableName("t_user")
 public class User implements Serializable {
@@ -26,31 +32,64 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
+    /**
+     * 用户名
+     */
     private String username;
 
+    /**
+     * 密码
+     */
     private String password;
 
+    /**
+     * 昵称
+     */
     private String nickName;
 
+    /**
+     * 工号
+     */
     private String workNum;
 
+    /**
+     * 备注
+     */
     private String remark;
 
+    /**
+     * 状态
+     */
     private String status;
 
+    /**
+     * 创建时间
+     */
     private Date createTime;
 
+    /**
+     * 修改时间
+     */
     private Date modifyTime;
 
-
+    /**
+     * 角色名称
+     */
     private transient String roleName;
+
+    /**
+     * 角色ID
+     */
     private transient String roleIds;
 
-
-    // 排序字段
+    /**
+     * 排序字段
+     */
     private transient String sortField;
 
-    // 排序规则 ascend 升序 descend 降序
+    /**
+     * 排序规则 ascend 升序 descend 降序
+     */
     private transient String sortOrder;
 
     private transient String createTimeFrom;

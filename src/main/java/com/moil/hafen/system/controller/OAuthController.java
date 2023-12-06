@@ -14,9 +14,12 @@ import com.moil.hafen.common.utils.FebsUtil;
 import com.moil.hafen.common.utils.MD5Util;
 import com.moil.hafen.system.domain.User;
 import com.moil.hafen.system.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +27,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
-@Controller
+/**
+ * @Author 陈子杰
+ * @Description 管理后台-用户登录
+ * @Version 1.0.0
+ * @Date 2023/12/6 14:48
+ */
+@RestController
+@RequestMapping("/backend")
+@Api("管理后台-用户登录")
 public class OAuthController {
     @Resource
     private RedisService redisService;
@@ -36,6 +47,7 @@ public class OAuthController {
     private UserService userService;
 
     @RequestMapping("oauth")
+    @ApiOperation("后台登录")
     public void oauth(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws Exception {
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");
