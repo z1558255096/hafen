@@ -1,5 +1,6 @@
 package com.moil.hafen.web.domain;
 
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -13,24 +14,26 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Data
-@TableName("t_commune_activity")
-@ApiModel("公社活动")
-public class CommuneActivity implements Serializable {
-    private static final long serialVersionUID = -3474104737272813515L;
+@TableName("t_commune_ticket_evaluate")
+@ApiModel("门票评价信息")
+public class CommuneTicketEvaluate implements Serializable {
+    private static final long serialVersionUID = 5876645447159453361L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    @ApiModelProperty("活动名称")
-    private String name;
-    @ApiModelProperty("活动时间")
-    private Date activityTime;
-    @ApiModelProperty("是否微官网展示 0 展示 1展示")
-    private Integer isShow;//是否微官网展示 0 展示 1展示
-    @ApiModelProperty("权重")
-    private Integer weight;
-    @ApiModelProperty("封面")
-    private String cover;
-    @ApiModelProperty("详情")
+    @ApiModelProperty("门票Id")
+    private String ticketId;
+    @ApiModelProperty("用户id")
+    private String userId;
+    @ApiModelProperty("用户昵称")
+    private transient String nickName;
+    @ApiModelProperty("手机号码")
+    private transient String phone;
+    @ApiModelProperty("评分")
+    private Integer score;
+    @ApiModelProperty("描述")
     private String detail;
+    @ApiModelProperty("图片")
+    private String fileIds;
     @ApiModelProperty("上架状态 0上架 1下架")
     private Integer status;//上架状态 0上架 1下架
     @ApiModelProperty("是否删除 0正常 1删除")
@@ -41,8 +44,4 @@ public class CommuneActivity implements Serializable {
     private Date createTime;
     @ApiModelProperty("更新时间")
     private Date modifyTime;
-    private transient String createTimeFrom;
-    private transient String createTimeTo;
-    private transient String activityTimeFrom;
-    private transient String activityTimeTo;
 }

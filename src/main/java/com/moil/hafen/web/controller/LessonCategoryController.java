@@ -1,5 +1,6 @@
 package com.moil.hafen.web.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.QueryRequest;
@@ -16,6 +17,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 管理后台-科技营-线下课程管理
@@ -41,11 +43,11 @@ public class LessonCategoryController extends BaseController {
      *
      * @return {@link Map}<{@link String}, {@link Object}>
      */
-    @GetMapping
-    @ApiOperation("获取课程类目列表（分页）")
-    public Map<String, Object> page(QueryRequest request, LessonCategory lessonCategory) {
+    @PostMapping("/page")
+    @ApiOperation(value = "获取课程类目列表（分页）", notes = "获取课程类目列表（分页）")
+    public Result<IPage<LessonCategory>> page(@RequestBody QueryRequest request, @RequestBody LessonCategory lessonCategory) {
         IPage<LessonCategory> page = this.lessonCategoryService.getPage(request, lessonCategory);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     /**
@@ -56,19 +58,19 @@ public class LessonCategoryController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PostMapping
+    @PostMapping("/add")
     @ApiOperation("添加课程类目信息")
-    public Result add(LessonCategory lessonCategory) throws FebsException {
-        try {
-            lessonCategory.setCreateTime(new Date());
-            lessonCategory.setModifyTime(new Date());
-            lessonCategory.setDelFlag(0);
-            return Result.OK(this.lessonCategoryService.save(lessonCategory));
-        } catch (Exception e) {
-            message = "添加课程类目信息失败";
-            log.error(message, e);
-            return Result.error(message);
+    public Result add(@RequestBody LessonCategory lessonCategory) throws FebsException {
+        int count = lessonCategoryService.count(new LambdaQueryWrapper<LessonCategory>()
+                .eq(LessonCategory::getName, lessonCategory.getName())
+                .eq(LessonCategory::getType, lessonCategory.getType())
+                .eq(LessonCategory::getDelFlag, 0));
+        if (count > 0) {
+            return Result.error("课程类目名称已存在");
         }
+        lessonCategory.setCreateTime(new Date());
+        lessonCategory.setModifyTime(new Date());
+        return Result.OK(lessonCategoryService.save(lessonCategory));
     }
 
     /**
@@ -81,18 +83,12 @@ public class LessonCategoryController extends BaseController {
      */
     @DeleteMapping("/{id}")
     @ApiOperation("删除课程类目信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
-        try {
-            LessonCategory lessonCategory = new LessonCategory();
-            lessonCategory.setDelFlag(1);
-            lessonCategory.setId(id);
-            lessonCategory.setModifyTime(new Date());
-            return Result.OK(this.lessonCategoryService.updateById(lessonCategory));
-        } catch (Exception e) {
-            message = "删除课程类目信息失败";
-            log.error(message, e);
-            return Result.error(message);
-        }
+    public Result<Boolean> delete(@PathVariable Integer id) {
+        LessonCategory lessonCategory = new LessonCategory();
+        lessonCategory.setDelFlag(1);
+        lessonCategory.setId(id);
+        lessonCategory.setModifyTime(new Date());
+        return Result.OK(lessonCategoryService.updateById(lessonCategory));
     }
 
     /**
@@ -105,15 +101,16 @@ public class LessonCategoryController extends BaseController {
      */
     @PutMapping
     @ApiOperation("修改课程类目信息")
-    public Result update(LessonCategory lessonCategory) throws FebsException {
-        try {
-            lessonCategory.setModifyTime(new Date());
-            return Result.OK(this.lessonCategoryService.updateById(lessonCategory));
-        } catch (Exception e) {
-            message = "修改课程类目信息失败";
-            log.error(message, e);
-            return Result.error(message);
+    public Result update(LessonCategory lessonCategory) {
+        LessonCategory one = lessonCategoryService.getOne(new LambdaQueryWrapper<LessonCategory>()
+                .eq(LessonCategory::getName, lessonCategory.getName())
+                .eq(LessonCategory::getType, lessonCategory.getType())
+                .eq(LessonCategory::getDelFlag, 0));
+        if (one != null && !Objects.equals(one.getId(), lessonCategory.getId())) {
+            return Result.error("课程类目名称已存在");
         }
+        lessonCategory.setModifyTime(new Date());
+        return Result.OK(lessonCategoryService.updateById(lessonCategory));
     }
 
     /**

@@ -37,8 +37,7 @@ public class CommuneTicketServiceImpl extends ServiceImpl<CommuneTicketDao, Comm
         if(communeTicket.getStatus() != null){
             lambdaQueryWrapper.eq(CommuneTicket::getStatus, communeTicket.getStatus());
         }
-        IPage<CommuneTicket> communeLessonIPage = this.page(page, lambdaQueryWrapper);
-        return communeLessonIPage;
+        return this.page(page, lambdaQueryWrapper);
     }
 
     @Override

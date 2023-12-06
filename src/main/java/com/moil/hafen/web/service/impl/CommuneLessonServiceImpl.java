@@ -15,8 +15,10 @@ import com.moil.hafen.web.service.CommuneLessonService;
 import com.moil.hafen.web.service.LessonCategoryService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -34,14 +36,14 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
         Page<CommuneLesson> page = new Page<>();
         SortUtil.handlePageSort(request, page, true);
         LambdaQueryWrapper<CommuneLesson> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(CommuneLesson::getDelFlag,0);
-        if(StringUtils.isNotBlank(communeLesson.getName())){
+        lambdaQueryWrapper.eq(CommuneLesson::getDelFlag, 0);
+        if (StringUtils.isNotBlank(communeLesson.getName())) {
             lambdaQueryWrapper.eq(CommuneLesson::getName, communeLesson.getName());
         }
-        if(communeLesson.getStatus() != null){
+        if (communeLesson.getStatus() != null) {
             lambdaQueryWrapper.eq(CommuneLesson::getStatus, communeLesson.getStatus());
         }
-        if(communeLesson.getCategoryId() != null){
+        if (communeLesson.getCategoryId() != null) {
             lambdaQueryWrapper.eq(CommuneLesson::getCategoryId, communeLesson.getCategoryId());
         }
         IPage<CommuneLesson> communeLessonIPage = this.page(page, lambdaQueryWrapper);
@@ -56,14 +58,17 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
 
     @Override
     public TreeMap<String, List<CommuneLesson>> miniList() {
+        //获取公社课程列表
         List<CommuneLesson> communeLessonList = this.list(new LambdaQueryWrapper<CommuneLesson>().eq(CommuneLesson::getStatus, 0)
                 .eq(CommuneLesson::getDelFlag, 0));
+        //按照类别分组
         Map<Integer, List<CommuneLesson>> listMap = communeLessonList.stream().collect(Collectors.groupingBy(CommuneLesson::getCategoryId));
-        List<Integer> categoryIds = listMap.keySet().stream().collect(Collectors.toList());
+        List<Integer> categoryIds = new ArrayList<>(listMap.keySet());
+        //获取类别列表
         List<LessonCategory> list = lessonCategoryService.list(new LambdaQueryWrapper<LessonCategory>().in(LessonCategory::getId, categoryIds).orderByDesc(LessonCategory::getWeight));
         TreeMap<String, List<CommuneLesson>> result = new TreeMap<>();
         for (LessonCategory lessonCategory : list) {
-            result.put(lessonCategory.getName(),listMap.get(lessonCategory.getId()));
+            result.put(lessonCategory.getName(), listMap.get(lessonCategory.getId()));
         }
         return result;
     }
@@ -71,9 +76,28 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
     @Override
     public CommuneLesson detail(Integer id) {
         CommuneLesson communeLesson = this.getById(id);
+        //获取公社课程高级设置
         List<CommuneLessonAdvance> communeLessonAdvanceList = communeLessonAdvanceService.list(new LambdaQueryWrapper<CommuneLessonAdvance>()
-                .eq(CommuneLessonAdvance::getLessonId, id).orderByAsc(CommuneLessonAdvance::getIndex));
+                .eq(CommuneLessonAdvance::getLessonId, id)
+                .eq(CommuneLessonAdvance::getDelFlag, 0)
+                .orderByAsc(CommuneLessonAdvance::getIndex));
         communeLesson.setCommuneLessonAdvanceList(communeLessonAdvanceList);
         return communeLesson;
+    }
+
+    /**
+     * 删除公社课程信息和公社课程高级设置
+     *
+     * @param id id
+     *
+     * @return {@link Boolean}
+     */
+    @Override
+    @Transactional
+    public Boolean delete(Integer id) {
+        //删除公社课程信息
+        this.lambdaUpdate().eq(CommuneLesson::getId, id).set(CommuneLesson::getDelFlag, 1).update();
+        //删除公社课程高级设置
+        return communeLessonAdvanceService.lambdaUpdate().eq(CommuneLessonAdvance::getLessonId, id).set(CommuneLessonAdvance::getDelFlag, 1).update();
     }
 }

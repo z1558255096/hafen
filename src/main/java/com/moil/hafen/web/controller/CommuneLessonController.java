@@ -1,6 +1,6 @@
 package com.moil.hafen.web.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.QueryRequest;
@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
+ * 管理后台/公社模块/公社课程管理
  * @author 8129
  */
 @Slf4j
@@ -42,29 +43,31 @@ public class CommuneLessonController extends BaseController {
      *
      * @param request       要求
      * @param communeLesson 社区课程
+     *
      * @return {@link Map}<{@link String}, {@link Object}>
      */
     @GetMapping
     @ApiOperation("获取公社课程列表（分页）")
-    public Map<String, Object> page(QueryRequest request, CommuneLesson communeLesson) {
+    public Result<IPage<CommuneLesson>> page(QueryRequest request, CommuneLesson communeLesson) {
         IPage<CommuneLesson> page = this.communeLessonService.getPage(request, communeLesson);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     /**
      * 添加公社课程信息 - 管理后台
      *
      * @param communeLesson 社区课程
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PostMapping
     @ApiOperation("添加公社课程信息")
-    public Result add(CommuneLesson communeLesson) throws FebsException {
+    public Result add(@RequestBody CommuneLesson communeLesson) throws FebsException {
         try {
             communeLesson.setCreateTime(new Date());
             communeLesson.setModifyTime(new Date());
-            this.communeLessonService.save(communeLesson);
+            communeLessonService.save(communeLesson);
             addAdvance(communeLesson);
             return Result.OK();
         } catch (Exception e) {
@@ -78,6 +81,7 @@ public class CommuneLessonController extends BaseController {
      * 删除公社课程信息 - 管理后台
      *
      * @param id id
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
@@ -85,7 +89,7 @@ public class CommuneLessonController extends BaseController {
     @ApiOperation("删除公社课程信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
         try {
-            return Result.OK(this.communeLessonService.removeById(id));
+            return Result.OK(communeLessonService.delete(id));
         } catch (Exception e) {
             message = "删除公社课程信息失败";
             log.error(message, e);
@@ -97,13 +101,14 @@ public class CommuneLessonController extends BaseController {
      * 上下架公社课程 - 管理后台
      *
      * @param id     id
-     * @param status 地位
+     * @param status 上架状态 0上架 1下架
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PutMapping("/{id}/changeStatus")
     @ApiOperation("上下架公社课程")
-    public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
+    public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
         try {
             CommuneLesson communeLesson = new CommuneLesson();
             communeLesson.setStatus(status);
@@ -121,12 +126,13 @@ public class CommuneLessonController extends BaseController {
      * 修改公社课程信息 - 管理后台
      *
      * @param communeLesson 社区课程
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PutMapping
     @ApiOperation("修改公社课程信息")
-    public Result update(CommuneLesson communeLesson) throws FebsException {
+    public Result update(@RequestBody CommuneLesson communeLesson) throws FebsException {
         try {
             communeLesson.setModifyTime(new Date());
             this.communeLessonService.updateById(communeLesson);
@@ -138,13 +144,21 @@ public class CommuneLessonController extends BaseController {
             return Result.error(message);
         }
     }
-    private void addAdvance(CommuneLesson communeLesson){
-        communeLessonAdvanceService.remove(new LambdaQueryWrapper<CommuneLessonAdvance>()
-                .eq(CommuneLessonAdvance::getLessonId,communeLesson.getId()));
+
+    /**
+     * 新增公社课程高级设置
+     *
+     * @param communeLesson 社区课程
+     */
+    private void addAdvance(CommuneLesson communeLesson) {
+        // 先删除原有的
+        communeLessonAdvanceService.update(new LambdaUpdateWrapper<CommuneLessonAdvance>()
+                .eq(CommuneLessonAdvance::getLessonId, communeLesson.getId()).set(CommuneLessonAdvance::getDelFlag, 1));
         List<CommuneLessonAdvance> communeLessonAdvanceList = communeLesson.getCommuneLessonAdvanceList();
         for (CommuneLessonAdvance communeLessonAdvance : communeLessonAdvanceList) {
             communeLessonAdvance.setLessonId(communeLesson.getId());
         }
+        // 再批量新增
         communeLessonAdvanceService.saveBatch(communeLessonAdvanceList);
     }
 
@@ -152,6 +166,7 @@ public class CommuneLessonController extends BaseController {
      * 通过ID获取公社课程详情 - 管理后台/小程序
      *
      * @param id id
+     *
      * @return {@link Result}<{@link CommuneLesson}>
      */
     @GetMapping("/{id}")

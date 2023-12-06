@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.Map;
 
 /**
+ * 管理后台/公社模块/公社活动管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -35,29 +37,31 @@ public class CommuneActivityController extends BaseController {
      *
      * @param request         要求
      * @param communeActivity 公社活动
+     *
      * @return {@link Map}<{@link String}, {@link Object}>
      */
     @GetMapping
     @ApiOperation("获取公社活动列表（分页）")
-    public Map<String, Object> page(QueryRequest request, CommuneActivity communeActivity) {
-        IPage<CommuneActivity> page = this.communeActivityService.getPage(request, communeActivity);
-        return getDataTable(page);
+    public Result page(QueryRequest request, CommuneActivity communeActivity) {
+        IPage<CommuneActivity> page = communeActivityService.getPage(request, communeActivity);
+        return Result.OK(page);
     }
 
     /**
      * 添加公社活动信息 - 管理后台
      *
      * @param communeActivity 公社活动
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PostMapping
     @ApiOperation("添加公社活动信息")
-    public Result add(CommuneActivity communeActivity) throws FebsException {
+    public Result add(@RequestBody CommuneActivity communeActivity) throws FebsException {
         try {
             communeActivity.setCreateTime(new Date());
             communeActivity.setModifyTime(new Date());
-            return Result.OK(this.communeActivityService.save(communeActivity));
+            return Result.OK(communeActivityService.save(communeActivity));
         } catch (Exception e) {
             message = "添加公社活动信息失败";
             log.error(message, e);
@@ -69,6 +73,7 @@ public class CommuneActivityController extends BaseController {
      * 删除公社活动信息 - 管理后台
      *
      * @param id id
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
@@ -76,7 +81,8 @@ public class CommuneActivityController extends BaseController {
     @ApiOperation("删除公社活动信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
         try {
-            return Result.OK(this.communeActivityService.removeById(id));
+            boolean update = communeActivityService.lambdaUpdate().eq(CommuneActivity::getId, id).set(CommuneActivity::getDelFlag, 1).update();
+            return Result.OK(update);
         } catch (Exception e) {
             message = "删除公社活动信息失败";
             log.error(message, e);
@@ -88,7 +94,8 @@ public class CommuneActivityController extends BaseController {
      * 上下架公社活动 - 管理后台
      *
      * @param id     id
-     * @param status 地位
+     * @param status 上架状态 0上架 1下架
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
@@ -109,9 +116,10 @@ public class CommuneActivityController extends BaseController {
     }
 
     /**
-     *  修改公社活动信息 - 管理后台
+     * 修改公社活动信息 - 管理后台
      *
      * @param communeActivity 公社活动
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
@@ -132,6 +140,7 @@ public class CommuneActivityController extends BaseController {
      * 通过ID获取公社活动详情 - 管理后台/小程序
      *
      * @param id id
+     *
      * @return {@link Result}<{@link CommuneActivity}>
      */
     @GetMapping("/{id}")

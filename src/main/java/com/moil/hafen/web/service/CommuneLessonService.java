@@ -14,4 +14,6 @@ public interface CommuneLessonService extends IService<CommuneLesson> {
     TreeMap<String, List<CommuneLesson>> miniList();
 
     CommuneLesson detail(Integer id);
+
+    Boolean delete(Integer id);
 }

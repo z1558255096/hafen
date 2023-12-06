@@ -21,14 +21,16 @@ public class LessonCategory implements Serializable {
     private String name;
     @ApiModelProperty("权重")
     private Integer weight;
-    @ApiModelProperty("是否删除 0正常 1删除")
-    private Integer delFlag;
     @ApiModelProperty("课程类型 1科技营 2体适能 3公社课程")
     private Integer type;
-
+    @ApiModelProperty("课程数量")
+    private Integer count;
+    @ApiModelProperty("创建时间")
     private Date createTime;
+    @ApiModelProperty("更新时间")
     private Date modifyTime;
+    @ApiModelProperty("是否删除 0正常 1删除")
+    private Integer delFlag;
     private transient String createTimeFrom;
     private transient String createTimeTo;
-    private transient int count;
 }

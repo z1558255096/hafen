@@ -18,9 +18,9 @@ public class LessonCategoryServiceImpl extends ServiceImpl<LessonCategoryDao,Les
         Page<LessonCategory> page = new Page<>();
         SortUtil.handlePageSort(request, page, true);
         LambdaQueryWrapper<LessonCategory> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(LessonCategory::getDelFlag,0).eq(LessonCategory::getType,lessonCategory.getType())
+        lambdaQueryWrapper.eq(LessonCategory::getDelFlag,0)
+                .eq(LessonCategory::getType,lessonCategory.getType())
                 .orderByDesc(LessonCategory::getWeight);
-        IPage<LessonCategory> lessonCategoryIPage = this.page(page, lambdaQueryWrapper);
-        return lessonCategoryIPage;
+        return this.page(page, lambdaQueryWrapper);
     }
 }

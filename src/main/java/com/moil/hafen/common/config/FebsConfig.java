@@ -36,6 +36,17 @@ public class FebsConfig {
                 .build()
                 .apiInfo(apiInfo(swagger));
     }
+    @Bean(value = "systemApi")
+    public Docket systemApi() {
+        SwaggerProperties swagger = properties.getSwagger();
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.moil.hafen.system.controller"))
+                .paths(PathSelectors.any())
+                .build()
+                .groupName("系统管理")
+                .apiInfo(apiInfo(swagger));
+    }
 
     private ApiInfo apiInfo(SwaggerProperties swagger) {
         return new ApiInfo(
