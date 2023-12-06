@@ -29,13 +29,13 @@ import java.time.LocalDateTime;
 
 /**
  * @Author 陈子杰
- * @Description 管理后台-用户登录
+ * @Description 授权
  * @Version 1.0.0
  * @Date 2023/12/6 14:48
  */
 @RestController
-@RequestMapping("/backend")
-@Api("管理后台-用户登录")
+@RequestMapping
+@Api("授权")
 public class OAuthController {
     @Resource
     private RedisService redisService;
@@ -47,7 +47,7 @@ public class OAuthController {
     private UserService userService;
 
     @RequestMapping("oauth")
-    @ApiOperation("后台登录")
+    @ApiOperation("授权")
     public void oauth(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse) throws Exception {
         httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
         httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS,PUT,DELETE");

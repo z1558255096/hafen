@@ -5,6 +5,12 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @Author 陈子杰
+ * @Description 登录日志实体类
+ * @Version 1.0.0
+ * @Date 2023/12/06 09:03
+ */
 @TableName("t_login_log")
 @Data
 public class LoginLog {
@@ -23,5 +29,8 @@ public class LoginLog {
      */
     private String location;
 
+    /**
+     * ip
+     */
     private String ip;
 }

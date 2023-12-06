@@ -21,6 +21,10 @@ import com.moil.hafen.system.domain.User;
 import com.moil.hafen.system.manager.UserManager;
 import com.moil.hafen.system.service.LoginLogService;
 import com.moil.hafen.system.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
@@ -32,8 +36,16 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.*;
 
+/**
+ * @Author 陈子杰
+ * @Description 管理后台/登录
+ * @Version 1.0.0
+ * @Date 2023/12/06 09:38
+ */
 @Validated
 @RestController
+@RequestMapping("/backend")
+@Api("管理后台/登录")
 public class LoginController {
 
     @Resource
@@ -53,6 +65,11 @@ public class LoginController {
 
     @PostMapping("/login")
     @Limit(key = "login", period = 60, count = 20, name = "登录接口", prefix = "limit")
+    @ApiOperation("用户登录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "string", paramType = "param"),
+            @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "string", paramType = "param")
+    })
     public FebsResponse login(
             @NotBlank(message = "{required}") String username,
             @NotBlank(message = "{required}") String password, HttpServletRequest request) throws Exception {
