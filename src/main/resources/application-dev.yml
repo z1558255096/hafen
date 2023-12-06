@@ -39,10 +39,10 @@ spring:
     time-zone: GMT+8
 
   redis:
-    host: r-bp1zn2wllbl5jrlfxepi.redis.rds.aliyuncs.com
+    host: 127.0.0.1
     port: 6379
-    database: 5
-    password: r-bp1zn2wllbl5jrlfxe
+    database: 1
+    password:
     jedis:
       pool:
         min-idle: 8
@@ -92,7 +92,7 @@ febs:
         num: 1000
   shiro:
     # 后端免认证接口 url
-    anonUrl:  /projectInfo/export,/oauth,/file/**,/honorManage/export,/login,/logout/**,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/doc.html/**,/favicon.ico,/css/**,/js/**,/fonts/**,/img/**,/login.html,/honor/**
+    anonUrl:  /projectInfo/export,/backend/oauth,/file/**,/honorManage/export,/backend/login,/logout/**,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/doc.html/**,/favicon.ico,/css/**,/js/**,/fonts/**,/img/**,/login.html,/honor/**
     # token有效期，单位秒
     jwtTimeOut: 86400
   # Swagger相关配置
