@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * 管理后台-科技营-线下课程管理
+ * 管理后台/科技营/课程类别管理
  *
  * @author 8129
  */

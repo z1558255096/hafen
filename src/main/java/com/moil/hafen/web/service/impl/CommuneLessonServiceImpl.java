@@ -36,7 +36,6 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
         Page<CommuneLesson> page = new Page<>();
         SortUtil.handlePageSort(request, page, true);
         LambdaQueryWrapper<CommuneLesson> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(CommuneLesson::getDelFlag, 0);
         if (StringUtils.isNotBlank(communeLesson.getName())) {
             lambdaQueryWrapper.eq(CommuneLesson::getName, communeLesson.getName());
         }
@@ -46,6 +45,7 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
         if (communeLesson.getCategoryId() != null) {
             lambdaQueryWrapper.eq(CommuneLesson::getCategoryId, communeLesson.getCategoryId());
         }
+        lambdaQueryWrapper.eq(CommuneLesson::getDelFlag,0).orderByDesc(CommuneLesson::getCreateTime);
         IPage<CommuneLesson> communeLessonIPage = this.page(page, lambdaQueryWrapper);
         List<Integer> categoryIds = communeLessonIPage.getRecords().stream().map(CommuneLesson::getCategoryId).collect(Collectors.toList());
         List<LessonCategory> communeLessonCategoryList = lessonCategoryService.list(new LambdaQueryWrapper<LessonCategory>().in(LessonCategory::getId, categoryIds));

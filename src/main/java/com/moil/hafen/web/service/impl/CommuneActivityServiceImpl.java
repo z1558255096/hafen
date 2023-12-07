@@ -44,6 +44,7 @@ public class CommuneActivityServiceImpl extends ServiceImpl<CommuneActivityDao,C
         if(StringUtils.isNotBlank(communeActivity.getActivityTimeTo())){
             lambdaQueryWrapper.le(CommuneActivity::getActivityTime,communeActivity.getActivityTimeTo()+" 23:59:59");
         }
+        lambdaQueryWrapper.eq(CommuneActivity::getDelFlag,0).orderByDesc(CommuneActivity::getCreateTime);
         return lambdaQueryWrapper;
     }
 }

@@ -32,6 +32,7 @@ public class CommuneTicketEvaluateServiceImpl extends ServiceImpl<CommuneTicketE
         if (communeTicketEvaluate.getUserId() != null) {
             lambdaQueryWrapper.eq(CommuneTicketEvaluate::getUserId, communeTicketEvaluate.getUserId());
         }
+        lambdaQueryWrapper.eq(CommuneTicketEvaluate::getDelFlag,0).orderByDesc(CommuneTicketEvaluate::getCreateTime);
         IPage<CommuneTicketEvaluate> communeTicketEvaluateIPage = this.page(page, lambdaQueryWrapper);
         for (CommuneTicketEvaluate record : communeTicketEvaluateIPage.getRecords()) {
             User user = userMapper.selectById(record.getUserId());

@@ -37,6 +37,7 @@ public class CommuneTicketServiceImpl extends ServiceImpl<CommuneTicketDao, Comm
         if(communeTicket.getStatus() != null){
             lambdaQueryWrapper.eq(CommuneTicket::getStatus, communeTicket.getStatus());
         }
+        lambdaQueryWrapper.eq(CommuneTicket::getDelFlag,0).orderByDesc(CommuneTicket::getCreateTime);
         return this.page(page, lambdaQueryWrapper);
     }
 

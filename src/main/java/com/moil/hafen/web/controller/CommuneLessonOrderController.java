@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台/公社模块/课程订单
  * @author 8129
  */
 @Slf4j
