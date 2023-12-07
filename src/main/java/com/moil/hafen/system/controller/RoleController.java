@@ -52,7 +52,7 @@ public class RoleController extends BaseController {
     @ApiOperation("获取角色列表")
     public Result<Object> roleList(QueryRequest queryRequest, Role role) {
         IPage<Role> roles = roleService.findRoles(role, queryRequest);
-        return Result.OK(role);
+        return Result.OK(roles);
     }
 
     @GetMapping("detail/{id}")
