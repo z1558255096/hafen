@@ -1,5 +1,6 @@
 package com.moil.hafen.system.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.QueryRequest;
 import com.moil.hafen.common.domain.Result;
@@ -21,7 +22,6 @@ import javax.validation.Valid;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * @Author 陈子杰
@@ -50,8 +50,9 @@ public class RoleController extends BaseController {
 
     @GetMapping("list")
     @ApiOperation("获取角色列表")
-    public Map<String, Object> roleList(QueryRequest queryRequest, Role role) {
-        return getDataTable(roleService.findRoles(role, queryRequest));
+    public Result<Object> roleList(QueryRequest queryRequest, Role role) {
+        IPage<Role> roles = roleService.findRoles(role, queryRequest);
+        return Result.OK(role);
     }
 
     @GetMapping("detail/{id}")

@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moil.hafen.common.annotation.Limit;
 import com.moil.hafen.common.authentication.JWTToken;
 import com.moil.hafen.common.authentication.JWTUtil;
-import com.moil.hafen.common.domain.ActiveUser;
-import com.moil.hafen.common.domain.FebsConstant;
-import com.moil.hafen.common.domain.FebsResponse;
-import com.moil.hafen.common.domain.UserInfoVo;
+import com.moil.hafen.common.domain.*;
 import com.moil.hafen.common.enums.RoleType;
 import com.moil.hafen.common.properties.FebsProperties;
 import com.moil.hafen.common.service.RedisService;
@@ -72,7 +69,7 @@ public class LoginController {
             @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "string", paramType = "param"),
             @ApiImplicitParam(name = "password", value = "密码", required = true, dataType = "string", paramType = "param")
     })
-    public FebsResponse login(
+    public Result<Object> login(
             @NotBlank(message = "{required}") String username,
             @NotBlank(message = "{required}") String password, HttpServletRequest request) throws Exception {
 
@@ -80,11 +77,11 @@ public class LoginController {
         User user = this.userManager.getUser(username);
 
         if (user == null)
-            return new FebsResponse().message(errorMessage);
+            return Result.error(errorMessage);
         if (!StringUtils.equals(user.getPassword(), password))
-            return new FebsResponse().message(errorMessage);
+            return Result.error(errorMessage);
         if (User.STATUS_LOCK.equals(user.getStatus()))
-            return new FebsResponse().message("账号已被锁定,请联系管理员！");
+            return Result.error("账号已被锁定,请联系管理员！");
 
         // 保存登录记录
         LoginLog loginLog = new LoginLog();
@@ -99,7 +96,7 @@ public class LoginController {
         String userId = this.saveTokenToRedis(user, jwtToken, request);
 
         UserInfoVo userInfo = this.generateUserInfo(jwtToken, user);
-        return new FebsResponse().message("认证成功").data(userInfo);
+        return Result.OK(userInfo);
     }
 
 //    @GetMapping("index/{username}")
