@@ -1,15 +1,12 @@
 package com.moil.hafen.system.controller;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.moil.hafen.common.authentication.JWTUtil;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.QueryRequest;
 import com.moil.hafen.common.domain.Result;
-import com.moil.hafen.common.domain.router.VueRouter;
 import com.moil.hafen.common.exception.FebsException;
 import com.moil.hafen.common.utils.MD5Util;
-import com.moil.hafen.system.domain.Menu;
 import com.moil.hafen.system.domain.Role;
 import com.moil.hafen.system.domain.User;
 import com.moil.hafen.system.manager.UserManager;
@@ -25,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -190,20 +186,20 @@ public class UserController extends BaseController {
             throw new FebsException(message);
         }
     }
-    @GetMapping("/getCurrentUserInfo")
-    public Result getCurrentUserInfo() {
-        int userId = JWTUtil.getCurrentCustomerId();
-        User user = userService.getById(userId);
-        Map<String, Object> userInfo = new HashMap<>();
-        List<VueRouter<Menu>> menu = this.userManager.getUserRouters(user.getUsername());
-        userInfo.put("menu", menu);
-        user.setPassword("it's a secret");
-        userInfo.put("user", user);
-        List<Role> userRole = roleService.findUserRole(user.getUsername());
-        if(CollectionUtils.isNotEmpty(userRole)) {
-            List<String> roleNames = userRole.stream().map(Role::getRoleName).collect(Collectors.toList());
-            user.setRoleName(StringUtils.join(roleNames, ";"));
-        }
-        return Result.OK(userInfo);
-    }
+    // @GetMapping("/getCurrentUserInfo")
+    // public Result getCurrentUserInfo() {
+    //     int userId = JWTUtil.getCurrentCustomerId();
+    //     User user = userService.getById(userId);
+    //     Map<String, Object> userInfo = new HashMap<>();
+    //     List<VueRouter<Menu>> menu = this.userManager.getUserRouters(user.getUsername());
+    //     userInfo.put("menu", menu);
+    //     user.setPassword("it's a secret");
+    //     userInfo.put("user", user);
+    //     List<Role> userRole = roleService.findUserRole(user.getUsername());
+    //     if(CollectionUtils.isNotEmpty(userRole)) {
+    //         List<String> roleNames = userRole.stream().map(Role::getRoleName).collect(Collectors.toList());
+    //         user.setRoleName(StringUtils.join(roleNames, ";"));
+    //     }
+    //     return Result.OK(userInfo);
+    // }
 }

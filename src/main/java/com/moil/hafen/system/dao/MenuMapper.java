@@ -2,20 +2,22 @@ package com.moil.hafen.system.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.moil.hafen.system.domain.Menu;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * @Author 陈子杰
+ * @Description 菜单mapper
+ * @Version 1.0.0
+ * @Date 2023/12/07 04:17
+ */
 public interface MenuMapper extends BaseMapper<Menu> {
-
-    List<Menu> findUserPermissions(String userName);
-
-    List<Menu> findUserMenus(String userName);
-
     /**
-     * 查找当前菜单/按钮关联的用户 ID
+     * 获取用户菜单
      *
-     * @param menuId menuId
-     * @return 用户 ID集合
+     * @param username 用户名
+     * @return {@link List}<{@link Menu}>
      */
-    List<String> findUserIdsByMenuId(String menuId);
+    List<Menu> getUserMenus(@Param("username") String username);
 }

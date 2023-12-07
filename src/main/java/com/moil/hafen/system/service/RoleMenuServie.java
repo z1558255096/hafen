@@ -14,4 +14,12 @@ public interface RoleMenuServie extends IService<RoleMenu> {
     List<RoleMenu> getRoleMenusByRoleId(int roleId);
 
     List<RoleMenu> getHasPathRoleMenusByRoleId(int roleId);
+
+    /**
+     * 角色分配菜单
+     *
+     * @param roleId  角色id
+     * @param menuIds 菜单ID
+     */
+    void roleAllotMenu(Integer roleId, List<String> menuIds);
 }

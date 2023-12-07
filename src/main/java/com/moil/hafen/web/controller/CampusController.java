@@ -8,14 +8,20 @@ import com.moil.hafen.common.domain.Result;
 import com.moil.hafen.common.exception.FebsException;
 import com.moil.hafen.web.domain.Campus;
 import com.moil.hafen.web.service.CampusService;
+import com.moil.hafen.web.service.DeptService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,14 @@ public class CampusController extends BaseController {
 
     @Resource
     private CampusService campusService;
+    @Resource
+    private DeptService deptService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder, WebRequest request) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+    }
 
     /**
      * 获取校区列表（分页） -管理后台/小程序
@@ -57,11 +71,13 @@ public class CampusController extends BaseController {
      */
     @PostMapping
     @ApiOperation("添加校区信息")
-    public Result add(Campus campus) throws FebsException {
+    public Result<Object> add(@RequestBody Campus campus) throws FebsException {
         try {
             campus.setCreateTime(new Date());
             campus.setModifyTime(new Date());
-            return Result.OK(this.campusService.save(campus));
+            this.campusService.save(campus);
+            deptService.saveDefaultDept(campus.getId());
+            return Result.OK();
         } catch (Exception e) {
             message = "添加校区信息失败";
             log.error(message, e);

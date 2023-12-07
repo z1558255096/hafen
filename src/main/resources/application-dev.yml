@@ -74,6 +74,10 @@ mybatis-plus:
   global-config:
     # 关闭 mybatis-plus的 banner
     banner: false
+    db-config:
+      logic-delete-field: delFlag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
 management:
   endpoints:

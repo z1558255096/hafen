@@ -1,13 +1,14 @@
 package com.moil.hafen.system.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.lang.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moil.hafen.common.mapper.LambdaQueryWrapperX;
-import com.moil.hafen.system.service.RoleService;
 import com.moil.hafen.common.domain.QueryRequest;
 import com.moil.hafen.common.exception.FebsException;
+import com.moil.hafen.common.mapper.LambdaQueryWrapperX;
 import com.moil.hafen.common.utils.SortUtil;
 import com.moil.hafen.system.dao.RoleMapper;
 import com.moil.hafen.system.dao.RoleMenuMapper;
@@ -16,9 +17,9 @@ import com.moil.hafen.system.domain.RoleMenu;
 import com.moil.hafen.system.domain.UserRole;
 import com.moil.hafen.system.manager.UserManager;
 import com.moil.hafen.system.service.RoleMenuServie;
+import com.moil.hafen.system.service.RoleService;
 import com.moil.hafen.system.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,32 +75,42 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     }
 
     @Override
-    public void createRole(Role role) throws FebsException {
+    @Transactional
+    public void createRole(Role role) {
         int count = count(new LambdaQueryWrapper<Role>().eq(Role::getRoleName, role.getRoleName()));
-        if (count > 0) {
-            throw new FebsException("角色名已存在");
-        }
+        Assert.isFalse(count > 0, () -> new FebsException("角色名已存在"));
         role.setModifyTime(new Date());
         role.setCreateTime(new Date());
         this.save(role);
+        // 给角色分配菜单
+        if (CollectionUtil.isNotEmpty(role.getMenuIds())) {
+            roleMenuService.roleAllotMenu(role.getId(), role.getMenuIds());
+        }
     }
 
     @Override
-    public void deleteRole(int roleId) throws Exception {
+    public void deleteRole(int roleId) {
         baseMapper.deleteById(roleId);
         this.roleMenuService.remove(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleId, roleId));
         this.userRoleService.remove(new LambdaQueryWrapper<UserRole>().eq(UserRole::getRoleId, roleId));
-
     }
 
     @Override
-    public void updateRole(Role role) throws Exception {
+    public void updateRole(Role role) {
         int count = count(new LambdaQueryWrapper<Role>().eq(Role::getRoleName, role.getRoleName()).ne(Role::getId, role.getId()));
-        if (count > 0) {
-            throw new FebsException("角色名已存在");
-        }
+        Assert.isFalse(count > 0, () -> new FebsException("角色名已存在"));
         role.setModifyTime(new Date());
         baseMapper.updateById(role);
+        // 给角色分配菜单
+        if (CollectionUtil.isNotEmpty(role.getMenuIds())) {
+            roleMenuService.roleAllotMenu(role.getId(), role.getMenuIds());
+        }
+    }
+
+    @Override
+    public Role detail(Integer id) {
+        Role role = baseMapper.selectById(id);
+        return role;
     }
 
     private void setRoleMenus(Role role, String[] menuIds) {

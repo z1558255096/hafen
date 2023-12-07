@@ -1,8 +1,6 @@
 package com.moil.hafen.system.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author 陈子杰
@@ -47,11 +46,26 @@ public class Role implements Serializable {
     @ApiModelProperty("修改时间")
     private Date modifyTime;
 
-    @ApiModelProperty("角色状态")
-    private String status;
+    @ApiModelProperty("角色状态：1-正常;0-禁用")
+    private Integer status;
 
+    @ApiModelProperty("数据权限：1-全部;2-本部门及以下;3-本人")
+    private Integer dataScope;
+
+    /**
+     * 0正常 1删除
+     */
+    @ApiModelProperty("删除标识：0-正常;1-删除")
+    @TableLogic
+    private Integer delFlag;
+
+    @TableField(exist = false)
     private transient String createTimeFrom;
-    private transient String createTimeTo;
-    private transient String menuId;
 
+    @TableField(exist = false)
+    private transient String createTimeTo;
+
+    @TableField(exist = false)
+    @ApiModelProperty("菜单id集合")
+    private transient List<String> menuIds;
 }

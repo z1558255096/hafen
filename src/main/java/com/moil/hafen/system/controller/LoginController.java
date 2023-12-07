@@ -7,7 +7,7 @@ import com.moil.hafen.common.authentication.JWTUtil;
 import com.moil.hafen.common.domain.ActiveUser;
 import com.moil.hafen.common.domain.FebsConstant;
 import com.moil.hafen.common.domain.FebsResponse;
-import com.moil.hafen.common.domain.router.VueRouter;
+import com.moil.hafen.common.domain.UserInfoVo;
 import com.moil.hafen.common.enums.RoleType;
 import com.moil.hafen.common.properties.FebsProperties;
 import com.moil.hafen.common.service.RedisService;
@@ -34,7 +34,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Author 陈子杰
@@ -96,7 +98,7 @@ public class LoginController {
 
         String userId = this.saveTokenToRedis(user, jwtToken, request);
 
-        Map<String, Object> userInfo = this.generateUserInfo(jwtToken, user);
+        UserInfoVo userInfo = this.generateUserInfo(jwtToken, user);
         return new FebsResponse().message("认证成功").data(userInfo);
     }
 
@@ -196,23 +198,21 @@ public class LoginController {
      * @param user  用户信息
      * @return UserInfo
      */
-    private Map<String, Object> generateUserInfo(JWTToken token, User user) {
+    private UserInfoVo generateUserInfo(JWTToken token, User user) {
         String username = user.getUsername();
-        Map<String, Object> userInfo = new HashMap<>();
-        userInfo.put("token", token.getToken());
-        userInfo.put("exipreTime", token.getExipreAt());
 
         Set<String> roles = this.userManager.getUserRoles(username);
-        userInfo.put("roles", roles);
-
-        List<VueRouter<Menu>> menu = this.userManager.getUserRouters(username);
-        userInfo.put("menu", menu);
-
-        Set<String> permissions = this.userManager.getUserPermissions(username);
-        userInfo.put("permissions", permissions);
-
+        List<Menu> menuList = this.userManager.getUserMenus(username);
+        // Set<String> permissions = this.userManager.getUserPermissions(username);
         user.setPassword("it's a secret");
-        userInfo.put("user", user);
-        return userInfo;
+
+        UserInfoVo userInfoVo = new UserInfoVo();
+        userInfoVo.setToken(token.getToken());
+        userInfoVo.setExipreTime(token.getExipreAt());
+        userInfoVo.setUser(user);
+        userInfoVo.setRoles(roles);
+        userInfoVo.setMenus(menuList);
+        // userInfoVo.setPermissions(permissions);
+        return userInfoVo;
     }
 }

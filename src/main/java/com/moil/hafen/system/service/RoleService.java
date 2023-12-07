@@ -3,7 +3,6 @@ package com.moil.hafen.system.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moil.hafen.common.domain.QueryRequest;
-import com.moil.hafen.common.exception.FebsException;
 import com.moil.hafen.system.domain.Role;
 
 import java.util.List;
@@ -23,9 +22,32 @@ public interface RoleService extends IService<Role> {
 
     Role findByName(String roleName);
 
-    void createRole(Role role) throws FebsException;
+    /**
+     * 创建角色
+     *
+     * @param role 角色
+     */
+    void createRole(Role role);
 
-    void deleteRole(int roleId) throws Exception;
+    /**
+     * 根据id删除角色
+     *
+     * @param roleId 角色id
+     */
+    void deleteRole(int roleId);
 
-    void updateRole(Role role) throws Exception;
+    /**
+     * 更新角色
+     *
+     * @param role 角色
+     */
+    void updateRole(Role role) ;
+
+    /**
+     * 根据id获取角色详情
+     *
+     * @param id id
+     * @return {@link Role}
+     */
+    Role detail(Integer id);
 }

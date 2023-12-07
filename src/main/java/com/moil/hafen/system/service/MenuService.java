@@ -4,27 +4,19 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moil.hafen.system.domain.Menu;
 
 import java.util.List;
-import java.util.Map;
 
+/**
+ * @Author 陈子杰
+ * @Description 菜单service
+ * @Version 1.0.0
+ * @Date 2023/12/07 03:08
+ */
 public interface MenuService extends IService<Menu> {
-
-    List<Menu> findUserPermissions(String username);
-
-    List<Menu> findUserMenus(String username);
-
-    Map<String, Object> findMenus(int roleId);
-
-    List<Menu> findMenuList(Menu menu);
-
-    void createMenu(Menu menu);
-
-    void updateMenu(Menu menu) throws Exception;
-
     /**
-     * 递归删除菜单/按钮
+     * 获取用户菜单
      *
-     * @param menuIds menuIds
+     * @param username 用户名
+     * @return {@link List}<{@link Menu}>
      */
-    void deleteMeuns(String[] menuIds) throws Exception;
-
+    List<Menu> getUseMenus(String username);
 }
