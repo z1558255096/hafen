@@ -19,4 +19,11 @@ public interface MenuService extends IService<Menu> {
      * @return {@link List}<{@link Menu}>
      */
     List<Menu> getUseMenus(String username);
+
+    /**
+     * 获取菜单树
+     *
+     * @return {@link List}<{@link Menu}>
+     */
+    List<Menu> getMenuTree();
 }

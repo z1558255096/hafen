@@ -46,21 +46,13 @@ public class Menu implements BaseTree<Integer>, Serializable {
     private Date modifyTime;
 
     @ApiModelProperty("子菜单")
+    @TableField(exist = false)
     private List<Menu> children;
 
     /**
      * 删除标识：0-正常;1-删除
      */
     private Integer delFlag;
-
-    @TableField(exist = false)
-    private transient String createTimeFrom;
-
-    @TableField(exist = false)
-    private transient String createTimeTo;
-
-    @TableField(exist = false)
-    private transient Integer roleId;
 
     @Override
     public Integer id() {

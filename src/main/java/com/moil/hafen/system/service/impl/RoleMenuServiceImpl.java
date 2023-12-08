@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 @Service("roleMenuService")
@@ -43,13 +42,13 @@ public class RoleMenuServiceImpl extends ServiceImpl<RoleMenuMapper, RoleMenu> i
     }
 
     @Override
-    public void roleAllotMenu(Integer roleId, List<String> menuIds) {
+    public void roleAllotMenu(Integer roleId, List<Integer> menuIds) {
         baseMapper.delete(new LambdaQueryWrapper<RoleMenu>().eq(RoleMenu::getRoleId, roleId));
         List<RoleMenu> roleMenuList = new ArrayList<>();
-        for (String menuId : menuIds) {
+        for (Integer menuId : menuIds) {
             RoleMenu roleMenu = new RoleMenu();
             roleMenu.setRoleId(roleId);
-            roleMenu.setMenuId(Integer.valueOf(menuId));
+            roleMenu.setMenuId(menuId);
             roleMenuList.add(roleMenu);
         }
         this.saveBatch(roleMenuList);

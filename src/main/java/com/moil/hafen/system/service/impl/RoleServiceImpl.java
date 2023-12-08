@@ -25,9 +25,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service("roleService")
@@ -49,6 +49,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         queryWrapper.likeIfPresent(Role::getRoleName, role.getRoleName());
         queryWrapper.geIfPresent(Role::getCreateTime, role.getCreateTimeFrom()).leIfPresent(Role::getCreateTime, role.getCreateTimeTo());
         queryWrapper.eqIfPresent(Role::getStatus, role.getStatus());
+        queryWrapper.orderByDesc(Role::getCreateTime);
         // if (StringUtils.isNotBlank(role.getRoleName())) {
         //     queryWrapper.like(Role::getRoleName, role.getRoleName());
         // }
@@ -110,15 +111,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public Role detail(Integer id) {
         Role role = baseMapper.selectById(id);
+        LambdaQueryWrapper<RoleMenu> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(RoleMenu::getRoleId, role.getId());
+        List<RoleMenu> roleMenuList = roleMenuMapper.selectList(queryWrapper);
+        List<Integer> menuIdList = roleMenuList.stream().map(RoleMenu::getMenuId).collect(Collectors.toList());
+        role.setMenuIds(menuIdList);
         return role;
-    }
-
-    private void setRoleMenus(Role role, String[] menuIds) {
-        Arrays.stream(menuIds).forEach(menuId -> {
-            RoleMenu rm = new RoleMenu();
-            rm.setMenuId(Integer.valueOf(menuId));
-            rm.setRoleId(role.getId());
-            this.roleMenuMapper.insert(rm);
-        });
     }
 }

@@ -67,5 +67,5 @@ public class Role implements Serializable {
 
     @TableField(exist = false)
     @ApiModelProperty("菜单id集合")
-    private transient List<String> menuIds;
+    private transient List<Integer> menuIds;
 }

@@ -1,5 +1,6 @@
 package com.moil.hafen.web.domain;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,6 +20,7 @@ import java.util.Date;
 public class Dept implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    @TableId
     @ApiModelProperty(value = "部门ID")
     private Long deptId;
 
