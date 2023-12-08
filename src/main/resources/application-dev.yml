@@ -39,10 +39,10 @@ spring:
     time-zone: GMT+8
 
   redis:
-    host: 127.0.0.1
+    host: r-bp1zn2wllbl5jrlfxepd.redis.rds.aliyuncs.com
     port: 6379
     database: 1
-    password:
+    password: Hafen123!
     jedis:
       pool:
         min-idle: 8
