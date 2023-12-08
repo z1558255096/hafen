@@ -53,7 +53,7 @@ public class RedissonDelayQueue {
             while (true) {
                 try {
                     String task = blockingQueue.take();
-                    log.info("接收到延迟任务:{}", task);
+                    log.info("接收到延迟任务:{} ", task);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
