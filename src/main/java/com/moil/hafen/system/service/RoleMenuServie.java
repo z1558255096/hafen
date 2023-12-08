@@ -21,5 +21,5 @@ public interface RoleMenuServie extends IService<RoleMenu> {
      * @param roleId  角色id
      * @param menuIds 菜单ID
      */
-    void roleAllotMenu(Integer roleId, List<String> menuIds);
+    void roleAllotMenu(Integer roleId, List<Integer> menuIds);
 }

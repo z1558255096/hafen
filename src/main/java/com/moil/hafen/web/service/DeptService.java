@@ -1,5 +1,7 @@
 package com.moil.hafen.web.service;
 
+import com.moil.hafen.web.domain.Dept;
+
 /**
  * @Author 陈子杰
  * @Description 校区部门表service
@@ -13,4 +15,32 @@ public interface DeptService {
      * @param campusId 校区id
      */
     void saveDefaultDept(Integer campusId);
+
+    /**
+     * 添加部门
+     *
+     * @param dept dept
+     */
+    void add(Dept dept);
+
+    /**
+     * 根据校区id删除部门
+     *
+     * @param campusId 校区id
+     */
+    void delete(Integer campusId);
+
+    /**
+     * 修改部门
+     *
+     * @param dept dept
+     */
+    void update(Dept dept);
+
+    /**
+     * 删除dept
+     *
+     * @param deptId 部门id
+     */
+    void deleteDept(Integer deptId);
 }

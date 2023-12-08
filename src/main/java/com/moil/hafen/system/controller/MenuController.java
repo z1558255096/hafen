@@ -1,19 +1,24 @@
 package com.moil.hafen.system.controller;
 
 import com.moil.hafen.common.controller.BaseController;
+import com.moil.hafen.common.domain.Result;
+import com.moil.hafen.system.domain.Menu;
 import com.moil.hafen.system.manager.UserManager;
 import com.moil.hafen.system.service.MenuService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author 陈子杰
- * @Description 内部管理-菜单管理
+ * @Description 内部管理/菜单管理
  * @Version 1.0.0
  * @Date 2023/12/6 14:48
  */
@@ -21,7 +26,7 @@ import javax.annotation.Resource;
 @Validated
 @RestController
 @RequestMapping("/backend/menu")
-@Api("内部管理-菜单管理")
+@Api("内部管理/菜单管理")
 public class MenuController extends BaseController {
 
     private String message;
@@ -30,6 +35,13 @@ public class MenuController extends BaseController {
     private UserManager userManager;
     @Resource
     private MenuService menuService;
+
+    @GetMapping("/tree")
+    @ApiOperation("获取菜单树")
+    public Result<List<Menu>> getMenuTree(){
+        List<Menu> menuList = menuService.getMenuTree();
+        return Result.OK(menuList);
+    }
 
     // @GetMapping("/{username}")
     // @ApiOperation("获取用户菜单")

@@ -55,10 +55,10 @@ public class RoleController extends BaseController {
         return Result.OK(roles);
     }
 
-    @GetMapping("detail/{id}")
+    @GetMapping("detail")
     @ApiOperation("根据id获取角色详情")
-    @ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "int", paramType = "path")
-    public Result<Role> detail(@PathVariable("id") Integer id) {
+    @ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "int", paramType = "query")
+    public Result<Role> detail(@RequestParam("id") Integer id) {
         Role role = roleService.detail(id);
         return Result.OK(role);
     }
@@ -70,10 +70,10 @@ public class RoleController extends BaseController {
         return Result.OK();
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("delete")
     @ApiOperation("根据id删除角色")
-    @ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "int", paramType = "path")
-    public Result<Void> delete(@PathVariable("id") Integer id) {
+    @ApiImplicitParam(name = "id", value = "角色id", required = true, dataType = "int", paramType = "query")
+    public Result<Void> delete(@RequestParam("id") Integer id) {
         this.roleService.deleteRole(id);
         return Result.OK();
     }

@@ -25,11 +25,17 @@ import java.util.List;
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
     @Resource
     private MenuMapper menuMapper;
-
-
+    
     @Override
     public List<Menu> getUseMenus(String username) {
         List<Menu> menuList = menuMapper.getUserMenus(username);
+        List<Menu> menuTree = TreeUtils.buildTree(menuList);
+        return menuTree;
+    }
+
+    @Override
+    public List<Menu> getMenuTree() {
+        List<Menu> menuList = menuMapper.selectList(null);
         List<Menu> menuTree = TreeUtils.buildTree(menuList);
         return menuTree;
     }
