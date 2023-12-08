@@ -1,7 +1,3 @@
-/*
- * 51qbiz.id
- * Copyright (C) 2021-2023 All Rights Reserved.
- */
 package com.moil.hafen.common.utils.lock;
 
 import java.util.function.Supplier;

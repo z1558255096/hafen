@@ -1,7 +1,3 @@
-/**
- * Zentech-Inc
- * Copyright (C) 2018 All Rights Reserved.
- */
 package com.moil.hafen.common.utils.lock.exception;
 
 
