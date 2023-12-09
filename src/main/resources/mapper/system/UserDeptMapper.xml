@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.moil.hafen.system.dao.UserDeptMapper">
+
+    <select id="getDeptCampusByUserId" resultType="com.moil.hafen.system.vo.DeptCampusVo">
+        SELECT d.dept_id AS dept_id, d.dept_name AS dept_name, c.id AS campus_id, c.name AS campus_name
+        FROM t_dept d
+                 LEFT JOIN t_user_dept ud ON d.dept_id = ud.dept_id
+                 LEFT JOIN t_campus c ON c.id = d.campus_id
+        WHERE ud.user_id = ${userId}
+          AND c.status = 1;
+    </select>
+</mapper>

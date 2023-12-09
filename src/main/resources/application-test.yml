@@ -184,3 +184,6 @@ aliyun:
   TemplateCode: SMS_272000136
   TemplateSign: 安心家服
   SceneId: 3775001
+
+tencent:
+  key: TUSBZ-N6UKJ-ODKFP-XBVCI-NEHH2-DFBW4 # 腾讯地图key

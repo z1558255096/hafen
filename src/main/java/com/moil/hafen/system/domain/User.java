@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author 陈子杰
@@ -37,26 +38,34 @@ public class User implements Serializable {
     /**
      * 用户名
      */
+    @ApiModelProperty("用户名")
     private String username;
 
     /**
      * 密码
      */
+    @ApiModelProperty("密码")
     private String password;
 
     /**
      * 昵称
      */
+    @ApiModelProperty("昵称")
     private String nickName;
 
     /**
      * 工号
      */
+    @ApiModelProperty("工号")
     private String workNum;
+
+    @ApiModelProperty("生日")
+    private String birthday;
 
     /**
      * 备注
      */
+    @ApiModelProperty("备注")
     private String remark;
 
     /**
@@ -75,15 +84,42 @@ public class User implements Serializable {
      */
     private Date modifyTime;
 
-    /**
-     * 角色名称
-     */
-    private transient String roleName;
 
     /**
      * 角色ID
      */
-    private transient String roleIds;
+    @TableField(exist = false)
+    private List<Integer> roleIds;
+
+    /**
+     * 角色名称
+     */
+    @TableField(exist = false)
+    private List<String> roleNames;
+
+    /**
+     * 部门ID
+     */
+    @TableField(exist = false)
+    private List<Integer> deptIds;
+
+    /**
+     * 校区ID
+     */
+    @TableField(exist = false)
+    private List<Integer> campusIds;
+
+    /**
+     * 校区名称
+     */
+    @TableField(exist = false)
+    private List<String> campusNames;
+
+    /**
+     * 部门名称
+     */
+    @TableField(exist = false)
+    private List<String> deptNames;
 
     /**
      * 排序字段
@@ -100,7 +136,7 @@ public class User implements Serializable {
 
     @ApiModelProperty("姓名、手机号、账号")
     @TableField(exist = false)
-    private Integer keyword;
+    private String keyword;
 
     /**
      * shiro-redis v3.1.0 必须要有 getAuthCacheKey()或者 getId()方法
