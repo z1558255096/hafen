@@ -1,4 +1,4 @@
-package com.moil.hafen.third.impl;
+package com.moil.hafen.common.tencent.impl;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
@@ -7,8 +7,8 @@ import cn.hutool.http.Method;
 import com.alibaba.fastjson.JSONObject;
 import com.moil.hafen.common.constant.ThirdApiConstant;
 import com.moil.hafen.common.exception.FebsException;
-import com.moil.hafen.third.TencentService;
-import com.moil.hafen.third.resp.TencentResp;
+import com.moil.hafen.common.tencent.TencentService;
+import com.moil.hafen.common.tencent.resp.TencentResp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

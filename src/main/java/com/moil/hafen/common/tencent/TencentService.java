@@ -1,6 +1,6 @@
-package com.moil.hafen.third;
+package com.moil.hafen.common.tencent;
 
-import com.moil.hafen.third.resp.TencentResp;
+import com.moil.hafen.common.tencent.resp.TencentResp;
 
 /**
  * @Author 陈子杰

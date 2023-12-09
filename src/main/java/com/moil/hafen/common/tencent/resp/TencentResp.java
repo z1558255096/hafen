@@ -1,4 +1,4 @@
-package com.moil.hafen.third.resp;
+package com.moil.hafen.common.tencent.resp;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
