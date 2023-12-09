@@ -5,7 +5,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moil.hafen.common.domain.QueryRequest;
 import com.moil.hafen.system.domain.User;
 
-
+/**
+ * @Author 陈子杰
+ * @Description 用户服务
+ * @Version 1.0.0
+ * @Date 2023/12/09 08:34
+ */
 public interface UserService extends IService<User> {
 
     /**
@@ -17,13 +22,13 @@ public interface UserService extends IService<User> {
     User findByName(String username);
 
     /**
-     * 查询用户详情，包括基本信息，用户角色，用户部门
+     * 查找用户信息分页
      *
-     * @param user user
+     * @param user         user
      * @param queryRequest queryRequest
      * @return IPage
      */
-    IPage<User> findUserDetail(User user, QueryRequest queryRequest);
+    IPage<User> userPage(User user, QueryRequest queryRequest);
 
     /**
      * 新增用户

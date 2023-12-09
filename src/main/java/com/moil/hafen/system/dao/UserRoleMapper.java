@@ -1,8 +1,11 @@
 package com.moil.hafen.system.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.moil.hafen.system.domain.Role;
 import com.moil.hafen.system.domain.UserRole;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserRoleMapper extends BaseMapper<UserRole> {
 
@@ -25,4 +28,12 @@ public interface UserRoleMapper extends BaseMapper<UserRole> {
      * @date 2019年03月04日17:47:16
      */
     Boolean deleteByRoleId(@Param("roleId") Long roleId);
+
+    /**
+     * 根据用户id查询角色信息
+     *
+     * @param userId 用户id
+     * @return {@link List}<{@link Role}>
+     */
+    List<Role> getRoleByUserId(@Param("userId") Integer userId);
 }

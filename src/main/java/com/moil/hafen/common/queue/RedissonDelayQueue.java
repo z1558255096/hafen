@@ -7,6 +7,7 @@ import org.redisson.api.RDelayedQueue;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +22,14 @@ public class RedissonDelayQueue {
     @Resource
     private RedissonClient redissonClient;
 
+    @PreDestroy
+    public void destroy() {
+        // 在应用关闭时关闭Redisson客户端
+        if (redissonClient != null && !redissonClient.isShutdown()) {
+            redissonClient.shutdown();
+            LogUtil.info(log, "Redisson客户端已关闭。");
+        }
+    }
 
     public <T> void offerTask(T data, Class<? extends RedisDelayedQueueListener<T>> clazz) {
         String queueName = clazz.getSimpleName().toLowerCase();
