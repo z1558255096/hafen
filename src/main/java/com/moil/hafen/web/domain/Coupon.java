@@ -3,6 +3,8 @@ package com.moil.hafen.web.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,12 +13,16 @@ import java.util.List;
 
 @Data
 @TableName("t_coupon")
+@ApiModel("优惠券")
 public class Coupon implements Serializable {
     private static final long serialVersionUID = -8270317021753608891L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    @ApiModelProperty("优惠券名称")
     private String name;
+    @ApiModelProperty("使用价格")
     private Double usePrice;
+    @ApiModelProperty("折扣价")
     private Double discountPrice;
     private String cover;
     private Integer status;//状态 0上架 1下架

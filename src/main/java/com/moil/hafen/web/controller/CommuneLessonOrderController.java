@@ -37,7 +37,7 @@ public class CommuneLessonOrderController extends BaseController {
 
 
     /**
-     * 创建订单 - 小程序
+     * 创建订单
      *
      * @param order 顺序
      * @return {@link Result}<{@link CommuneLessonOrder}>
@@ -45,9 +45,9 @@ public class CommuneLessonOrderController extends BaseController {
      */
     @PostMapping("/createOrder")
     @ApiOperation("创建订单")
-    public Result<CommuneLessonOrder> createOrder(CommuneLessonOrder order) throws FebsException {
+    public Result<CommuneLessonOrder> createOrder(@RequestBody CommuneLessonOrder order) throws FebsException {
         try {
-            return Result.OK(this.communeLessonOrderService.createOrder(order));
+            return Result.OK(communeLessonOrderService.createOrder(order));
         } catch (Exception e) {
             message = "创建订单失败";
             log.error(message, e);

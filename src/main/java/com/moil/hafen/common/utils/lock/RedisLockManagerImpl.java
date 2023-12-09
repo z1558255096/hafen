@@ -7,7 +7,9 @@ import com.moil.hafen.common.utils.lock.exception.RedisTryLockException;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -19,6 +21,7 @@ import java.util.function.Supplier;
  * @date 2023/12/09
  */
 @Slf4j
+@Component
 public class RedisLockManagerImpl implements LockManager {
 
     /**
@@ -32,6 +35,7 @@ public class RedisLockManagerImpl implements LockManager {
     /**
      * redis连接对象
      */
+    @Resource
     private RedissonClient redissonClient;
 
     @Override

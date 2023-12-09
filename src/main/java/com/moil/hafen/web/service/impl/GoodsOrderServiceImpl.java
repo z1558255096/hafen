@@ -143,7 +143,7 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderDao, GoodsOrder
                 actualPayment = actualPayment - coupon.getDiscountPrice();
             }
         }
-        Double hafenCoin = order.getHafenCoin();
+        Integer hafenCoin = order.getHafenCoin();
         if(hafenCoin!=null&&hafenCoin>0){
             actualPayment = actualPayment-hafenCoin;
         }

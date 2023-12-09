@@ -21,12 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 管理后台/公社模块/门票订单
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"communeTicketOrder"})
-@Api(tags = "公社门票订单订单管理")
+@Api(tags = "管理后台/公社模块/门票订单")
 public class CommuneTicketOrderController extends BaseController {
 
     private String message;
@@ -44,7 +45,7 @@ public class CommuneTicketOrderController extends BaseController {
      */
     @PostMapping("/createOrder")
     @ApiOperation("创建订单")
-    public Result<CommuneTicketOrder> createOrder(CommuneTicketOrder order) throws FebsException {
+    public Result<CommuneTicketOrder> createOrder(@RequestBody CommuneTicketOrder order) throws FebsException {
         try {
             return Result.OK(this.communeTicketOrderService.createOrder(order));
         } catch (Exception e) {

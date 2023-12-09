@@ -23,7 +23,7 @@ public class LessonOnlineOrder implements Serializable {
     private Integer lessonId;
     private String lessonName;
     private Double price;
-    private Double hafenCoin;
+    private Integer hafenCoin;
     private Double couponAmount;
     private Integer couponId;
     private String couponName;

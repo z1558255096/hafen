@@ -37,7 +37,9 @@ public class CommuneTicket implements Serializable {
     private Integer isShow;//是否微官网展示 0 展示 1展示
     @ApiModelProperty("上架状态 0上架 1下架")
     private Integer status;//上架状态 0上架 1下架
+    @ApiModelProperty("价格")
     private Double price;
+    @ApiModelProperty("描述")
     private String detail;
     @ApiModelProperty("展示退款规则 0展示 1不展示")
     private Integer refundRulesStatus;//展示退款规则 0展示 1不展示

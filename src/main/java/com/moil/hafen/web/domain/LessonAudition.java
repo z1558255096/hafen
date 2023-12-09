@@ -16,7 +16,7 @@ import java.util.List;
 
 @Data
 @TableName("t_lesson_audition")
-@HeadStyle(fillForegroundColor=52)
+@HeadStyle(fillForegroundColor = 52)
 @ExcelIgnoreUnannotated
 @ApiModel(value = "试听课程")
 public class LessonAudition implements Serializable {
@@ -31,6 +31,7 @@ public class LessonAudition implements Serializable {
     private String classStartTime;
     @ApiModelProperty(value = "上课结束时间")
     private String classEndTime;
+    @ApiModelProperty(value = "上课日期时间")
     private Date classDateTime;
     @ApiModelProperty(value = "课程id")
     private Integer lessonId;
@@ -46,15 +47,16 @@ public class LessonAudition implements Serializable {
     private transient Integer studentCount;
     @ExcelProperty(value = "预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间")
     private transient String reservationStatus;//预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间
-
+    @ApiModelProperty(value = "校区Id")
     private Integer campusId;
     @ExcelProperty(value = "所属校区")
     private transient String campusName;
-
+    @ApiModelProperty("参加学生数量")
     private Integer attendStudentCount;
 
     private String cover;
     private Integer status;//试听状态 0 上架 1下架
+    @ApiModelProperty("课程类型 1科技营 2体适能 3公社课程")
     private Integer type;//课程类型 1科技营 2体适能 3公社课程
 
     private transient int studentReservationStatus;//学生预约状态 0未预约 1已预约
@@ -79,10 +81,11 @@ public class LessonAudition implements Serializable {
             return "下架";
         }
     }
+
     public String getReservationStatus() {
-        if((new Date()).before(classDateTime)){
+        if ((new Date()).before(classDateTime)) {
             return "预约中";
-        }else{
+        } else {
             return "预约结束";
         }
     }

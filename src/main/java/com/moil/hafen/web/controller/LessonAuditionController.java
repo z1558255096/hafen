@@ -24,14 +24,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 管理后台—科技营—试听日程管理
+ * 管理后台/科技营/试听日程管理
  *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"lessonAudition"})
-@Api(tags = "管理后台—科技营—试听日程管理")
+@Api(tags = "管理后台/科技营/试听日程管理")
 public class LessonAuditionController extends BaseController {
 
     private String message;
@@ -52,7 +52,7 @@ public class LessonAuditionController extends BaseController {
     @GetMapping
     @ApiOperation("获取试听日程列表（分页）")
     public Map<String, Object> page(QueryRequest request, LessonAudition lessonAudition) {
-        IPage<LessonAudition> page = this.lessonAuditionService.getPage(request, lessonAudition);
+        IPage<LessonAudition> page = lessonAuditionService.getPage(request, lessonAudition);
         return getDataTable(page);
     }
 
@@ -75,7 +75,7 @@ public class LessonAuditionController extends BaseController {
             LessonOffline lessonOffline = lessonOfflineService.getById(lessonAudition.getLessonId());
             lessonAudition.setType(lessonOffline.getType());
             lessonAudition.setClassTime(lessonAudition.getClassStartTime() + " ~ " + lessonAudition.getClassEndTime());
-            this.lessonAuditionService.addLessonAudition(lessonAudition);
+            lessonAuditionService.addLessonAudition(lessonAudition);
             return Result.OK();
         } catch (Exception e) {
             message = "添加试听日程信息失败";
@@ -96,7 +96,7 @@ public class LessonAuditionController extends BaseController {
     @ApiOperation("删除试听日程信息")
     public Result delete(@PathVariable Integer id) throws FebsException {
         try {
-            return Result.OK(this.lessonAuditionService.removeById(id));
+            return Result.OK(lessonAuditionService.removeById(id));
         } catch (Exception e) {
             message = "删除试听日程信息失败";
             log.error(message, e);
@@ -122,7 +122,7 @@ public class LessonAuditionController extends BaseController {
             LessonOffline lessonOffline = lessonOfflineService.getById(lessonAudition.getLessonId());
             lessonAudition.setType(lessonOffline.getType());
             lessonAudition.setClassTime(lessonAudition.getClassStartTime() + " ~ " + lessonAudition.getClassEndTime());
-            return Result.OK(this.lessonAuditionService.updateById(lessonAudition));
+            return Result.OK(lessonAuditionService.updateById(lessonAudition));
         } catch (Exception e) {
             message = "修改试听日程信息失败";
             log.error(message, e);
@@ -146,7 +146,7 @@ public class LessonAuditionController extends BaseController {
             LessonAudition lessonAudition = lessonAuditionService.getById(id);
             lessonAudition.setStatus(status);
             lessonAudition.setModifyTime(new Date());
-            return Result.OK(this.lessonAuditionService.updateById(lessonAudition));
+            return Result.OK(lessonAuditionService.updateById(lessonAudition));
         } catch (Exception e) {
             message = "上下架试听日程失败";
             log.error(message, e);
@@ -164,7 +164,7 @@ public class LessonAuditionController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取试听日程详情")
     public Result<LessonAudition> detail(@PathVariable Integer id) {
-        return Result.OK(this.lessonAuditionService.getById(id));
+        return Result.OK(lessonAuditionService.getById(id));
     }
 
     /**
@@ -178,7 +178,7 @@ public class LessonAuditionController extends BaseController {
     @ApiOperation("导出试听日程列表")
     public void export(LessonAudition lessonAudition, HttpServletResponse response) throws FebsException {
         try {
-            List<LessonAudition> contestantInfoList = this.lessonAuditionService.getLessonAuditionList(lessonAudition);
+            List<LessonAudition> contestantInfoList = lessonAuditionService.getLessonAuditionList(lessonAudition);
             // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setCharacterEncoding("utf-8");
@@ -205,7 +205,7 @@ public class LessonAuditionController extends BaseController {
     @GetMapping("/getAudition")
     @ApiOperation("获取试听日程列表（分页）")
     public Result<Map<String, List<LessonAudition>>> getAuditionList(int type, String date, int campusId) {
-        Map<String, List<LessonAudition>> result = this.lessonAuditionService.getAuditionList(type, date, campusId);
+        Map<String, List<LessonAudition>> result = lessonAuditionService.getAuditionList(type, date, campusId);
         return Result.OK(result);
     }
 
@@ -219,7 +219,7 @@ public class LessonAuditionController extends BaseController {
     @GetMapping("/getMyAudition")
     @ApiOperation("获取我的试听日程列表")
     public Map<String, Object> getMyAudition(QueryRequest request) {
-        IPage<LessonAudition> page = this.lessonAuditionService.getMyAudition(request);
+        IPage<LessonAudition> page = lessonAuditionService.getMyAudition(request);
         return getDataTable(page);
     }
 }

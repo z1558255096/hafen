@@ -36,12 +36,12 @@ public class GoodsOrder implements Serializable {
     private String img;
     @ApiModelProperty(value = "商品规格")
     private String specs;
-    @ApiModelProperty(value = "商品数量")
+    @ApiModelProperty(value = "商品总价")
     private Double totalPrice;
     @ApiModelProperty(value = "实际支付金额")
     private Double actualPayment;
-    @ApiModelProperty(value = "积分")
-    private Double hafenCoin;
+    @ApiModelProperty(value = "哈奋币")
+    private Integer hafenCoin;
     @ApiModelProperty(value = "优惠券金额")
     private Double couponAmount;
     @ApiModelProperty(value = "优惠券id")

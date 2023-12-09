@@ -64,7 +64,7 @@ public class LessonOnlineOrderServiceImpl extends ServiceImpl<LessonOnlineOrderD
                 actualPayment = actualPayment - coupon.getDiscountPrice();
             }
         }
-        Double hafenCoin = order.getHafenCoin();
+        Integer hafenCoin = order.getHafenCoin();
         if(hafenCoin!=null&&hafenCoin>0){
             actualPayment = actualPayment-hafenCoin;
         }

@@ -85,6 +85,9 @@ management:
       exposure:
         include: ['httptrace', 'metrics']
 
+logging:
+  level:
+    springfox: error
 
 febs:
   # 是否异步记录用户操作日志

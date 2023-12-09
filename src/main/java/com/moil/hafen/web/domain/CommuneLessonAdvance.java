@@ -29,7 +29,9 @@ public class CommuneLessonAdvance implements Serializable {
     private Integer index;
     @ApiModelProperty("是否删除 0正常 1删除")
     private Integer delFlag;//0正常 1删除
+    @ApiModelProperty("创建时间")
     private Date createTime;
+    @ApiModelProperty("更新时间")
     private Date modifyTime;
     private transient String createTimeFrom;
     private transient String createTimeTo;

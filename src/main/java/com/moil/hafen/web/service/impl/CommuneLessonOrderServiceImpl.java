@@ -8,10 +8,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.binarywang.wxpay.bean.request.WxPayRefundRequest;
 import com.github.binarywang.wxpay.exception.WxPayException;
 import com.github.binarywang.wxpay.service.WxPayService;
-import com.moil.hafen.common.authentication.JWTUtil;
+import com.moil.hafen.common.constant.RedisKeyConstant;
 import com.moil.hafen.common.domain.QueryRequest;
 import com.moil.hafen.common.utils.PayUtil;
 import com.moil.hafen.common.utils.SortUtil;
+import com.moil.hafen.common.utils.lock.LockManager;
 import com.moil.hafen.web.dao.CommuneLessonOrderDao;
 import com.moil.hafen.web.domain.*;
 import com.moil.hafen.web.service.*;
@@ -34,23 +35,22 @@ public class CommuneLessonOrderServiceImpl extends ServiceImpl<CommuneLessonOrde
     private CouponService couponService;
     @Resource
     private WxPayService wxService;
+    @Resource
+    private LockManager lockManager;
+
     @Override
     public CommuneLessonOrder createOrder(CommuneLessonOrder order) {
+        String orderSn = lockManager.execute
+                (RedisKeyConstant.COMMUNE_LESSON_ORDER(String.valueOf(order.getCustomerId())),
+                () -> PayUtil.generateOrderNo("CLN"));
         CommuneLesson communeLesson = communeLessonService.getById(order.getLessonId());
         order.setLessonName(communeLesson.getName());
         Double actualPrice = communeLesson.getPrice();
-        double totalPrice = actualPrice*order.getCount();
+        Double totalPrice = actualPrice*order.getCount();
         order.setPrice(totalPrice);
-        order.setOrderSn(PayUtil.generateOrderNo("CLN"));
+        order.setOrderSn(orderSn);
         order.setCreateTime(new Date());
         order.setModifyTime(new Date());
-        int customerId = JWTUtil.getCurrentCustomerId();
-        order.setCustomerId(customerId);
-        Customer customer = customerService.getById(customerId);
-        order.setNickName(customer.getNickName());
-        order.setMobile(customer.getMobile());
-        order.setPayMethod(0);
-        order.setOrderSource(0);
 
         //计算优惠
         Double actualPayment = totalPrice;
@@ -62,7 +62,7 @@ public class CommuneLessonOrderServiceImpl extends ServiceImpl<CommuneLessonOrde
                 actualPayment = actualPayment - coupon.getDiscountPrice();
             }
         }
-        Double hafenCoin = order.getHafenCoin();
+        Integer hafenCoin = order.getHafenCoin();
         if(hafenCoin!=null&&hafenCoin>0){
             actualPayment = actualPayment-hafenCoin;
         }
