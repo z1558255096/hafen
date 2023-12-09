@@ -1,18 +1,24 @@
 package com.moil.hafen.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.QueryRequest;
 import com.moil.hafen.common.domain.Result;
 import com.moil.hafen.common.exception.FebsException;
+import com.moil.hafen.common.tencent.TencentService;
+import com.moil.hafen.common.tencent.resp.TencentResp;
 import com.moil.hafen.web.domain.CommuneTicket;
 import com.moil.hafen.web.domain.CommuneTicketAdvance;
 import com.moil.hafen.web.domain.CommuneTicketAdvanceOption;
 import com.moil.hafen.web.service.CommuneTicketAdvanceOptionService;
 import com.moil.hafen.web.service.CommuneTicketAdvanceService;
 import com.moil.hafen.web.service.CommuneTicketService;
+import com.moil.hafen.web.vo.LocationVO;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -42,6 +48,8 @@ public class CommuneTicketController extends BaseController {
     private CommuneTicketAdvanceService communeTicketAdvanceService;
     @Resource
     private CommuneTicketAdvanceOptionService communeTicketAdvanceOptionService;
+    @Resource
+    private TencentService tencentService;
 
     /**
      * 获取公社门票列表（分页） - 管理后台/小程序
@@ -56,6 +64,32 @@ public class CommuneTicketController extends BaseController {
     public Result page(QueryRequest request, CommuneTicket communeTicket) {
         IPage<CommuneTicket> page = communeTicketService.getPage(request, communeTicket);
         return Result.OK(page);
+    }
+
+    /**
+     * 地址坐标转位置
+     *
+     * @param lat 纬度
+     * @param lng 经度
+     *
+     * @return {@link Result}<{@link List}<{@link LocationVO}>>
+     */
+    @GetMapping("getLocation")
+    @ApiOperation("地址坐标转位置")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "lat", value = "纬度", required = true),
+            @ApiImplicitParam(name = "lng", value = "经度", required = true)
+    })
+    public Result<LocationVO> getLocation(@RequestParam String lat, @RequestParam String lng) {
+        TencentResp tencentResp = tencentService.location(lat, lng);
+        String jsonData = tencentResp.getData();
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        JSONObject location = jsonObject.getJSONObject("location");
+        LocationVO locationVO = new LocationVO();
+        locationVO.setAddress(jsonObject.get("address").toString());
+        locationVO.setLat(location.get("lat").toString());
+        locationVO.setLng(location.get("lng").toString());
+        return Result.OK(locationVO);
     }
 
     /**

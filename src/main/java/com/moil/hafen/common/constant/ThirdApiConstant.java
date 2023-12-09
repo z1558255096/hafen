@@ -15,5 +15,5 @@ public class ThirdApiConstant {
     /**
      * 腾讯地图-根据经纬度获取位置信息
      */
-    public final static String TENCENT_LOCATION = "https://apis.map.qq.com/ws/geocoder/v1";
+    public final static String TENCENT_LOCATION = "https://apis.map.qq.com/ws/geocoder/v1/";
 }
