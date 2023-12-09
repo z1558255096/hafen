@@ -1,6 +1,6 @@
 server:
   port: 8100
-
+  shutdown: graceful
 spring:
   datasource:
     dynamic:

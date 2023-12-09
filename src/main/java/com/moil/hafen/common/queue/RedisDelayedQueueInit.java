@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * redis 延时队列初始化
@@ -54,9 +55,11 @@ public class RedisDelayedQueueInit implements ApplicationContextAware {
             LogUtil.info(log, "启动监听队列线程" + queueName);
             while (true) {
                 try {
-                    T t = blockingFairQueue.take();
-                    LogUtil.info(log, "监听队列线程{},获取到值:{}", queueName, JSON.toJSONString(t));
-                    redisDelayedQueueListener.invoke(t);
+                    if(Objects.isNull(blockingFairQueue) ){
+                        T t = blockingFairQueue.take();
+                        LogUtil.info(log, "监听队列线程{},获取到值:{}", queueName, JSON.toJSONString(t));
+                        redisDelayedQueueListener.invoke(t);
+                    }
                 } catch (Exception e) {
                     LogUtil.error(log, "监听队列线程错误,", e);
                 }
