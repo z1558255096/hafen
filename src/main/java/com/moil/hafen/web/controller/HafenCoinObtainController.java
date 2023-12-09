@@ -1,5 +1,7 @@
 package com.moil.hafen.web.controller;
 
+import cn.hutool.core.util.ObjectUtil;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.QueryRequest;
@@ -15,16 +17,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 管理后台—内部管理—基础规则管理—哈奋币规则-获取
+ * 管理后台/内部管理/基础规则管理/哈奋币规则/获取
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"hafenCoinObtain"})
-@Api(tags = "管理后台—内部管理—基础规则管理—哈奋币规则-获取")
+@Api(tags = "管理后台/内部管理/基础规则管理/哈奋币规则/获取")
 public class HafenCoinObtainController extends BaseController {
 
     private String message;
@@ -36,15 +37,14 @@ public class HafenCoinObtainController extends BaseController {
      * 获取哈奋币规则列表（分页）
      *
      * @param request         要求
-     * @param hafenCoinObtain 哈芬币获得
-     *
-     * @return {@link Map}<{@link String}, {@link Object}>
+     * @param hafenCoinObtain 哈奋币获得
+     * @return {@link Result}<{@link Object}>
      */
     @GetMapping
     @ApiOperation("获取哈奋币规则列表（分页）")
-    public Map<String, Object> page(QueryRequest request, HafenCoinObtain hafenCoinObtain) {
+    public Result<IPage<HafenCoinObtain>> page(QueryRequest request, HafenCoinObtain hafenCoinObtain) {
         IPage<HafenCoinObtain> page = this.hafenCoinObtainService.getPage(request, hafenCoinObtain);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
 
@@ -58,9 +58,14 @@ public class HafenCoinObtainController extends BaseController {
      */
     @PutMapping
     @ApiOperation("修改哈奋币规则信息")
-    public Result update(HafenCoinObtain hafenCoinObtain) throws FebsException {
+    public Result<Object> update(@RequestBody HafenCoinObtain hafenCoinObtain) throws FebsException {
         try {
             hafenCoinObtain.setModifyTime(new Date());
+            LambdaUpdateWrapper<HafenCoinObtain> updateWrapper = new LambdaUpdateWrapper<>();
+            updateWrapper.eq(HafenCoinObtain::getId, hafenCoinObtain.getId());
+            updateWrapper.set(HafenCoinObtain::getModifyTime, new Date());
+            updateWrapper.set(ObjectUtil.isNotEmpty(hafenCoinObtain.getObtNumber()), HafenCoinObtain::getObtNumber, hafenCoinObtain.getObtNumber());
+            updateWrapper.set(ObjectUtil.isNotEmpty(hafenCoinObtain.getRules()), HafenCoinObtain::getRules, hafenCoinObtain.getRules());
             return Result.OK(this.hafenCoinObtainService.updateById(hafenCoinObtain));
         } catch (Exception e) {
             message = "修改哈奋币规则信息失败";

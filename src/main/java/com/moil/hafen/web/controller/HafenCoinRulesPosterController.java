@@ -9,22 +9,20 @@ import com.moil.hafen.web.service.HafenCoinRulesPosterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
 
 /**
- * 管理后台—内部管理—基础规则管理—哈奋币规则-海报
+ * 管理后台/内部管理/基础规则管理/哈奋币规则/海报
+ *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"hafenCoinRulesPoster"})
-@Api(tags = "管理后台—内部管理—基础规则管理—哈奋币规则-海报")
+@Api(tags = "管理后台/内部管理/基础规则管理/哈奋币规则/海报")
 public class HafenCoinRulesPosterController extends BaseController {
 
     private String message;
@@ -36,13 +34,12 @@ public class HafenCoinRulesPosterController extends BaseController {
      * 修改哈奋币规则信息
      *
      * @param hafenCoinRulesPoster 哈芬币规则海报
-     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PutMapping
     @ApiOperation("修改哈奋币规则信息")
-    public Result update(HafenCoinRulesPoster hafenCoinRulesPoster) throws FebsException {
+    public Result<Object> update(@RequestBody HafenCoinRulesPoster hafenCoinRulesPoster) throws FebsException {
         try {
             hafenCoinRulesPoster.setModifyTime(new Date());
             return Result.OK(this.hafenCoinRulesPosterService.updateById(hafenCoinRulesPoster));

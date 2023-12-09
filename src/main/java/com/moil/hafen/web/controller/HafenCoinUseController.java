@@ -15,16 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 管理后台—内部管理—基础规则管理—哈奋币规则-使用
+ * 管理后台/内部管理/基础规则管理/哈奋币规则/使用
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"hafenCoinUse"})
-@Api(tags = "管理后台—内部管理—基础规则管理—哈奋币规则-使用")
+@Api(tags = "管理后台/内部管理/基础规则管理/哈奋币规则/使用")
 public class HafenCoinUseController extends BaseController {
 
     private String message;
@@ -36,28 +35,27 @@ public class HafenCoinUseController extends BaseController {
      * 获取哈奋币规则列表（分页）
      *
      * @param request      要求
-     * @param hafenCoinUse 港口硬币使用
-     *
-     * @return {@link Map}<{@link String}, {@link Object}>
+     * @param hafenCoinUse 哈奋币
+     * @return {@link Result}<{@link IPage}<{@link HafenCoinUse}>>
      */
     @GetMapping
     @ApiOperation("获取哈奋币规则列表（分页）")
-    public Map<String, Object> page(QueryRequest request, HafenCoinUse hafenCoinUse) {
+    public Result<IPage<HafenCoinUse>> page(QueryRequest request, HafenCoinUse hafenCoinUse) {
         IPage<HafenCoinUse> page = this.hafenCoinUseService.getPage(request, hafenCoinUse);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     /**
      * 修改哈奋币规则信息
      *
-     * @param hafenCoinUse 港口硬币使用
+     * @param hafenCoinUse 哈奋币规则使用
      *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PutMapping
     @ApiOperation("修改哈奋币规则信息")
-    public Result update(HafenCoinUse hafenCoinUse) throws FebsException {
+    public Result<Object> update(@RequestBody HafenCoinUse hafenCoinUse) throws FebsException {
         try {
             hafenCoinUse.setModifyTime(new Date());
             return Result.OK(this.hafenCoinUseService.updateById(hafenCoinUse));
