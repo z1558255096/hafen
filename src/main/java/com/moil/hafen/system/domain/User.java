@@ -1,8 +1,10 @@
 package com.moil.hafen.system.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -60,7 +62,8 @@ public class User implements Serializable {
     /**
      * 状态
      */
-    private String status;
+    @ApiModelProperty("状态：1-正常；0-锁定")
+    private Integer status;
 
     /**
      * 创建时间
@@ -94,6 +97,10 @@ public class User implements Serializable {
 
     private transient String createTimeFrom;
     private transient String createTimeTo;
+
+    @ApiModelProperty("姓名、手机号、账号")
+    @TableField(exist = false)
+    private Integer keyword;
 
     /**
      * shiro-redis v3.1.0 必须要有 getAuthCacheKey()或者 getId()方法

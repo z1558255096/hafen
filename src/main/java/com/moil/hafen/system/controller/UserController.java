@@ -26,11 +26,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @Author 陈子杰
+ * @Description 管理后台/内部管理/用户管理
+ * @Version 1.0.0
+ * @Date 2023/12/08 11:24
+ */
 @Slf4j
 @Validated
 @RestController
 @RequestMapping("backend/user")
-@Api("管理后台-用户管理")
+@Api("管理后台/内部管理/用户管理")
 public class UserController extends BaseController {
 
     private String message;
@@ -174,7 +180,7 @@ public class UserController extends BaseController {
 //        }
 //    }
     @PutMapping("/{id}/updataStatus")
-    public Result updataStatus(@PathVariable int id, String status) throws FebsException {
+    public Result updataStatus(@PathVariable int id, Integer status) throws FebsException {
         try {
             User user = new User();
             user.setId(id);

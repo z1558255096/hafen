@@ -1,12 +1,17 @@
 package com.moil.hafen.web.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.Result;
 import com.moil.hafen.common.exception.FebsException;
+import com.moil.hafen.third.TencentService;
+import com.moil.hafen.third.resp.TencentResp;
 import com.moil.hafen.web.domain.Campus;
 import com.moil.hafen.web.domain.Dept;
 import com.moil.hafen.web.service.CampusService;
 import com.moil.hafen.web.service.DeptService;
+import com.moil.hafen.web.vo.LocationVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -20,6 +25,7 @@ import org.springframework.web.context.request.WebRequest;
 import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +44,8 @@ public class CampusController extends BaseController {
     private CampusService campusService;
     @Resource
     private DeptService deptService;
+    @Resource
+    private TencentService tencentService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {
@@ -64,6 +72,27 @@ public class CampusController extends BaseController {
     public Result<List<Campus>> get() {
         List<Campus> campusList = campusService.getList();
         return Result.OK(campusList);
+    }
+
+    @GetMapping("title")
+    @ApiOperation("根据关键字获取位置")
+    @ApiImplicitParams({@ApiImplicitParam(name = "keyWord", value = "关键字", required = true, paramType = "query"), @ApiImplicitParam(name = "region", value = "城市",
+            paramType = "query"),})
+    public Result<List<LocationVO>> getTitle(String keyWord, String region) {
+        TencentResp tencentResp = tencentService.suggestion(keyWord, region);
+        String jsonData = tencentResp.getData();
+        JSONArray jsonArray = JSONArray.parseArray(jsonData);
+        List<LocationVO> locationVOList = new ArrayList<>();
+        for (Object o : jsonArray) {
+            JSONObject jsonObject = JSONObject.parseObject(o.toString());
+            JSONObject location = jsonObject.getJSONObject("location");
+            LocationVO locationVO = new LocationVO();
+            locationVO.setAddress(jsonObject.get("address").toString());
+            locationVO.setLat(location.get("lat").toString());
+            locationVO.setLng(location.get("lng").toString());
+            locationVOList.add(locationVO);
+        }
+        return Result.OK(locationVOList);
     }
 
     /**
@@ -152,9 +181,7 @@ public class CampusController extends BaseController {
 
     @PutMapping("updateDept")
     @ApiOperation("修改部门")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "deptId", value = "部门id", required = true),
-            @ApiImplicitParam(name = "deptName", value = "部门名称", required = true)})
+    @ApiImplicitParams({@ApiImplicitParam(name = "deptId", value = "部门id", required = true), @ApiImplicitParam(name = "deptName", value = "部门名称", required = true)})
     public Result<Object> updateDept(@RequestBody Dept dept) {
         deptService.update(dept);
         return Result.OK();
