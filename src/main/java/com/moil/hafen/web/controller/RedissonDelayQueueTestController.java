@@ -27,14 +27,14 @@ public class RedissonDelayQueueTestController {
     @Resource
     private RedissonDelayQueue redissonDelayQueue;
 
-    /**
-     * 添加任务
-     *
-     * @param task 任务
-     */
-    @GetMapping("/add")
-    public void addTask(@RequestParam("task") String task) {
-        redissonDelayQueue.offerTask(task, 5);
-    }
+//    /**
+//     * 添加任务
+//     *
+//     * @param task 任务
+//     */
+//    @GetMapping("/add")
+//    public void addTask(@RequestParam("task") String task) {
+//        redissonDelayQueue.offerTask(task, 5);
+//    }
 
 }

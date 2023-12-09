@@ -1,5 +1,6 @@
 package com.moil.hafen.web.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.moil.hafen.common.controller.BaseController;
@@ -155,11 +156,13 @@ public class CommuneLessonController extends BaseController {
         communeLessonAdvanceService.update(new LambdaUpdateWrapper<CommuneLessonAdvance>()
                 .eq(CommuneLessonAdvance::getLessonId, communeLesson.getId()).set(CommuneLessonAdvance::getDelFlag, 1));
         List<CommuneLessonAdvance> communeLessonAdvanceList = communeLesson.getCommuneLessonAdvanceList();
-        for (CommuneLessonAdvance communeLessonAdvance : communeLessonAdvanceList) {
-            communeLessonAdvance.setLessonId(communeLesson.getId());
+        if (CollectionUtil.isNotEmpty(communeLessonAdvanceList)){
+            for (CommuneLessonAdvance communeLessonAdvance : communeLessonAdvanceList) {
+                communeLessonAdvance.setLessonId(communeLesson.getId());
+            }
+            // 再批量新增
+            communeLessonAdvanceService.saveBatch(communeLessonAdvanceList);
         }
-        // 再批量新增
-        communeLessonAdvanceService.saveBatch(communeLessonAdvanceList);
     }
 
     /**

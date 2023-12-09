@@ -155,26 +155,27 @@ public class CommuneTicketController extends BaseController {
     private void addAdvance(CommuneTicket communeTicket) {
         //删除原有门票高级设置
         communeTicketAdvanceService.update(new LambdaUpdateWrapper<CommuneTicketAdvance>()
-                .eq(CommuneTicketAdvance::getTicketId, communeTicket.getId()).set(CommuneTicketAdvance::getDelFlag,1));
+                .eq(CommuneTicketAdvance::getTicketId, communeTicket.getId()).set(CommuneTicketAdvance::getDelFlag, 1));
         //删除原有门票高级设置选项
         communeTicketAdvanceOptionService.update(new LambdaUpdateWrapper<CommuneTicketAdvanceOption>()
-                .eq(CommuneTicketAdvanceOption::getTicketId, communeTicket.getId()).set(CommuneTicketAdvanceOption::getDelFlag,1));
+                .eq(CommuneTicketAdvanceOption::getTicketId, communeTicket.getId()).set(CommuneTicketAdvanceOption::getDelFlag, 1));
         List<CommuneTicketAdvance> communeLessonAdvanceList = communeTicket.getCommuneTicketAdvanceList();
-        for (CommuneTicketAdvance communeTicketAdvance : communeLessonAdvanceList) {
-            communeTicketAdvance.setTicketId(communeTicket.getId());
-            communeTicketAdvanceService.save(communeTicketAdvance);
+        if (CollectionUtils.isNotEmpty(communeLessonAdvanceList)) {
+            for (CommuneTicketAdvance communeTicketAdvance : communeLessonAdvanceList) {
+                communeTicketAdvance.setTicketId(communeTicket.getId());
+                communeTicketAdvanceService.save(communeTicketAdvance);
 
-            List<CommuneTicketAdvanceOption> communeTicketAdvanceOptionList = communeTicketAdvance.getCommuneTicketAdvanceOptionList();
-            if (CollectionUtils.isEmpty(communeTicketAdvanceOptionList)) {
-                continue;
+                List<CommuneTicketAdvanceOption> communeTicketAdvanceOptionList = communeTicketAdvance.getCommuneTicketAdvanceOptionList();
+                if (CollectionUtils.isEmpty(communeTicketAdvanceOptionList)) {
+                    continue;
+                }
+                for (CommuneTicketAdvanceOption communeTicketAdvanceOption : communeTicketAdvanceOptionList) {
+                    communeTicketAdvanceOption.setAdvanceId(communeTicketAdvance.getId());
+                    communeTicketAdvanceOption.setTicketId(communeTicket.getId());
+                }
+                communeTicketAdvanceOptionService.saveBatch(communeTicketAdvanceOptionList);
             }
-            for (CommuneTicketAdvanceOption communeTicketAdvanceOption : communeTicketAdvanceOptionList) {
-                communeTicketAdvanceOption.setAdvanceId(communeTicketAdvance.getId());
-                communeTicketAdvanceOption.setTicketId(communeTicket.getId());
-            }
-            communeTicketAdvanceOptionService.saveBatch(communeTicketAdvanceOptionList);
         }
-
     }
 
     /**

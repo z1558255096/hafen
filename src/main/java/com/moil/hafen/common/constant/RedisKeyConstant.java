@@ -13,5 +13,11 @@ public class RedisKeyConstant {
     public static String COMMUNE_LESSON_ORDER(String customerId) {
         return String.join(":", "hafen", "commune_lesson_order_lock_key", customerId);
     }
+    /**
+     * 公社门票订单
+     */
+    public static String COMMUNE_TICKET_ORDER(String customerId) {
+        return String.join(":", "hafen", "commune_ticket_order_lock_key", customerId);
+    }
 
 }
