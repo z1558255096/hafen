@@ -24,6 +24,7 @@ import java.util.TreeMap;
 
 /**
  * 管理后台/公社模块/公社课程管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -86,9 +87,9 @@ public class CommuneLessonController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除公社课程信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
             return Result.OK(communeLessonService.delete(id));
         } catch (Exception e) {
@@ -107,9 +108,9 @@ public class CommuneLessonController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/changeStatus")
+    @PostMapping("/changeStatus")
     @ApiOperation("上下架公社课程")
-    public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
+    public Result changeStatus(@RequestParam Integer id, @RequestParam Integer status) throws FebsException {
         try {
             CommuneLesson communeLesson = new CommuneLesson();
             communeLesson.setStatus(status);
@@ -131,7 +132,7 @@ public class CommuneLessonController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改公社课程信息")
     public Result update(@RequestBody CommuneLesson communeLesson) throws FebsException {
         try {
@@ -156,7 +157,7 @@ public class CommuneLessonController extends BaseController {
         communeLessonAdvanceService.update(new LambdaUpdateWrapper<CommuneLessonAdvance>()
                 .eq(CommuneLessonAdvance::getLessonId, communeLesson.getId()).set(CommuneLessonAdvance::getDelFlag, 1));
         List<CommuneLessonAdvance> communeLessonAdvanceList = communeLesson.getCommuneLessonAdvanceList();
-        if (CollectionUtil.isNotEmpty(communeLessonAdvanceList)){
+        if (CollectionUtil.isNotEmpty(communeLessonAdvanceList)) {
             for (CommuneLessonAdvance communeLessonAdvance : communeLessonAdvanceList) {
                 communeLessonAdvance.setLessonId(communeLesson.getId());
             }
@@ -172,9 +173,9 @@ public class CommuneLessonController extends BaseController {
      *
      * @return {@link Result}<{@link CommuneLesson}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取公社课程详情")
-    public Result<CommuneLesson> detail(@PathVariable Integer id) {
+    public Result<CommuneLesson> detail(@RequestParam Integer id) {
         return Result.OK(this.communeLessonService.detail(id));
     }
 

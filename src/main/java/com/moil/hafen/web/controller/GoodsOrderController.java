@@ -68,9 +68,9 @@ public class GoodsOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/afterSales/{orderId}")
+    @PostMapping("/afterSales")
     @ApiOperation("通过ID对商品订单售后")
-    public Result afterSales(@PathVariable Integer orderId, int afterSalesType, String afterSalesReason, String afterSalesCertificate) throws FebsException {
+    public Result afterSales(@RequestParam Integer orderId, int afterSalesType, String afterSalesReason, String afterSalesCertificate) throws FebsException {
         try {
             goodsOrderService.afterSales(orderId, afterSalesType, afterSalesReason, afterSalesCertificate);
             return Result.OK();
@@ -90,9 +90,9 @@ public class GoodsOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/updateAfterSalesLogisticsSn/{orderId}")
+    @PostMapping("/updateAfterSalesLogisticsSn")
     @ApiOperation("通过ID对商品订单售后物流订单")
-    public Result updateAfterSalesLogisticsSn(@PathVariable Integer orderId, String logisticsSn) throws FebsException {
+    public Result updateAfterSalesLogisticsSn(@RequestParam Integer orderId, String logisticsSn) throws FebsException {
         try {
             goodsOrderService.updateAfterSalesLogisticsSn(orderId, logisticsSn);
             return Result.OK();
@@ -111,9 +111,9 @@ public class GoodsOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/confirmReceipt/{orderId}")
+    @PostMapping("/confirmReceipt")
     @ApiOperation("通过ID对商品订单确认收货")
-    public Result confirmReceipt(@PathVariable Integer orderId) throws FebsException {
+    public Result confirmReceipt(@RequestParam Integer orderId) throws FebsException {
         try {
             goodsOrderService.confirmReceipt(orderId);
             return Result.OK();
@@ -131,9 +131,9 @@ public class GoodsOrderController extends BaseController {
      *
      * @return {@link Result}
      */
-    @GetMapping("/goodsOrderLogistics/{orderId}")
+    @GetMapping("/goodsOrderLogistics")
     @ApiOperation("获取商品订单物流轨迹")
-    public Result goodsOrderLogistics(@PathVariable Integer orderId) {
+    public Result goodsOrderLogistics(@RequestParam Integer orderId) {
         List<GoodsOrderLogistics> list = goodsOrderService.getGoodsOrderLogistics(orderId);
         return Result.OK(list);
     }
@@ -160,9 +160,9 @@ public class GoodsOrderController extends BaseController {
      *
      * @return {@link Result}<{@link GoodsOrder}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取商品订单详情")
-    public Result<GoodsOrder> detail(@PathVariable Integer id) {
+    public Result<GoodsOrder> detail(@RequestParam Integer id) {
         GoodsOrder goodsOrder = goodsOrderService.detail(id);
         return Result.OK(goodsOrder);
     }
@@ -177,9 +177,9 @@ public class GoodsOrderController extends BaseController {
      * @return {@link Result}<{@link GoodsOrder}>
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/delivery")
+    @PostMapping("/delivery")
     @ApiOperation("通过ID对商品订单发货")
-    public Result<GoodsOrder> delivery(@PathVariable Integer id, String logisticsSn, String deliveryCode) throws FebsException {
+    public Result<GoodsOrder> delivery(@RequestParam Integer id, String logisticsSn, String deliveryCode) throws FebsException {
         try {
             goodsOrderService.delivery(id, logisticsSn, deliveryCode);
             return Result.OK();
@@ -200,9 +200,9 @@ public class GoodsOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/afterSalesApproval")
+    @PostMapping("/afterSalesApproval")
     @ApiOperation("通过ID对商品订单售后审核")
-    public Result afterSalesApproval(@PathVariable Integer id, String status, String reason) throws FebsException {
+    public Result afterSalesApproval(@RequestParam Integer id, String status, String reason) throws FebsException {
         try {
             goodsOrderService.afterSalesApproval(id, status, reason);
             return Result.OK();
@@ -221,9 +221,9 @@ public class GoodsOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/refund")
+    @PostMapping("/refund")
     @ApiOperation("通过ID对商品订单退款")
-    public Result refund(@PathVariable Integer id) throws FebsException {
+    public Result refund(@RequestParam Integer id) throws FebsException {
         try {
             goodsOrderService.refund(id);
             return Result.OK();

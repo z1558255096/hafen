@@ -51,7 +51,7 @@ public class GoodsCategoryController extends BaseController {
      */
     @PostMapping
     @ApiOperation("添加商品类目信息")
-    public Result add(GoodsCategory goodsCategory) throws FebsException {
+    public Result add(@RequestBody GoodsCategory goodsCategory) throws FebsException {
         try {
             int count = goodsCategoryService.count(new LambdaQueryWrapper<GoodsCategory>()
                     .eq(GoodsCategory::getName, goodsCategory.getName())
@@ -75,9 +75,9 @@ public class GoodsCategoryController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除商品类目信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
             GoodsCategory goodsCategory = new GoodsCategory();
             goodsCategory.setDelFlag(1);
@@ -99,9 +99,9 @@ public class GoodsCategoryController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改商品类目信息")
-    public Result update(GoodsCategory goodsCategory) throws FebsException {
+    public Result update(@RequestBody GoodsCategory goodsCategory) throws FebsException {
         try {
             GoodsCategory one = goodsCategoryService.getOne(new LambdaQueryWrapper<GoodsCategory>()
                     .eq(GoodsCategory::getName, goodsCategory.getName())
@@ -125,9 +125,9 @@ public class GoodsCategoryController extends BaseController {
      *
      * @return {@link Result}<{@link GoodsCategory}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取商品类目详情")
-    public Result<GoodsCategory> detail(@PathVariable Integer id) {
+    public Result<GoodsCategory> detail(@RequestParam Integer id) {
         return Result.OK(goodsCategoryService.getById(id));
     }
 

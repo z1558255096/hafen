@@ -77,9 +77,9 @@ public class CommuneActivityController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除公社活动信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
             boolean update = communeActivityService.lambdaUpdate().eq(CommuneActivity::getId, id).set(CommuneActivity::getDelFlag, 1).update();
             return Result.OK(update);
@@ -99,9 +99,9 @@ public class CommuneActivityController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/changeStatus")
+    @PostMapping("/changeStatus")
     @ApiOperation("上下架公社活动")
-    public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
+    public Result changeStatus(@RequestParam Integer id, @RequestParam int status) throws FebsException {
         try {
             CommuneActivity communeActivity = new CommuneActivity();
             communeActivity.setStatus(status);
@@ -123,9 +123,9 @@ public class CommuneActivityController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改公社活动信息")
-    public Result update(CommuneActivity communeActivity) throws FebsException {
+    public Result update(@RequestBody CommuneActivity communeActivity) throws FebsException {
         try {
             communeActivity.setModifyTime(new Date());
             return Result.OK(this.communeActivityService.updateById(communeActivity));
@@ -143,9 +143,9 @@ public class CommuneActivityController extends BaseController {
      *
      * @return {@link Result}<{@link CommuneActivity}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取公社活动详情")
-    public Result<CommuneActivity> detail(@PathVariable Integer id) {
+    public Result<CommuneActivity> detail(@RequestParam Integer id) {
         return Result.OK(this.communeActivityService.getById(id));
     }
 }

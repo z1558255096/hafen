@@ -75,9 +75,9 @@ public class CommuneTicketEvaluateController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/changeStatus")
+    @PostMapping("/changeStatus")
     @ApiOperation("上下架公社门票评价")
-    public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
+    public Result changeStatus(@RequestParam Integer id,@RequestParam int status) throws FebsException {
         try {
             CommuneTicketEvaluate communeTicketEvaluate = new CommuneTicketEvaluate();
             communeTicketEvaluate.setStatus(status);
@@ -97,9 +97,9 @@ public class CommuneTicketEvaluateController {
      *
      * @return {@link Result}<{@link CommuneTicketEvaluate}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取公社门票评价详情")
-    public Result<CommuneTicketEvaluate> detail(@PathVariable Integer id) {
+    public Result<CommuneTicketEvaluate> detail(@RequestParam Integer id) {
         CommuneTicketEvaluate byId = communeTicketEvaluateService.getById(id);
         return Result.OK(byId);
     }

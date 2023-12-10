@@ -81,9 +81,9 @@ public class LessonCategoryController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除课程类目信息")
-    public Result<Boolean> delete(@PathVariable Integer id) {
+    public Result<Boolean> delete(@RequestParam Integer id) {
         LessonCategory lessonCategory = new LessonCategory();
         lessonCategory.setDelFlag(1);
         lessonCategory.setId(id);
@@ -99,9 +99,9 @@ public class LessonCategoryController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改课程类目信息")
-    public Result update(LessonCategory lessonCategory) {
+    public Result update(@RequestBody LessonCategory lessonCategory) {
         LessonCategory one = lessonCategoryService.getOne(new LambdaQueryWrapper<LessonCategory>()
                 .eq(LessonCategory::getName, lessonCategory.getName())
                 .eq(LessonCategory::getType, lessonCategory.getType())
@@ -120,9 +120,9 @@ public class LessonCategoryController extends BaseController {
      *
      * @return {@link Result}<{@link LessonCategory}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取课程类目详情")
-    public Result<LessonCategory> detail(@PathVariable Integer id) {
+    public Result<LessonCategory> detail(@RequestParam Integer id) {
         return Result.OK(this.lessonCategoryService.getById(id));
     }
 

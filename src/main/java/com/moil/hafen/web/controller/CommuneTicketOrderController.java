@@ -62,9 +62,9 @@ public class CommuneTicketOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改订单信息")
-    public Result update(CommuneTicketOrder communeTicketOrder) throws FebsException {
+    public Result update(@RequestBody CommuneTicketOrder communeTicketOrder) throws FebsException {
         try {
             communeTicketOrder.setModifyTime(new Date());
             return Result.OK(this.communeTicketOrderService.updateById(communeTicketOrder));
@@ -83,9 +83,9 @@ public class CommuneTicketOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/afterSales/{orderId}")
+    @PostMapping("/afterSales")
     @ApiOperation("通过ID对商品订单售后")
-    public Result afterSales(@PathVariable Integer orderId, String afterSalesReason) throws FebsException {
+    public Result afterSales(@RequestParam Integer orderId,@RequestParam String afterSalesReason) throws FebsException {
         try {
             this.communeTicketOrderService.afterSales(orderId,afterSalesReason);
             return Result.OK();
@@ -116,9 +116,9 @@ public class CommuneTicketOrderController extends BaseController {
      * @param id id
      * @return {@link Result}<{@link CommuneTicketOrder}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取订单详情")
-    public Result<CommuneTicketOrder> detail(@PathVariable Integer id) {
+    public Result<CommuneTicketOrder> detail(@RequestParam Integer id) {
         CommuneTicketOrder communeTicketOrder = this.communeTicketOrderService.getById(id);
         return Result.OK(communeTicketOrder);
     }
@@ -130,9 +130,9 @@ public class CommuneTicketOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/refund")
+    @PostMapping("/refund")
     @ApiOperation("通过ID对订单退款")
-    public Result refund(@PathVariable Integer id) throws FebsException {
+    public Result refund(@RequestParam Integer id) throws FebsException {
         try {
             this.communeTicketOrderService.refund(id);
             return Result.OK();
@@ -150,9 +150,9 @@ public class CommuneTicketOrderController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/use")
+    @PostMapping("/use")
     @ApiOperation("通过ID对订单核销")
-    public Result use(@PathVariable Integer id) throws FebsException {
+    public Result use(@RequestParam Integer id) throws FebsException {
         try {
             this.communeTicketOrderService.use(id);
             return Result.OK();

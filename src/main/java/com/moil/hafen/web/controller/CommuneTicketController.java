@@ -124,9 +124,9 @@ public class CommuneTicketController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除公社门票信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
             //删除公社课程信息
             boolean update = communeTicketService.lambdaUpdate().eq(CommuneTicket::getId, id).set(CommuneTicket::getDelFlag, 1).update();
@@ -147,9 +147,9 @@ public class CommuneTicketController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/changeStatus")
+    @PostMapping("/changeStatus")
     @ApiOperation("上下架公社门票")
-    public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
+    public Result changeStatus(@RequestParam Integer id, @RequestParam int status) throws FebsException {
         try {
             CommuneTicket communeTicket = new CommuneTicket();
             communeTicket.setStatus(status);
@@ -171,7 +171,7 @@ public class CommuneTicketController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改公社门票信息")
     public Result update(@RequestBody CommuneTicket communeTicket) throws FebsException {
         try {
@@ -219,9 +219,9 @@ public class CommuneTicketController extends BaseController {
      *
      * @return {@link Result}<{@link CommuneTicket}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取公社门票详情")
-    public Result<CommuneTicket> detail(@PathVariable Integer id) {
+    public Result<CommuneTicket> detail(@RequestParam Integer id) {
         return Result.OK(communeTicketService.detail(id));
     }
 }

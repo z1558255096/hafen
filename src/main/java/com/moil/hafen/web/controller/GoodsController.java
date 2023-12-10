@@ -87,9 +87,9 @@ public class GoodsController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除商品信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
             Goods goods = new Goods();
             goods.setDelFlag(1);
@@ -112,9 +112,9 @@ public class GoodsController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/changeStatus")
+    @PostMapping("/changeStatus")
     @ApiOperation("上下架商品信息")
-    public Result changeStatus(@PathVariable Integer id, int status) throws FebsException {
+    public Result changeStatus(@RequestParam Integer id, @RequestParam int status) throws FebsException {
         try {
             Goods goods = new Goods();
             goods.setStatus(status);
@@ -136,9 +136,9 @@ public class GoodsController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改商品信息")
-    public Result update(Goods goods) throws FebsException {
+    public Result update(@RequestBody Goods goods) throws FebsException {
         try {
             goods.setModifyTime(new Date());
             goodsService.updateById(goods);
@@ -163,9 +163,9 @@ public class GoodsController extends BaseController {
      *
      * @return {@link Result}<{@link Goods}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取商品详情")
-    public Result<Goods> detail(@PathVariable Integer id) {
+    public Result<Goods> detail(@RequestParam Integer id) {
         Goods goods = goodsService.detail(id);
         return Result.OK(goods);
     }

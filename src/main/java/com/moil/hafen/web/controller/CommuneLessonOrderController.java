@@ -22,6 +22,7 @@ import java.util.Map;
 
 /**
  * 管理后台/公社模块/课程订单
+ *
  * @author 8129
  */
 @Slf4j
@@ -40,6 +41,7 @@ public class CommuneLessonOrderController extends BaseController {
      * 创建订单
      *
      * @param order 顺序
+     *
      * @return {@link Result}<{@link CommuneLessonOrder}>
      * @throws FebsException FEBS系统内部异常
      */
@@ -59,12 +61,13 @@ public class CommuneLessonOrderController extends BaseController {
      * 修改订单信息 - 小程序
      *
      * @param communeLessonOrder 社区课程顺序
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改订单信息")
-    public Result update(CommuneLessonOrder communeLessonOrder) throws FebsException {
+    public Result update(@RequestBody CommuneLessonOrder communeLessonOrder) throws FebsException {
         try {
             communeLessonOrder.setModifyTime(new Date());
             return Result.OK(this.communeLessonOrderService.updateById(communeLessonOrder));
@@ -80,14 +83,15 @@ public class CommuneLessonOrderController extends BaseController {
      *
      * @param orderId          订单id
      * @param afterSalesReason 售后原因
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/afterSales/{orderId}")
+    @PostMapping("/afterSales")
     @ApiOperation("通过ID对商品订单售后")
-    public Result afterSales(@PathVariable Integer orderId, String afterSalesReason) throws FebsException {
+    public Result afterSales(@RequestParam Integer orderId, @RequestParam String afterSalesReason) throws FebsException {
         try {
-            this.communeLessonOrderService.afterSales(orderId,afterSalesReason);
+            this.communeLessonOrderService.afterSales(orderId, afterSalesReason);
             return Result.OK();
         } catch (Exception e) {
             message = "通过ID对商品订单售后失败";
@@ -101,6 +105,7 @@ public class CommuneLessonOrderController extends BaseController {
      *
      * @param request            要求
      * @param communeLessonOrder 社区课程顺序
+     *
      * @return {@link Map}<{@link String}, {@link Object}>
      */
     @GetMapping
@@ -114,11 +119,12 @@ public class CommuneLessonOrderController extends BaseController {
      * 通过ID获取订单详情 管理后台/小程序
      *
      * @param id id
+     *
      * @return {@link Result}<{@link CommuneLessonOrder}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取订单详情")
-    public Result<CommuneLessonOrder> detail(@PathVariable Integer id) {
+    public Result<CommuneLessonOrder> detail(@RequestParam Integer id) {
         CommuneLessonOrder communeLessonOrder = this.communeLessonOrderService.getById(id);
         return Result.OK(communeLessonOrder);
     }
@@ -127,12 +133,13 @@ public class CommuneLessonOrderController extends BaseController {
      * 通过ID对订单退款 管理后台/小程序
      *
      * @param id id
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/refund")
+    @PostMapping("/refund")
     @ApiOperation("通过ID对订单退款")
-    public Result refund(@PathVariable Integer id) throws FebsException {
+    public Result refund(@RequestParam Integer id) throws FebsException {
         try {
             this.communeLessonOrderService.refund(id);
             return Result.OK();
@@ -147,12 +154,13 @@ public class CommuneLessonOrderController extends BaseController {
      * 通过ID对订单核销 管理后台
      *
      * @param id id
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/use")
+    @PostMapping("/use")
     @ApiOperation("通过ID对订单核销")
-    public Result use(@PathVariable Integer id) throws FebsException {
+    public Result use(@RequestParam Integer id) throws FebsException {
         try {
             this.communeLessonOrderService.use(id);
             return Result.OK();
@@ -169,6 +177,7 @@ public class CommuneLessonOrderController extends BaseController {
      *
      * @param communeLessonOrder 社区课程顺序
      * @param response           回答
+     *
      * @throws FebsException FEBS系统内部异常
      */
     @GetMapping("/export")
