@@ -21,14 +21,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 管理后台——商城——商品订单订单管理
+ * 管理后台/商城模块/商品订单订单管理
  *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"goodsOrderOrder"})
-@Api(tags = "管理后台—商城—商品订单管理")
+@Api(tags = "管理后台/商城模块/商品订单订单管理")
 public class GoodsOrderController extends BaseController {
 
     private String message;
@@ -49,7 +49,7 @@ public class GoodsOrderController extends BaseController {
     @ApiOperation("创建订单")
     public Result<GoodsOrder> createOrder(GoodsOrder order) throws FebsException {
         try {
-            return Result.OK(this.goodsOrderService.createOrder(order));
+            return Result.OK(goodsOrderService.createOrder(order));
         } catch (Exception e) {
             message = "创建订单失败";
             log.error(message, e);
@@ -70,9 +70,9 @@ public class GoodsOrderController extends BaseController {
      */
     @PutMapping("/afterSales/{orderId}")
     @ApiOperation("通过ID对商品订单售后")
-    public Result afterSales(@PathVariable Integer orderId,int afterSalesType, String afterSalesReason, String afterSalesCertificate) throws FebsException {
+    public Result afterSales(@PathVariable Integer orderId, int afterSalesType, String afterSalesReason, String afterSalesCertificate) throws FebsException {
         try {
-            this.goodsOrderService.afterSales(orderId,afterSalesType,afterSalesReason,afterSalesCertificate);
+            goodsOrderService.afterSales(orderId, afterSalesType, afterSalesReason, afterSalesCertificate);
             return Result.OK();
         } catch (Exception e) {
             message = "通过ID对商品订单售后失败";
@@ -92,9 +92,9 @@ public class GoodsOrderController extends BaseController {
      */
     @PutMapping("/updateAfterSalesLogisticsSn/{orderId}")
     @ApiOperation("通过ID对商品订单售后物流订单")
-    public Result updateAfterSalesLogisticsSn(@PathVariable Integer orderId,String logisticsSn) throws FebsException {
+    public Result updateAfterSalesLogisticsSn(@PathVariable Integer orderId, String logisticsSn) throws FebsException {
         try {
-            this.goodsOrderService.updateAfterSalesLogisticsSn(orderId,logisticsSn);
+            goodsOrderService.updateAfterSalesLogisticsSn(orderId, logisticsSn);
             return Result.OK();
         } catch (Exception e) {
             message = "通过ID对商品订单售后物流订单失败";
@@ -115,7 +115,7 @@ public class GoodsOrderController extends BaseController {
     @ApiOperation("通过ID对商品订单确认收货")
     public Result confirmReceipt(@PathVariable Integer orderId) throws FebsException {
         try {
-            this.goodsOrderService.confirmReceipt(orderId);
+            goodsOrderService.confirmReceipt(orderId);
             return Result.OK();
         } catch (Exception e) {
             message = "通过ID对商品订单确认收货失败";
@@ -134,7 +134,7 @@ public class GoodsOrderController extends BaseController {
     @GetMapping("/goodsOrderLogistics/{orderId}")
     @ApiOperation("获取商品订单物流轨迹")
     public Result goodsOrderLogistics(@PathVariable Integer orderId) {
-        List<GoodsOrderLogistics> list = this.goodsOrderService.getGoodsOrderLogistics(orderId);
+        List<GoodsOrderLogistics> list = goodsOrderService.getGoodsOrderLogistics(orderId);
         return Result.OK(list);
     }
 
@@ -149,7 +149,7 @@ public class GoodsOrderController extends BaseController {
     @GetMapping
     @ApiOperation("获取商品订单列表（分页）")
     public Map<String, Object> page(QueryRequest request, GoodsOrder goodsOrder) {
-        IPage<GoodsOrder> page = this.goodsOrderService.getPage(request, goodsOrder);
+        IPage<GoodsOrder> page = goodsOrderService.getPage(request, goodsOrder);
         return getDataTable(page);
     }
 
@@ -163,7 +163,7 @@ public class GoodsOrderController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品订单详情")
     public Result<GoodsOrder> detail(@PathVariable Integer id) {
-        GoodsOrder goodsOrder = this.goodsOrderService.detail(id);
+        GoodsOrder goodsOrder = goodsOrderService.detail(id);
         return Result.OK(goodsOrder);
     }
 
@@ -179,9 +179,9 @@ public class GoodsOrderController extends BaseController {
      */
     @PutMapping("/{id}/delivery")
     @ApiOperation("通过ID对商品订单发货")
-    public Result<GoodsOrder> delivery(@PathVariable Integer id,String logisticsSn, String deliveryCode) throws FebsException {
+    public Result<GoodsOrder> delivery(@PathVariable Integer id, String logisticsSn, String deliveryCode) throws FebsException {
         try {
-            this.goodsOrderService.delivery(id,logisticsSn,deliveryCode);
+            goodsOrderService.delivery(id, logisticsSn, deliveryCode);
             return Result.OK();
         } catch (Exception e) {
             message = "商品订单发货失败";
@@ -202,9 +202,9 @@ public class GoodsOrderController extends BaseController {
      */
     @PutMapping("/{id}/afterSalesApproval")
     @ApiOperation("通过ID对商品订单售后审核")
-    public Result afterSalesApproval(@PathVariable Integer id,String status, String reason) throws FebsException {
+    public Result afterSalesApproval(@PathVariable Integer id, String status, String reason) throws FebsException {
         try {
-            this.goodsOrderService.afterSalesApproval(id,status,reason);
+            goodsOrderService.afterSalesApproval(id, status, reason);
             return Result.OK();
         } catch (Exception e) {
             message = "商品订单审核失败";
@@ -225,7 +225,7 @@ public class GoodsOrderController extends BaseController {
     @ApiOperation("通过ID对商品订单退款")
     public Result refund(@PathVariable Integer id) throws FebsException {
         try {
-            this.goodsOrderService.refund(id);
+            goodsOrderService.refund(id);
             return Result.OK();
         } catch (Exception e) {
             message = "商品订单退款失败";
@@ -246,7 +246,7 @@ public class GoodsOrderController extends BaseController {
     @ApiOperation("导出订单列表")
     public void export(GoodsOrder goodsOrder, HttpServletResponse response) throws FebsException {
         try {
-            List<GoodsOrder> contestantInfoList = this.goodsOrderService.getGoodsOrderList(goodsOrder);
+            List<GoodsOrder> contestantInfoList = goodsOrderService.getGoodsOrderList(goodsOrder);
             // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
             response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             response.setCharacterEncoding("utf-8");

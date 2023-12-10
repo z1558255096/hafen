@@ -20,7 +20,6 @@ public class GoodsCategoryServiceImpl extends ServiceImpl<GoodsCategoryDao, Good
         SortUtil.handlePageSort(request, page, true);
         LambdaQueryWrapper<GoodsCategory> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(GoodsCategory::getDelFlag,0).orderByDesc(GoodsCategory::getWeight);
-        IPage<GoodsCategory> goodsCategoryIPage = this.page(page, lambdaQueryWrapper);
-        return goodsCategoryIPage;
+        return this.page(page, lambdaQueryWrapper);
     }
 }

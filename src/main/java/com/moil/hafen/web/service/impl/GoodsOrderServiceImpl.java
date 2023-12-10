@@ -116,12 +116,13 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderDao, GoodsOrder
 
     @Override
     public GoodsOrder createOrder(GoodsOrder order) {
+        //查询商品规格
         GoodsSpecs goodsSpecs = goodsSpecsService.getById(order.getSpecsId());
         Goods goods = goodsService.getById(goodsSpecs.getGoodsId());
         order.setGoodsName(goods.getName());
         order.setImg(goods.getImg());
         order.setSpecs(goodsSpecs.getSpecs());
-        double totalPrice = goodsSpecs.getPrice()*order.getCount();
+        double totalPrice = goodsSpecs.getPrice()*order.getCount(); //规格价格*数量
         order.setTotalPrice(totalPrice);
         String orderNo = PayUtil.generateOrderNo("GBN");
         order.setOrderSn(orderNo);
@@ -134,7 +135,7 @@ public class GoodsOrderServiceImpl extends ServiceImpl<GoodsOrderDao, GoodsOrder
         order.setConsigneeMobile(customerAddress.getMobile());
         order.setCustomerId(JWTUtil.getCurrentCustomerId());
         //计算优惠
-        Double actualPayment = totalPrice;
+        double actualPayment = totalPrice;
         Integer couponId = order.getCouponId();
         if(couponId != null && couponId>0){
             CouponCustomer couponCustomer = couponCustomerService.getById(couponId);

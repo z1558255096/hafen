@@ -17,16 +17,17 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
- * 管理后台—商品管理—商品类目管理
+ * 管理后台/商城模块/商品类目管理
  *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"goodsCategory"})
-@Api(tags = "管理后台—商品管理—商品类目管理")
+@Api(tags = "管理后台/商品管理/商品类目管理")
 public class GoodsCategoryController extends BaseController {
 
     private String message;
@@ -37,7 +38,7 @@ public class GoodsCategoryController extends BaseController {
     @GetMapping
     @ApiOperation("获取商品类目列表（分页）")
     public Map<String, Object> page(QueryRequest request, GoodsCategory goodsCategory) {
-        IPage<GoodsCategory> page = this.goodsCategoryService.getPage(request, goodsCategory);
+        IPage<GoodsCategory> page = goodsCategoryService.getPage(request, goodsCategory);
         return getDataTable(page);
     }
 
@@ -52,10 +53,13 @@ public class GoodsCategoryController extends BaseController {
     @ApiOperation("添加商品类目信息")
     public Result add(GoodsCategory goodsCategory) throws FebsException {
         try {
-            goodsCategory.setCreateTime(new Date());
-            goodsCategory.setModifyTime(new Date());
-            goodsCategory.setDelFlag(0);
-            return Result.OK(this.goodsCategoryService.save(goodsCategory));
+            int count = goodsCategoryService.count(new LambdaQueryWrapper<GoodsCategory>()
+                    .eq(GoodsCategory::getName, goodsCategory.getName())
+                    .eq(GoodsCategory::getDelFlag, 0));
+            if (count > 0) {
+                return Result.error("商品类目名称已存在");
+            }
+            return Result.OK(goodsCategoryService.save(goodsCategory));
         } catch (Exception e) {
             message = "添加商品类目信息失败";
             log.error(message, e);
@@ -79,7 +83,7 @@ public class GoodsCategoryController extends BaseController {
             goodsCategory.setDelFlag(1);
             goodsCategory.setId(id);
             goodsCategory.setModifyTime(new Date());
-            return Result.OK(this.goodsCategoryService.updateById(goodsCategory));
+            return Result.OK(goodsCategoryService.updateById(goodsCategory));
         } catch (Exception e) {
             message = "删除商品类目信息失败";
             log.error(message, e);
@@ -99,8 +103,14 @@ public class GoodsCategoryController extends BaseController {
     @ApiOperation("修改商品类目信息")
     public Result update(GoodsCategory goodsCategory) throws FebsException {
         try {
+            GoodsCategory one = goodsCategoryService.getOne(new LambdaQueryWrapper<GoodsCategory>()
+                    .eq(GoodsCategory::getName, goodsCategory.getName())
+                    .eq(GoodsCategory::getDelFlag, 0));
+            if (one != null && !Objects.equals(one.getId(), goodsCategory.getId())) {
+                return Result.error("课程类目名称已存在");
+            }
             goodsCategory.setModifyTime(new Date());
-            return Result.OK(this.goodsCategoryService.updateById(goodsCategory));
+            return Result.OK(goodsCategoryService.updateById(goodsCategory));
         } catch (Exception e) {
             message = "修改商品类目信息失败";
             log.error(message, e);
@@ -118,7 +128,7 @@ public class GoodsCategoryController extends BaseController {
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取商品类目详情")
     public Result<GoodsCategory> detail(@PathVariable Integer id) {
-        return Result.OK(this.goodsCategoryService.getById(id));
+        return Result.OK(goodsCategoryService.getById(id));
     }
 
     /**
@@ -129,7 +139,7 @@ public class GoodsCategoryController extends BaseController {
     @GetMapping("/list")
     @ApiOperation("获取商品类目列表")
     public Result list() {
-        List<GoodsCategory> list = this.goodsCategoryService.list(new LambdaQueryWrapper<GoodsCategory>().eq(GoodsCategory::getDelFlag, 0));
+        List<GoodsCategory> list = goodsCategoryService.list(new LambdaQueryWrapper<GoodsCategory>().eq(GoodsCategory::getDelFlag, 0));
         return Result.OK(list);
     }
 
