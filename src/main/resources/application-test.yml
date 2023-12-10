@@ -128,12 +128,12 @@ task:
 
 oss:
   config:
-    accessKeyId: LTAI5tCUE1a62zpVpSRRJhec
-    accessKeySecret: Dzyat2b62iLM6450QeaEp16D3nqESF
-    bucketName: pshonor
-    domain: https://pshonor.oss-cn-hangzhou.aliyuncs.com
-    endpoint: oss-cn-hangzhou.aliyuncs.com
-    prefix: educ
+    accessKeyId: LTAI5tKrdHUXpcqrgCF7opZQ
+    accessKeySecret: lr2lZ0W1xZ7ZQp94TFEUAARqWx3AyE
+    bucketName: hafen
+    domain: https://hafen.oss-cn-beijing.aliyuncs.com
+    endpoint: oss-cn-beijing.aliyuncs.com
+    prefix: file
 
 url:
   ip:
