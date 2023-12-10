@@ -26,7 +26,7 @@ public class CommuneLessonAdvance implements Serializable {
     @ApiModelProperty("选项")
     private String option;
     @ApiModelProperty("权重")
-    private Integer index;
+    private Integer sort;
     @ApiModelProperty("是否删除 0正常 1删除")
     private Integer delFlag;//0正常 1删除
     @ApiModelProperty("创建时间")

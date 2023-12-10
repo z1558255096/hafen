@@ -80,7 +80,7 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
         List<CommuneLessonAdvance> communeLessonAdvanceList = communeLessonAdvanceService.list(new LambdaQueryWrapper<CommuneLessonAdvance>()
                 .eq(CommuneLessonAdvance::getLessonId, id)
                 .eq(CommuneLessonAdvance::getDelFlag, 0)
-                .orderByAsc(CommuneLessonAdvance::getIndex));
+                .orderByAsc(CommuneLessonAdvance::getSort));
         communeLesson.setCommuneLessonAdvanceList(communeLessonAdvanceList);
         return communeLesson;
     }

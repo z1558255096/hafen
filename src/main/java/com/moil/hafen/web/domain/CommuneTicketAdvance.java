@@ -27,7 +27,7 @@ public class CommuneTicketAdvance implements Serializable {
     @ApiModelProperty("图片选项")
     private String imgOption;
     @ApiModelProperty("排序")
-    private Integer index;
+    private Integer sort;
     @ApiModelProperty("公社高级设置选项列表")
     private transient List<CommuneTicketAdvanceOption> communeTicketAdvanceOptionList;
     @ApiModelProperty("是否删除 0正常 1删除")

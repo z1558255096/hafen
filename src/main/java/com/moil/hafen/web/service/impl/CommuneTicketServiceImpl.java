@@ -45,10 +45,10 @@ public class CommuneTicketServiceImpl extends ServiceImpl<CommuneTicketDao, Comm
     public CommuneTicket detail(Integer id) {
         CommuneTicket communeTicket = this.getById(id);
         List<CommuneTicketAdvance> communeTicketAdvanceList = communeTicketAdvanceService.list(new LambdaQueryWrapper<CommuneTicketAdvance>().eq(CommuneTicketAdvance::getTicketId, id)
-                .orderByAsc(CommuneTicketAdvance::getIndex));
+                .orderByAsc(CommuneTicketAdvance::getSort));
         for (CommuneTicketAdvance communeTicketAdvance : communeTicketAdvanceList) {
             List<CommuneTicketAdvanceOption> communeTicketAdvanceOptions = communeTicketAdvanceOptionService.list(new LambdaQueryWrapper<CommuneTicketAdvanceOption>()
-                    .eq(CommuneTicketAdvanceOption::getAdvanceId,communeTicketAdvance.getId()).orderByAsc(CommuneTicketAdvanceOption::getIndex));
+                    .eq(CommuneTicketAdvanceOption::getAdvanceId,communeTicketAdvance.getId()).orderByAsc(CommuneTicketAdvanceOption::getSort));
             communeTicketAdvance.setCommuneTicketAdvanceOptionList(communeTicketAdvanceOptions);
         }
         communeTicket.setCommuneTicketAdvanceList(communeTicketAdvanceList);
