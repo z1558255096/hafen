@@ -15,17 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
- * 管理后台-内部管理-基础规则-用户标签管理
+ * 管理后台/内部管理/基础规则管理/用户标签管理
  *
  * @author 8129
  */
 @Slf4j
 @RestController
 @RequestMapping({"userTag"})
-@Api(tags = "用户标签管理")
+@Api(tags = "管理后台/内部管理/基础规则管理/用户标签管理")
 public class UserTagController extends BaseController {
 
     private String message;
@@ -35,14 +34,14 @@ public class UserTagController extends BaseController {
 
     @GetMapping
     @ApiOperation("获取用户标签列表（分页）")
-    public Map<String, Object> page(QueryRequest request, UserTag userTag) {
+    public Result<IPage<UserTag>> page(QueryRequest request, UserTag userTag) {
         IPage<UserTag> page = this.userTagService.getPage(request, userTag);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     @PostMapping
     @ApiOperation("添加用户标签信息")
-    public Result add(UserTag userTag) throws FebsException {
+    public Result add(@RequestBody UserTag userTag) throws FebsException {
         try {
             userTag.setCreateTime(new Date());
             userTag.setModifyTime(new Date());
@@ -54,9 +53,9 @@ public class UserTagController extends BaseController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ApiOperation("删除用户标签信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam("id") Integer id) throws FebsException {
         try {
             return Result.OK(this.userTagService.removeById(id));
         } catch (Exception e) {
@@ -68,7 +67,7 @@ public class UserTagController extends BaseController {
 
     @PutMapping
     @ApiOperation("修改用户标签信息")
-    public Result update(UserTag userTag) throws FebsException {
+    public Result update(@RequestBody UserTag userTag) throws FebsException {
         try {
             userTag.setModifyTime(new Date());
             return Result.OK(this.userTagService.updateById(userTag));
@@ -78,11 +77,13 @@ public class UserTagController extends BaseController {
             return Result.error(message);
         }
     }
+
     @GetMapping("/{id}")
     @ApiOperation("通过ID获取用户标签详情")
     public Result<UserTag> detail(@PathVariable Integer id) {
         return Result.OK(this.userTagService.getById(id));
     }
+
     @GetMapping("/list")
     @ApiOperation("获取用户标签列表")
     public Result list() {

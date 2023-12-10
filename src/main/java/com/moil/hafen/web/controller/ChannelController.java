@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author 8129
@@ -23,7 +22,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping({"channel"})
-@Api(tags = "渠道管理")
+@Api(tags = "管理后台/内部管理/基础规则管理/渠道管理")
 public class ChannelController extends BaseController {
 
     private String message;
@@ -36,13 +35,13 @@ public class ChannelController extends BaseController {
      *
      * @param request 要求
      * @param channel 频道
-     * @return {@link Map}<{@link String}, {@link Object}>
+     * @return {@link Result}<{@link IPage}<{@link Channel}>>
      */
     @GetMapping
     @ApiOperation("获取渠道列表（分页）")
-    public Map<String, Object> page(QueryRequest request, Channel channel) {
+    public Result<IPage<Channel>> page(QueryRequest request, Channel channel) {
         IPage<Channel> page = this.channelService.getPage(request, channel);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     /**
@@ -54,7 +53,7 @@ public class ChannelController extends BaseController {
      */
     @PostMapping
     @ApiOperation("添加渠道信息")
-    public Result add(Channel channel) throws FebsException {
+    public Result add(@RequestBody Channel channel) throws FebsException {
         try {
             channel.setCreateTime(new Date());
             channel.setModifyTime(new Date());
@@ -73,9 +72,9 @@ public class ChannelController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ApiOperation("删除渠道信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam("id") Integer id) throws FebsException {
         try {
             return Result.OK(this.channelService.removeById(id));
         } catch (Exception e) {
@@ -94,7 +93,7 @@ public class ChannelController extends BaseController {
      */
     @PutMapping
     @ApiOperation("修改渠道信息")
-    public Result update(Channel channel) throws FebsException {
+    public Result update(@RequestBody Channel channel) throws FebsException {
         try {
             channel.setModifyTime(new Date());
             return Result.OK(this.channelService.updateById(channel));

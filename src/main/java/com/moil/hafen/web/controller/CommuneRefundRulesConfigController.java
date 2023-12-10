@@ -8,10 +8,7 @@ import com.moil.hafen.web.service.CommuneRefundRulesConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -23,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping({"communeRefundRulesConfig"})
-@Api(tags = "公社退款规则管理")
+@Api(tags = "管理后台/内部管理/基础规则管理/公社退款规则配置")
 public class CommuneRefundRulesConfigController extends BaseController {
 
     private String message;
@@ -38,21 +35,42 @@ public class CommuneRefundRulesConfigController extends BaseController {
      */
     @GetMapping
     @ApiOperation("获取公社退款规则配置列表")
-    public Result list() {
+    public Result<List<CommuneRefundRulesConfig>> list() {
         List<CommuneRefundRulesConfig> list = this.communeRefundRulesConfigService.list();
         return Result.OK(list);
     }
 
     /**
-     * 修改公社退款规则配置状态 - 管理后台
+     * 添加公社退款规则配置
      *
      * @param communeRefundRulesConfig 社区退款规则配置
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
-    @ApiOperation("修改公社退款规则配置状态")
-    public Result update(CommuneRefundRulesConfig communeRefundRulesConfig) throws FebsException {
+    @PostMapping("add")
+    @ApiOperation("添加公社退款规则配置")
+    public Result add(@RequestBody CommuneRefundRulesConfig communeRefundRulesConfig) throws FebsException {
+        try {
+            communeRefundRulesConfig.setCreateTime(new Date());
+            communeRefundRulesConfig.setModifyTime(new Date());
+            return Result.OK(this.communeRefundRulesConfigService.save(communeRefundRulesConfig));
+        } catch (Exception e) {
+            message = "修改公社退款规则配置状态失败";
+            log.error(message, e);
+            return Result.error(message);
+        }
+    }
+
+    /**
+     * 修改公社退款规则配置 - 管理后台
+     *
+     * @param communeRefundRulesConfig 社区退款规则配置
+     * @return {@link Result}
+     * @throws FebsException FEBS系统内部异常
+     */
+    @PutMapping("update")
+    @ApiOperation("修改公社退款规则配置")
+    public Result update(@RequestBody CommuneRefundRulesConfig communeRefundRulesConfig) throws FebsException {
         try {
             communeRefundRulesConfig.setModifyTime(new Date());
             return Result.OK(this.communeRefundRulesConfigService.updateById(communeRefundRulesConfig));
