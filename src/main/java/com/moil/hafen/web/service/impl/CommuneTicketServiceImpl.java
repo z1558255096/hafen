@@ -31,24 +31,26 @@ public class CommuneTicketServiceImpl extends ServiceImpl<CommuneTicketDao, Comm
         Page<CommuneTicket> page = new Page<>();
         SortUtil.handlePageSort(request, page, true);
         LambdaQueryWrapper<CommuneTicket> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        if(StringUtils.isNotBlank(communeTicket.getName())){
+        if (StringUtils.isNotBlank(communeTicket.getName())) {
             lambdaQueryWrapper.eq(CommuneTicket::getName, communeTicket.getName());
         }
-        if(communeTicket.getStatus() != null){
+        if (communeTicket.getStatus() != null) {
             lambdaQueryWrapper.eq(CommuneTicket::getStatus, communeTicket.getStatus());
         }
-        lambdaQueryWrapper.eq(CommuneTicket::getDelFlag,0).orderByDesc(CommuneTicket::getCreateTime);
+        lambdaQueryWrapper.eq(CommuneTicket::getDelFlag, 0).orderByDesc(CommuneTicket::getCreateTime);
         return this.page(page, lambdaQueryWrapper);
     }
 
     @Override
     public CommuneTicket detail(Integer id) {
         CommuneTicket communeTicket = this.getById(id);
-        List<CommuneTicketAdvance> communeTicketAdvanceList = communeTicketAdvanceService.list(new LambdaQueryWrapper<CommuneTicketAdvance>().eq(CommuneTicketAdvance::getTicketId, id)
+        List<CommuneTicketAdvance> communeTicketAdvanceList = communeTicketAdvanceService.list(new LambdaQueryWrapper<CommuneTicketAdvance>().eq(CommuneTicketAdvance::getTicketId, id).eq(CommuneTicketAdvance::getDelFlag, 0)
                 .orderByAsc(CommuneTicketAdvance::getSort));
         for (CommuneTicketAdvance communeTicketAdvance : communeTicketAdvanceList) {
             List<CommuneTicketAdvanceOption> communeTicketAdvanceOptions = communeTicketAdvanceOptionService.list(new LambdaQueryWrapper<CommuneTicketAdvanceOption>()
-                    .eq(CommuneTicketAdvanceOption::getAdvanceId,communeTicketAdvance.getId()).orderByAsc(CommuneTicketAdvanceOption::getSort));
+                    .eq(CommuneTicketAdvanceOption::getAdvanceId, communeTicketAdvance.getId())
+                    .eq(CommuneTicketAdvanceOption::getDelFlag, 0)
+                    .orderByAsc(CommuneTicketAdvanceOption::getSort));
             communeTicketAdvance.setCommuneTicketAdvanceOptionList(communeTicketAdvanceOptions);
         }
         communeTicket.setCommuneTicketAdvanceList(communeTicketAdvanceList);

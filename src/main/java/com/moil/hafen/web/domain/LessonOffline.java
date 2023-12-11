@@ -19,16 +19,22 @@ public class LessonOffline implements Serializable {
     private static final long serialVersionUID = 8437259452992093235L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    @ApiModelProperty(value = "课程名称")
     @ExcelProperty(value = "课程名称")
     private String name;
+    @ApiModelProperty(value = "课程类别")
     @ExcelProperty(value = "课程类别")
     private transient String categoryName;
+    @ApiModelProperty(value = "报价单数量")
     @ExcelProperty(value = "报价单数量")
     private transient Integer chapterCount;
+    @ApiModelProperty(value = "课程状态")
     @ExcelProperty(value = "课程状态")
     private transient String statusStr;
+    @ApiModelProperty(value = "上架推荐区")
     @ExcelProperty(value = "上架推荐区")
     private transient String recommendStatusStr;
+    @ApiModelProperty(value = "上架微官网")
     @ExcelProperty(value = "上架微官网")
     private transient String websiteStatusStr;
     @ApiModelProperty(value = "类别Id")

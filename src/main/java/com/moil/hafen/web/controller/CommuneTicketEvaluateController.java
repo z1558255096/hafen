@@ -39,7 +39,7 @@ public class CommuneTicketEvaluateController {
      */
     @GetMapping
     @ApiOperation("获取公社门票评价列表（分页）")
-    public Result page(QueryRequest request, CommuneTicketEvaluate communeTicketEvaluate) {
+    public Result<IPage<CommuneTicketEvaluate>> page(QueryRequest request, CommuneTicketEvaluate communeTicketEvaluate) {
         IPage<CommuneTicketEvaluate> page = communeTicketEvaluateService.getPage(request, communeTicketEvaluate);
         return Result.OK(page);
     }

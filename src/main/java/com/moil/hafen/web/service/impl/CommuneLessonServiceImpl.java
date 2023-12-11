@@ -1,5 +1,6 @@
 package com.moil.hafen.web.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -47,11 +48,13 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
         }
         lambdaQueryWrapper.eq(CommuneLesson::getDelFlag,0).orderByDesc(CommuneLesson::getCreateTime);
         IPage<CommuneLesson> communeLessonIPage = this.page(page, lambdaQueryWrapper);
-        List<Integer> categoryIds = communeLessonIPage.getRecords().stream().map(CommuneLesson::getCategoryId).collect(Collectors.toList());
-        List<LessonCategory> communeLessonCategoryList = lessonCategoryService.list(new LambdaQueryWrapper<LessonCategory>().in(LessonCategory::getId, categoryIds));
-        Map<Integer, String> communeLessonCategoryMap = communeLessonCategoryList.stream().collect(Collectors.toMap(LessonCategory::getId, LessonCategory::getName));
-        for (CommuneLesson record : communeLessonIPage.getRecords()) {
-            record.setCategoryName(communeLessonCategoryMap.get(record.getCategoryId()));
+        if (CollectionUtil.isNotEmpty(communeLessonIPage.getRecords())){
+            List<Integer> categoryIds = communeLessonIPage.getRecords().stream().map(CommuneLesson::getCategoryId).collect(Collectors.toList());
+            List<LessonCategory> communeLessonCategoryList = lessonCategoryService.list(new LambdaQueryWrapper<LessonCategory>().in(LessonCategory::getId, categoryIds));
+            Map<Integer, String> communeLessonCategoryMap = communeLessonCategoryList.stream().collect(Collectors.toMap(LessonCategory::getId, LessonCategory::getName));
+            for (CommuneLesson record : communeLessonIPage.getRecords()) {
+                record.setCategoryName(communeLessonCategoryMap.get(record.getCategoryId()));
+            }
         }
         return communeLessonIPage;
     }

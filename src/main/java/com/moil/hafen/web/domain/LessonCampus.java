@@ -22,6 +22,8 @@ public class LessonCampus implements Serializable {
     private Integer campusId;
     @ApiModelProperty("课程类型 1科技营 2体适能 3公社课程")
     private Integer type;
+    @ApiModelProperty(value = "0正常 1删除")
+    private Integer delFlag;//0正常 1删除
 
     public LessonCampus(Integer lessonId, Integer campusId, Integer type) {
         this.lessonId = lessonId;

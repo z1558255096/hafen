@@ -17,7 +17,7 @@ public class LessonCategory implements Serializable {
     private static final long serialVersionUID = -4170422773961779058L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    @ApiModelProperty("课程名称")
+    @ApiModelProperty("分类名称")
     private String name;
     @ApiModelProperty("权重")
     private Integer weight;

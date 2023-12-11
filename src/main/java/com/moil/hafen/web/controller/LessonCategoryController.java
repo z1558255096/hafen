@@ -43,9 +43,9 @@ public class LessonCategoryController extends BaseController {
      *
      * @return {@link Map}<{@link String}, {@link Object}>
      */
-    @PostMapping("/page")
+    @GetMapping("/page")
     @ApiOperation(value = "获取课程类目列表（分页）", notes = "获取课程类目列表（分页）")
-    public Result<IPage<LessonCategory>> page(@RequestBody QueryRequest request, @RequestBody LessonCategory lessonCategory) {
+    public Result<IPage<LessonCategory>> page(QueryRequest request, LessonCategory lessonCategory) {
         IPage<LessonCategory> page = this.lessonCategoryService.getPage(request, lessonCategory);
         return Result.OK(page);
     }

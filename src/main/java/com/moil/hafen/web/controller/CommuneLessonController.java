@@ -67,8 +67,6 @@ public class CommuneLessonController extends BaseController {
     @ApiOperation("添加公社课程信息")
     public Result add(@RequestBody CommuneLesson communeLesson) throws FebsException {
         try {
-            communeLesson.setCreateTime(new Date());
-            communeLesson.setModifyTime(new Date());
             communeLessonService.save(communeLesson);
             addAdvance(communeLesson);
             return Result.OK();

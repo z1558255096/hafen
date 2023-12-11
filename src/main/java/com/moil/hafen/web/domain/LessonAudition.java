@@ -23,8 +23,10 @@ public class LessonAudition implements Serializable {
     private static final long serialVersionUID = 1719983841769611114L;
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    @ApiModelProperty(value = "上课日期")
     @ExcelProperty(value = "上课日期")
     private String classDate;
+    @ApiModelProperty(value = "上课时间")
     @ExcelProperty(value = "上课时间")
     private String classTime;
     @ApiModelProperty(value = "上课开始时间")
@@ -36,25 +38,32 @@ public class LessonAudition implements Serializable {
     @ApiModelProperty(value = "课程id")
     private Integer lessonId;
     @ExcelProperty(value = "课程名称")
+    @ApiModelProperty(value = "课程名称")
     private transient String lessonName;
     @ApiModelProperty(value = "课程分类")
     private transient String categoryName;
     @ExcelProperty(value = "上课教师")
+    @ApiModelProperty(value = "上课教师")
     private String teacher;
     @ApiModelProperty(value = "教师id")
     private Integer staffId;
     @ExcelProperty(value = "上课学员数量")
+    @ApiModelProperty(value = "上课学员数量")
     private transient Integer studentCount;
     @ExcelProperty(value = "预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间")
+    @ApiModelProperty(value = "预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间")
     private transient String reservationStatus;//预约状态 0预约中 未达到上课开始时间   1预约结束 达到上课开始时间
     @ApiModelProperty(value = "校区Id")
     private Integer campusId;
     @ExcelProperty(value = "所属校区")
+    @ApiModelProperty(value = "所属校区")
     private transient String campusName;
     @ApiModelProperty("参加学生数量")
     private Integer attendStudentCount;
 
+    @ApiModelProperty(value = "课程封面")
     private String cover;
+    @ApiModelProperty(value = "试听状态 0 上架 1下架")
     private Integer status;//试听状态 0 上架 1下架
     @ApiModelProperty("课程类型 1科技营 2体适能 3公社课程")
     private Integer type;//课程类型 1科技营 2体适能 3公社课程
@@ -63,7 +72,9 @@ public class LessonAudition implements Serializable {
     private transient Integer classStatus;//到课状态 0未到课 1到课
 
     @ExcelProperty(value = "创建时间")
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
+    @ApiModelProperty(value = "更新时间")
     private Date modifyTime;
     private transient String createTimeFrom;
     private transient String createTimeTo;
@@ -83,6 +94,9 @@ public class LessonAudition implements Serializable {
     }
 
     public String getReservationStatus() {
+        if (classDateTime == null) {
+            return null;
+        }
         if ((new Date()).before(classDateTime)) {
             return "预约中";
         } else {

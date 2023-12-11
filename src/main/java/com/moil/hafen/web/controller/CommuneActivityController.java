@@ -42,7 +42,7 @@ public class CommuneActivityController extends BaseController {
      */
     @GetMapping
     @ApiOperation("获取公社活动列表（分页）")
-    public Result page(QueryRequest request, CommuneActivity communeActivity) {
+    public Result<IPage<CommuneActivity>> page(QueryRequest request, CommuneActivity communeActivity) {
         IPage<CommuneActivity> page = communeActivityService.getPage(request, communeActivity);
         return Result.OK(page);
     }

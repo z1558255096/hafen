@@ -61,7 +61,7 @@ public class CommuneTicketController extends BaseController {
      */
     @GetMapping
     @ApiOperation("获取公社门票列表（分页）")
-    public Result page(QueryRequest request, CommuneTicket communeTicket) {
+    public Result<IPage<CommuneTicket>> page(QueryRequest request, CommuneTicket communeTicket) {
         IPage<CommuneTicket> page = communeTicketService.getPage(request, communeTicket);
         return Result.OK(page);
     }
@@ -104,8 +104,6 @@ public class CommuneTicketController extends BaseController {
     @ApiOperation("添加公社门票信息")
     public Result add(@RequestBody CommuneTicket communeTicket) throws FebsException {
         try {
-            communeTicket.setCreateTime(new Date());
-            communeTicket.setModifyTime(new Date());
             communeTicketService.save(communeTicket);
             addAdvance(communeTicket);
             return Result.OK();

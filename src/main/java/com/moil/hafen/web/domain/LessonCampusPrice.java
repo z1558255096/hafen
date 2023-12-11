@@ -29,6 +29,8 @@ public class LessonCampusPrice implements Serializable {
     private Double actualPrice;
     @ApiModelProperty("课程类型 1科技营 2体适能 3公社课程")
     private Integer type;
+    @ApiModelProperty(value = "0正常 1删除")
+    private Integer delFlag;//0正常 1删除
 
     public LessonCampusPrice(Integer lessonId, Integer campusId, String campusName, Integer lessonCount, Double price, Double actualPrice, Integer type) {
         this.lessonId = lessonId;

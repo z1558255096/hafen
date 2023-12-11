@@ -48,9 +48,9 @@ public class GoodsController extends BaseController {
      */
     @GetMapping
     @ApiOperation("获取商品列表（分页）")
-    public Map<String, Object> page(QueryRequest request, Goods goods) {
+    public Result<IPage<Goods>> page(QueryRequest request, Goods goods) {
         IPage<Goods> page = goodsService.getPage(request, goods);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     /**

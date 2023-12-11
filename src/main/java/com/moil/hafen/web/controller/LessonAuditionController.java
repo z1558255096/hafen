@@ -51,9 +51,9 @@ public class LessonAuditionController extends BaseController {
      */
     @GetMapping
     @ApiOperation("获取试听日程列表（分页）")
-    public Map<String, Object> page(QueryRequest request, LessonAudition lessonAudition) {
+    public Result<IPage<LessonAudition>> page(QueryRequest request, LessonAudition lessonAudition) {
         IPage<LessonAudition> page = lessonAuditionService.getPage(request, lessonAudition);
-        return getDataTable(page);
+        return Result.OK(page);
     }
 
     /**
@@ -92,9 +92,9 @@ public class LessonAuditionController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除试听日程信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
             return Result.OK(lessonAuditionService.removeById(id));
         } catch (Exception e) {
@@ -112,9 +112,9 @@ public class LessonAuditionController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改试听日程信息")
-    public Result update(LessonAudition lessonAudition) throws FebsException {
+    public Result update(@RequestBody LessonAudition lessonAudition) throws FebsException {
         try {
             lessonAudition.setModifyTime(new Date());
             String classDateTime = lessonAudition.getClassDate() + " " + lessonAudition.getClassStartTime();
@@ -139,9 +139,9 @@ public class LessonAuditionController extends BaseController {
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping("/{id}/changeStatus")
+    @PostMapping("/changeStatus")
     @ApiOperation("上下架试听日程")
-    public Result changeStatus(@PathVariable Integer id, Integer status) throws FebsException {
+    public Result changeStatus(@RequestParam Integer id, Integer status) throws FebsException {
         try {
             LessonAudition lessonAudition = lessonAuditionService.getById(id);
             lessonAudition.setStatus(status);
@@ -161,9 +161,9 @@ public class LessonAuditionController extends BaseController {
      *
      * @return {@link Result}<{@link LessonAudition}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取试听日程详情")
-    public Result<LessonAudition> detail(@PathVariable Integer id) {
+    public Result<LessonAudition> detail(@RequestParam Integer id) {
         return Result.OK(lessonAuditionService.getById(id));
     }
 

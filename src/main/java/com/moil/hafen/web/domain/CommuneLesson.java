@@ -29,11 +29,16 @@ public class CommuneLesson implements Serializable {
     @ApiModelProperty("课程类别名称")
     private transient String categoryName;
     private Double price;
+    @ApiModelProperty("小程序地址")
+    private String mpUrl;
+    @ApiModelProperty("权重")
     private Integer weight;
     @ApiModelProperty("上架状态 0上架 1下架")
     private Integer status;//上架状态 0上架 1下架
     @ApiModelProperty("课程开始时间")
     private Date startTime;
+    @ApiModelProperty("课程结束时间")
+    private Date endTime;
     @ApiModelProperty("课程描述")
     private String description;
     @ApiModelProperty("是否微官网展示 0 展示 1展示")
