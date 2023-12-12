@@ -15,6 +15,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 
 /**
+ * 管理后台/公社模块/公社微官网头部信息管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -30,18 +32,19 @@ public class CommuneWebHeaderController extends BaseController {
 
 
     /**
-     * 获取公社微官网头部信息列表 - 管理后台/小程序
+     * 修改公社微官网头部信息信息 - 管理后台/小程序
      *
      * @param communeWebHeader 社区web标头
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改公社微官网头部信息信息")
-    public Result update(CommuneWebHeader communeWebHeader) throws FebsException {
+    public Result update(@RequestBody CommuneWebHeader communeWebHeader) throws FebsException {
         try {
             communeWebHeader.setModifyTime(new Date());
-            return Result.OK(this.communeWebHeaderService.update(communeWebHeader,new LambdaUpdateWrapper<CommuneWebHeader>().gt(CommuneWebHeader::getId,0)));
+            return Result.OK(communeWebHeaderService.saveOrUpdate(communeWebHeader, new LambdaUpdateWrapper<CommuneWebHeader>().gt(CommuneWebHeader::getId, 0)));
         } catch (Exception e) {
             message = "修改公社微官网头部信息信息失败";
             log.error(message, e);
@@ -53,12 +56,13 @@ public class CommuneWebHeaderController extends BaseController {
      * 通过ID获取公社微官网头部信息详情 - 管理后台/小程序
      *
      * @param id id
+     *
      * @return {@link Result}<{@link CommuneWebHeader}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取公社微官网头部信息详情")
-    public Result<CommuneWebHeader> detail(@PathVariable Integer id) {
-        return Result.OK(this.communeWebHeaderService.getById(id));
+    public Result<CommuneWebHeader> detail(@RequestParam Integer id) {
+        return Result.OK(communeWebHeaderService.getById(id));
     }
 
 }

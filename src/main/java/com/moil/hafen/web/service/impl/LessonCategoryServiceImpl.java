@@ -20,7 +20,7 @@ public class LessonCategoryServiceImpl extends ServiceImpl<LessonCategoryDao,Les
         LambdaQueryWrapper<LessonCategory> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(LessonCategory::getDelFlag,0)
                 .eq(LessonCategory::getType,lessonCategory.getType())
-                .orderByDesc(LessonCategory::getWeight);
+                .orderByDesc(LessonCategory::getCreateTime);
         return this.page(page, lambdaQueryWrapper);
     }
 }

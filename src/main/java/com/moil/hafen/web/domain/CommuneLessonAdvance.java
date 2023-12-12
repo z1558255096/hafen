@@ -1,6 +1,7 @@
 package com.moil.hafen.web.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
@@ -24,6 +25,7 @@ public class CommuneLessonAdvance implements Serializable {
     @ApiModelProperty("标题")
     private String title;
     @ApiModelProperty("选项")
+    @TableField("`option`")
     private String option;
     @ApiModelProperty("权重")
     private Integer sort;

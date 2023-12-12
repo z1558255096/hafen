@@ -1,5 +1,7 @@
 package com.moil.hafen.web.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.Result;
 import com.moil.hafen.common.exception.FebsException;
@@ -15,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * 管理后台/公社模块/公社微官网banner管理
+ *
  * @author 8129
  */
 @Slf4j
@@ -36,8 +40,7 @@ public class CommuneWebBannerController extends BaseController {
     @GetMapping
     @ApiOperation("获取公社微官网banner列表")
     public Result<List<CommuneWebBanner>> list() {
-
-        List<CommuneWebBanner> list = this.communeWebBannerService.list();
+        List<CommuneWebBanner> list = communeWebBannerService.list(new LambdaQueryWrapper<>(new CommuneWebBanner()).eq(CommuneWebBanner::getDelFlag, 0).orderByAsc(CommuneWebBanner::getWeight));
         return Result.OK(list);
     }
 
@@ -45,16 +48,15 @@ public class CommuneWebBannerController extends BaseController {
      * 添加公社微官网banner信息 - 管理后台
      *
      * @param communeWebBanner 社区网络横幅
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PostMapping
     @ApiOperation("添加公社微官网banner信息")
-    public Result add(CommuneWebBanner communeWebBanner) throws FebsException {
+    public Result add(@RequestBody CommuneWebBanner communeWebBanner) throws FebsException {
         try {
-            communeWebBanner.setCreateTime(new Date());
-            communeWebBanner.setModifyTime(new Date());
-            return Result.OK(this.communeWebBannerService.save(communeWebBanner));
+            return Result.OK(communeWebBannerService.save(communeWebBanner));
         } catch (Exception e) {
             message = "添加公社微官网banner信息失败";
             log.error(message, e);
@@ -66,14 +68,15 @@ public class CommuneWebBannerController extends BaseController {
      * 删除公社微官网banner信息 - 管理后台
      *
      * @param id id
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @DeleteMapping("/{id}")
+    @PostMapping("/delete")
     @ApiOperation("删除公社微官网banner信息")
-    public Result delete(@PathVariable Integer id) throws FebsException {
+    public Result delete(@RequestParam Integer id) throws FebsException {
         try {
-            return Result.OK(this.communeWebBannerService.removeById(id));
+            return Result.OK(communeWebBannerService.update(new LambdaUpdateWrapper<CommuneWebBanner>().eq(CommuneWebBanner::getId, id).set(CommuneWebBanner::getDelFlag, 1)));
         } catch (Exception e) {
             message = "删除公社微官网banner信息失败";
             log.error(message, e);
@@ -85,15 +88,16 @@ public class CommuneWebBannerController extends BaseController {
      * 修改公社微官网banner信息 - 管理后台
      *
      * @param communeWebBanner 社区网络横幅
+     *
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
-    @PutMapping
+    @PostMapping("/update")
     @ApiOperation("修改公社微官网banner信息")
-    public Result update(CommuneWebBanner communeWebBanner) throws FebsException {
+    public Result update(@RequestBody CommuneWebBanner communeWebBanner) throws FebsException {
         try {
             communeWebBanner.setModifyTime(new Date());
-            return Result.OK(this.communeWebBannerService.updateById(communeWebBanner));
+            return Result.OK(communeWebBannerService.updateById(communeWebBanner));
         } catch (Exception e) {
             message = "修改公社微官网banner信息失败";
             log.error(message, e);
@@ -105,12 +109,13 @@ public class CommuneWebBannerController extends BaseController {
      * 通过ID获取公社微官网banner详情 - 管理后台/小程序
      *
      * @param id id
+     *
      * @return {@link Result}<{@link CommuneWebBanner}>
      */
-    @GetMapping("/{id}")
+    @GetMapping("/detail")
     @ApiOperation("通过ID获取公社微官网banner详情")
-    public Result<CommuneWebBanner> detail(@PathVariable Integer id) {
-        return Result.OK(this.communeWebBannerService.getById(id));
+    public Result<CommuneWebBanner> detail(@RequestParam Integer id) {
+        return Result.OK(communeWebBannerService.getById(id));
     }
 
 }

@@ -24,12 +24,11 @@ public class CommuneWebServiceImpl implements CommuneWebService {
 
     @Override
     public CommuneWebVo index() {
-        List<CommuneWebBanner> communeWebBannerList = communeWebBannerService.list();
-        CommuneWebHeader communeWebHeader = communeWebHeaderService.getOne(new LambdaQueryWrapper<CommuneWebHeader>());
+        List<CommuneWebBanner> communeWebBannerList = communeWebBannerService.list(new LambdaQueryWrapper<>(new CommuneWebBanner()).eq(CommuneWebBanner::getDelFlag, 0).orderByAsc(CommuneWebBanner::getWeight));
+        CommuneWebHeader communeWebHeader = communeWebHeaderService.getOne(new LambdaQueryWrapper<CommuneWebHeader>().eq(CommuneWebHeader::getDelFlag, 0));
         List<CommuneWebLesson > communeWebLessonList = communeWebLessonService.getList();
         List<CommuneTicket > communeTicketList = communeTicketService.list(new LambdaQueryWrapper<CommuneTicket>().eq(CommuneTicket::getIsShow,1).eq(CommuneTicket::getStatus,0));
         List<CommuneActivity > communeActivityList = communeActivityService.list(new LambdaQueryWrapper<CommuneActivity>().eq(CommuneActivity::getIsShow,1).eq(CommuneActivity::getStatus,0));
-        CommuneWebVo communeWebVo = new CommuneWebVo(communeWebBannerList, communeWebHeader, communeWebLessonList, communeTicketList, communeActivityList);
-        return communeWebVo;
+        return new CommuneWebVo(communeWebBannerList, communeWebHeader, communeWebLessonList, communeTicketList, communeActivityList);
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
+ * 管理后台/公社模块/公社微官网
+ *
  * @author 8129
  */
 @Slf4j
@@ -22,7 +24,6 @@ import javax.annotation.Resource;
 @Api(tags = "公社微官网")
 public class CommuneWebController extends BaseController {
 
-    private String message;
 
     @Resource
     private CommuneWebService communeWebService;
@@ -35,8 +36,7 @@ public class CommuneWebController extends BaseController {
     @GetMapping
     @ApiOperation("获取公社微官网")
     public Result<CommuneWebVo> index() {
-
-        CommuneWebVo index = this.communeWebService.index();
+        CommuneWebVo index = communeWebService.index();
         return Result.OK(index);
     }
 
