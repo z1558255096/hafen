@@ -38,7 +38,7 @@ public class CommuneLessonServiceImpl extends ServiceImpl<CommuneLessonDao, Comm
         SortUtil.handlePageSort(request, page, true);
         LambdaQueryWrapper<CommuneLesson> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         if (StringUtils.isNotBlank(communeLesson.getName())) {
-            lambdaQueryWrapper.eq(CommuneLesson::getName, communeLesson.getName());
+            lambdaQueryWrapper.like(CommuneLesson::getName, communeLesson.getName());
         }
         if (communeLesson.getStatus() != null) {
             lambdaQueryWrapper.eq(CommuneLesson::getStatus, communeLesson.getStatus());

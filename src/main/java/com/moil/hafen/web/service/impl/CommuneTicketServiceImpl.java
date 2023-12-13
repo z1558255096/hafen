@@ -57,4 +57,13 @@ public class CommuneTicketServiceImpl extends ServiceImpl<CommuneTicketDao, Comm
         return communeTicket;
 
     }
+
+    @Override
+    public Boolean updateTicketCount(Integer ticketId, Integer count) {
+        CommuneTicket byId = this.getById(ticketId);
+        if (byId.getCount() < count) {
+            return false; // 门票数量不足，返回false
+        }
+        return baseMapper.updateTicketCount(ticketId, count);
+    }
 }

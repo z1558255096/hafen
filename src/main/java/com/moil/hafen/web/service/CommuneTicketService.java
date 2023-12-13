@@ -9,4 +9,6 @@ public interface CommuneTicketService extends IService<CommuneTicket> {
     IPage<CommuneTicket> getPage(QueryRequest request, CommuneTicket communeTicket);
 
     CommuneTicket detail(Integer id);
+
+    Boolean updateTicketCount(Integer ticketId, Integer count);
 }

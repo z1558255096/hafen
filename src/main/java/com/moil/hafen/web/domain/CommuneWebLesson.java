@@ -25,8 +25,9 @@ public class CommuneWebLesson implements Serializable {
     private transient String cover;
     @ApiModelProperty("课程价格")
     private transient Double price;
-    @ApiModelProperty("课程数量")
+    @ApiModelProperty("基础数")
     private Integer baseCount;
+    @ApiModelProperty("费率")
     private Integer rate;
     @ApiModelProperty("是否热卖 0否 1是")
     private Integer status;//是否热卖 0否 1是

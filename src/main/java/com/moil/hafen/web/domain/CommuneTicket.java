@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -32,6 +31,8 @@ public class CommuneTicket implements Serializable {
     private String openEndTime;
     @ApiModelProperty("门票描述")
     private String description;
+    @ApiModelProperty("门票数量")
+    private Integer count;
     @ApiModelProperty("小程序地址")
     private String mpUrl;
     @ApiModelProperty("门票地址")
