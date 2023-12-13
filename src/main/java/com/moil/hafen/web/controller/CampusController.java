@@ -194,30 +194,11 @@ public class CampusController extends BaseController {
         return Result.OK();
     }
 
-    /**
-     * 导出校区列表 （管理后台）
-     *
-     * @param campus   校园
-     * @param response 回答
-     * @throws FebsException FEBS系统内部异常
-     */
-    // @GetMapping("/export")
-    // @ApiOperation("导出校区列表")
-    // public void export(Campus campus, HttpServletResponse response) throws FebsException {
-    //     try {
-    //         List<Campus> contestantInfoList = this.campusService.getCampusList(campus);
-    //         // 这里注意 有同学反应使用swagger 会导致各种问题，请直接用浏览器或者用postman
-    //         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    //         response.setCharacterEncoding("utf-8");
-    //         // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-    //         String fileName = URLEncoder.encode("校区列表", "UTF-8").replaceAll("\\+", "%20");
-    //         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-    //         EasyExcel.write(response.getOutputStream(), Campus.class).sheet("校区列表").doWrite(contestantInfoList);
-    //     } catch (Exception e) {
-    //         message = "导出Excel失败";
-    //         log.error(message, e);
-    //         throw new FebsException(message);
-    //     }
-    // }
+    @GetMapping("getDeptByCampusId")
+    @ApiOperation("根据校区id查询部门")
+    public Result<List<Dept>> getDeptByCampusId(@RequestParam("id") Integer campusId) {
+        List<Dept> list = deptService.getListByCampusId(campusId);
+        return Result.OK(list);
+    }
 
 }

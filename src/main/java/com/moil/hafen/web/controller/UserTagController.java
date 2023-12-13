@@ -86,7 +86,7 @@ public class UserTagController extends BaseController {
 
     @GetMapping("/list")
     @ApiOperation("获取用户标签列表")
-    public Result list() {
+    public Result<List<UserTag>> list() {
         List<UserTag> list = this.userTagService.list();
         return Result.OK(list);
     }

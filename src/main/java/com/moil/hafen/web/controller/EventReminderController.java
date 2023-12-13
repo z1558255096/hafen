@@ -1,5 +1,6 @@
 package com.moil.hafen.web.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.Result;
 import com.moil.hafen.common.exception.FebsException;
@@ -37,11 +38,16 @@ public class EventReminderController extends BaseController {
 
     @PostMapping("add")
     @ApiOperation("添加家校设置信息")
-    public Result add(@RequestBody EventReminder eventReminder){
+    public Result add(@RequestBody List<EventReminder> eventReminderList,@RequestParam("type") Integer type){
         try {
-            eventReminder.setCreateTime(new Date());
-            eventReminder.setModifyTime(new Date());
-            return Result.OK(this.eventReminderService.save(eventReminder));
+            LambdaQueryWrapper<EventReminder> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(EventReminder::getType, type);
+            this.eventReminderService.remove(queryWrapper);
+            for (EventReminder reminder : eventReminderList) {
+                reminder.setCreateTime(new Date());
+                reminder.setModifyTime(new Date());
+            }
+            return Result.OK(this.eventReminderService.saveBatch(eventReminderList));
         } catch (Exception e) {
             message = "添加家校设置信息失败";
             log.error(message, e);

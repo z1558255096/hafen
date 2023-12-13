@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.moil.hafen.web.dao.ClueDao">
+    <resultMap id="vo" type="com.moil.hafen.web.vo.ClueVo">
+        <id property="clue.id" column="id"/>
+        <result property="clue.clueName" column="clue_name"/>
+        <result property="clue.contactNumber" column="contact_number"/>
+        <result property="clue.gender" column="gender"/>
+        <result property="clue.age" column="age"/>
+        <result property="clue.homeAddress" column="home_address"/>
+        <result property="clue.collegeRemark" column="college_remark"/>
+        <result property="clue.business" column="business"/>
+        <result property="clue.consultationCourse" column="consultation_course"/>
+        <result property="clue.channelId" column="channel_id"/>
+        <result property="clue.campusAffiliation" column="campus_affiliation"/>
+        <result property="clue.personnelAffiliation" column="personnel_affiliation"/>
+        <result property="clue.createTime" column="create_time"/>
+        <result property="clue.creator" column="creator"/>
+        <result property="clue.modifyTime" column="modify_time"/>
+        <result property="clue.modifier" column="modifier"/>
+        <result property="followUpStatus" column="follow_up_status"/>
+        <result property="nextFollowUpTime" column="next_follow_up_time"/>
+    </resultMap>
+    <select id="page" resultMap="vo">
+        SELECT c.*, ct.follow_up_status, ct.next_follow_up_time
+        FROM t_clue c
+        LEFT JOIN t_clue_trail ct ON c.id = ct.clue_id
+        <where>
+            <if test="clue.campusAffiliation != null">
+                AND c.campus_affiliation = #{clue.campusAffiliation}
+            </if>
+            <if test="clue.followUpStatus != null">
+                AND ct.follow_up_status = #{clue.followUpStatus}
+            </if>
+            <if test="clue.createTimeStart != null">
+                AND c.create_time &gt;= #{clue.createTimeStart}
+            </if>
+            <if test="clue.createTimeEnd != null">
+                AND c.create_time &lt;= #{clue.createTimeEnd}
+            </if>
+            <if test="clue.channelId != null">
+                AND c.channel_id = #{clue.channelId}
+            </if>
+            <if test="clue.keyword != null">
+                AND (c.clue_name LIKE CONCAT('%', #{clue.keyword}, '%') OR c.contact_number LIKE CONCAT('%', #{clue.keyword}, '%'))
+            </if>
+            <if test="clue.nextFollowUpTimeStart != null">
+                AND ct.next_follow_up_time &gt;= #{clue.nextFollowUpTimeStart}
+            </if>
+            <if test="clue.nextFollowUpTimeEnd != null">
+                AND ct.next_follow_up_time &lt;= #{clue.nextFollowUpTimeEnd}
+            </if>
+        </where>
+    </select>
+</mapper>

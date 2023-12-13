@@ -112,14 +112,7 @@ public class Campus implements Serializable {
     private transient String createTimeFrom;
     private transient String createTimeTo;
 
-    @ExcelProperty(value = "校区地址")
-    private transient String fullAddress;
-
     @ApiModelProperty("部门列表")
     @TableField(exist = false)
     private List<Dept> children;
-
-    public String getFullAddress() {
-        return province.concat(city).concat(address);
-    }
 }

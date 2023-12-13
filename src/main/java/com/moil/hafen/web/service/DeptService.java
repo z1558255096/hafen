@@ -2,6 +2,8 @@ package com.moil.hafen.web.service;
 
 import com.moil.hafen.web.domain.Dept;
 
+import java.util.List;
+
 /**
  * @Author 陈子杰
  * @Description 校区部门表service
@@ -43,4 +45,12 @@ public interface DeptService {
      * @param deptId 部门id
      */
     void deleteDept(Integer deptId);
+
+    /**
+     * 按校园id获取列表
+     *
+     * @param campusId 校园id
+     * @return {@link List}<{@link Dept}>
+     */
+    List<Dept> getListByCampusId(Integer campusId);
 }

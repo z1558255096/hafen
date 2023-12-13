@@ -2,6 +2,7 @@ package com.moil.hafen.web.service.impl;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.moil.hafen.common.constant.DeptConstant;
 import com.moil.hafen.common.exception.FebsException;
 import com.moil.hafen.common.mapper.LambdaQueryWrapperX;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Author 陈子杰
@@ -67,5 +69,13 @@ public class DeptServiceImpl implements DeptService {
             Assert.isTrue(dept.getIsDefault().equals(1), () -> new FebsException("默认部门不可删除"));
         }
         dao.deleteById(deptId);
+    }
+
+    @Override
+    public List<Dept> getListByCampusId(Integer campusId) {
+        LambdaQueryWrapper<Dept> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dept::getCampusId, campusId);
+        List<Dept> deptList = dao.selectList(queryWrapper);
+        return deptList;
     }
 }

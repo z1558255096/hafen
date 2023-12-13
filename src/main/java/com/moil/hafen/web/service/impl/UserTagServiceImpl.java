@@ -12,6 +12,9 @@ import com.moil.hafen.web.service.UserTagService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 public class UserTagServiceImpl extends ServiceImpl<UserTagDao,UserTag> implements UserTagService {
     @Override

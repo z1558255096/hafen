@@ -1,5 +1,6 @@
 package com.moil.hafen.web.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.moil.hafen.common.controller.BaseController;
 import com.moil.hafen.common.domain.Result;
 import com.moil.hafen.common.exception.FebsException;
@@ -41,21 +42,27 @@ public class CommuneRefundRulesConfigController extends BaseController {
     }
 
     /**
-     * 添加公社退款规则配置
+     * 保存公社退款规则配置
      *
-     * @param communeRefundRulesConfig 社区退款规则配置
+     * @param communeRefundRulesConfigList 社区退款规则配置
      * @return {@link Result}
      * @throws FebsException FEBS系统内部异常
      */
     @PostMapping("add")
-    @ApiOperation("添加公社退款规则配置")
-    public Result add(@RequestBody CommuneRefundRulesConfig communeRefundRulesConfig) throws FebsException {
+    @ApiOperation("保存公社退款规则配置")
+    public Result add(@RequestBody List<CommuneRefundRulesConfig> communeRefundRulesConfigList, @RequestParam("type") Integer type) throws FebsException {
         try {
-            communeRefundRulesConfig.setCreateTime(new Date());
-            communeRefundRulesConfig.setModifyTime(new Date());
-            return Result.OK(this.communeRefundRulesConfigService.save(communeRefundRulesConfig));
+            LambdaQueryWrapper<CommuneRefundRulesConfig> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(CommuneRefundRulesConfig::getType, type);
+            communeRefundRulesConfigService.remove(queryWrapper);
+            for (CommuneRefundRulesConfig config : communeRefundRulesConfigList) {
+                config.setCreateTime(new Date());
+                config.setModifyTime(new Date());
+            }
+            this.communeRefundRulesConfigService.saveBatch(communeRefundRulesConfigList);
+            return Result.OK();
         } catch (Exception e) {
-            message = "修改公社退款规则配置状态失败";
+            message = "保存公社退款规则配置状态失败";
             log.error(message, e);
             return Result.error(message);
         }
