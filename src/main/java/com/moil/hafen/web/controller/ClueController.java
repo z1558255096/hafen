@@ -23,7 +23,7 @@ import java.util.Date;
  * @Date 2023-12-14 02:35:11
  */
 @RestController
-@RequestMapping("tClue")
+@RequestMapping("clue")
 @Api(tags = "管理后台/营销管理/线索管理")
 public class ClueController extends BaseController {
     @Resource
@@ -45,6 +45,16 @@ public class ClueController extends BaseController {
         clue.setCreator(Integer.toString(id));
         clue.setModifier(Integer.toString(id));
         clueService.add(clue);
+        return Result.OK();
+    }
+
+    @PutMapping("update")
+    @ApiOperation("修改线索")
+    public Result<Object> update(@RequestBody Clue clue) {
+        clue.setModifyTime(new Date());
+        int id = JWTUtil.getCurrentCustomerId();
+        clue.setModifier(Integer.toString(id));
+        clueService.update(clue);
         return Result.OK();
     }
 }

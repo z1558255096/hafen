@@ -96,45 +96,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         setUserDept(user);
     }
 
-    @Override
-    @Transactional
-    public void updateUser(User user) throws Exception {
-        // 更新用户
-        user.setModifyTime(new Date());
-        updateById(user);
-        setUserRoles(user);
-        setUserDept(user);
-    }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteUser(int userId) throws Exception {
-
-        removeById(userId);
-        // 删除用户角色
-        userRoleService.remove(new LambdaQueryWrapper<UserRole>().eq(UserRole::getUserId, userId));
-    }
-
-    @Override
-    @Transactional
-    public void updatePassword(String username, String password) throws Exception {
-        User user = new User();
-        user.setPassword(password);
-
-        this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
-    }
-
-    @Override
-    @Transactional
-    public void resetPassword(String[] usernames) throws Exception {
-        for (String username : usernames) {
-
-            User user = new User();
-            user.setPassword(User.DEFAULT_PASSWORD);
-
-            this.baseMapper.update(user, new LambdaQueryWrapper<User>().eq(User::getUsername, username));
-        }
-
+    public List<User> listByCampusId(Integer campusId) {
+        List<User> userList = userDeptMapper.getListByCampusId(campusId);
+        return userList;
     }
 
     /**
@@ -164,7 +130,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private void setUserDept(User user) {
         userDeptMapper.delete(new LambdaQueryWrapper<UserDept>().eq(UserDept::getUserId, user.getId()));
         if (CollectionUtil.isNotEmpty(user.getDeptIds())) {
-            List<UserDept> userDepts = new ArrayList<>();
             for (Integer deptId : user.getDeptIds()) {
                 UserDept userDept = new UserDept();
                 userDept.setDeptId(deptId);

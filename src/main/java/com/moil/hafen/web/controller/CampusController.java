@@ -17,14 +17,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.web.bind.WebDataBinder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
 import javax.annotation.Resource;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -46,26 +42,6 @@ public class CampusController extends BaseController {
     private DeptService deptService;
     @Resource
     private TencentService tencentService;
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder, WebRequest request) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
-    }
-
-    // /**
-    //  * 获取校区列表（分页） -管理后台/小程序
-    //  *
-    //  * @param request 要求
-    //  * @param campus  校园
-    //  * @return {@link Map}<{@link String}, {@link Object}>
-    //  */
-    // @GetMapping
-    // @ApiOperation("获取校区列表（分页）")
-    // public Result<Object> page(QueryRequest request, Campus campus) {
-    //     IPage<Campus> page = this.campusService.getPage(request, campus);
-    //     return Result.OK(page);
-    // }
 
     @GetMapping("list")
     @ApiOperation("获取校区列表")
@@ -104,6 +80,7 @@ public class CampusController extends BaseController {
      */
     @PostMapping
     @ApiOperation("添加校区信息")
+    @Transactional(rollbackFor = Exception.class)
     public Result<Object> add(@RequestBody Campus campus) throws FebsException {
         try {
             campus.setCreateTime(new Date());
@@ -127,6 +104,7 @@ public class CampusController extends BaseController {
      */
     @DeleteMapping("delete")
     @ApiOperation("根据id删除校区信息")
+    @Transactional(rollbackFor = Exception.class)
     public Result<Object> delete(@RequestParam("id") Integer id) throws FebsException {
         try {
             this.campusService.removeById(id);

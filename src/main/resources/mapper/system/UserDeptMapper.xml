@@ -10,4 +10,12 @@
         WHERE ud.user_id = ${userId}
           AND c.status = 1;
     </select>
+    <select id="getListByCampusId" resultType="com.moil.hafen.system.domain.User">
+        SELECT u.id, u.username
+        FROM t_user u
+        WHERE id IN (SELECT DISTINCT ud.user_id
+                     FROM t_user_dept ud
+                              LEFT JOIN t_dept d ON d.dept_id = ud.dept_id
+                     WHERE d.campus_id = #{campusId});
+    </select>
 </mapper>

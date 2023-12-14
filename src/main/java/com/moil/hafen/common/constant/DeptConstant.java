@@ -12,6 +12,7 @@ public class DeptConstant {
      */
     public final static String MARKET_DEPT = "市场部";
     public final static String TEACHING_DEPT = "教学部";
+    public final static String[] DEFAULT_NAME = {MARKET_DEPT, TEACHING_DEPT};
 
     /**
      * 默认部门

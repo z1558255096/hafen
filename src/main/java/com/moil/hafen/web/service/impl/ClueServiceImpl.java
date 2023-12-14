@@ -35,4 +35,9 @@ public class ClueServiceImpl implements ClueService {
         IPage<ClueVo> voPage = clueDao.page(page, clue);
         return voPage;
     }
+
+    @Override
+    public void update(Clue clue) {
+        clueDao.updateById(clue);
+    }
 }

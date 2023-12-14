@@ -30,7 +30,7 @@ public class DeptServiceImpl implements DeptService {
     public void saveDefaultDept(Integer campusId) {
         for (int i = 0; i < 2; i++) {
             Dept dept = new Dept();
-            dept.setDeptName(DeptConstant.MARKET_DEPT);
+            dept.setDeptName(DeptConstant.DEFAULT_NAME[i]);
             dept.setIsDefault(DeptConstant.DEFAULT_DEPT);
             dept.setCampusId(campusId);
             dept.setCreateTime(new Date());

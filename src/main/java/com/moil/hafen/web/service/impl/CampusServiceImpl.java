@@ -50,17 +50,20 @@ public class CampusServiceImpl extends ServiceImpl<CampusDao, Campus> implements
                 queryWrapper.eq(Dept::getCampusId, campus.getId());
                 List<Dept> deptList = deptDao.selectList(queryWrapper);
                 campus.setChildren(deptList);
+                if (StringUtils.isNotBlank(campus.getBusinessScope())) {
+                    campus.setBusinessScopeArr(campus.getBusinessScope().split(","));
+                }
             }
         }
         return campusList;
     }
 
-    private LambdaQueryWrapper<Campus> getCondition(Campus campus){
+    private LambdaQueryWrapper<Campus> getCondition(Campus campus) {
         LambdaQueryWrapper<Campus> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        if(StringUtils.isNotBlank(campus.getName())){
+        if (StringUtils.isNotBlank(campus.getName())) {
             lambdaQueryWrapper.eq(Campus::getName, campus.getName());
         }
-        if(StringUtils.isNotBlank(campus.getTelephone())){
+        if (StringUtils.isNotBlank(campus.getTelephone())) {
             lambdaQueryWrapper.eq(Campus::getTelephone, campus.getTelephone());
         }
         return lambdaQueryWrapper;

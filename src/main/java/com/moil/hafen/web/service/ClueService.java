@@ -29,4 +29,11 @@ public interface ClueService {
      * @return {@link List}<{@link ClueVo}>
      */
     IPage<ClueVo> page(QueryRequest queryRequest, Clue clue);
+
+    /**
+     * 修改线索
+     *
+     * @param clue 线索
+     */
+    void update(Clue clue);
 }

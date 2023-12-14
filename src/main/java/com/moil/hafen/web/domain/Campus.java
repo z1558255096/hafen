@@ -20,8 +20,8 @@ import java.util.List;
  */
 @Data
 @TableName("t_campus")
-@ApiModel(description="管理校区")
-@HeadStyle(fillForegroundColor=52)
+@ApiModel(description = "管理校区")
+@HeadStyle(fillForegroundColor = 52)
 @ExcelIgnoreUnannotated
 public class Campus implements Serializable {
     private static final long serialVersionUID = 3665013544492472037L;
@@ -31,57 +31,62 @@ public class Campus implements Serializable {
     /**
      * 校区名称
      */
-    @ApiModelProperty( "校区名称")
+    @ApiModelProperty("校区名称")
     @ExcelProperty(value = "校区名称")
     private String name;
 
     /**
      * 联系人
      */
-    @ApiModelProperty( "联系电话")
+    @ApiModelProperty("联系电话")
     @ExcelProperty(value = "联系电话")
     private String telephone;
 
     /**
      * 省份
      */
-    @ApiModelProperty( "省份")
+    @ApiModelProperty("省份")
     private String province;
 
     /**
      * 城市
      */
-    @ApiModelProperty( "城市")
+    @ApiModelProperty("城市")
     private String city;
 
     /**
      * 区/县
      */
-    @ApiModelProperty( "区/县")
+    @ApiModelProperty("区/县")
     private String district;
 
     /**
      * 详细地址
      */
-    @ApiModelProperty( "详细地址")
+    @ApiModelProperty("详细地址")
     private String address;
+
+    @ApiModelProperty("纬度")
+    private String lat;
+    @ApiModelProperty("经度")
+    private String lng;
 
     /**
      * 描述
      */
-    @ApiModelProperty( "描述")
+    @ApiModelProperty("描述")
     private String description;
 
     /**
-     * 业务范围：0-科技营、体适能；1-科技营；2-体适能
+     * 业务范围：1-科技营；2-体适能
      */
-    @ApiModelProperty( "业务范围：0-科技营、体适能；1-科技营；2-体适能")
-    private Integer businessScope;
+    @ApiModelProperty("业务范围：1-科技营；2-体适能")
+    private String businessScope;
 
     /**
      * 校区标识
      */
-    @ApiModelProperty( "校区标识")
+    @ApiModelProperty("校区标识")
     private String logo;
 
     /**
@@ -93,13 +98,13 @@ public class Campus implements Serializable {
     /**
      * 创建时间
      */
-    @ApiModelProperty( "创建时间")
+    @ApiModelProperty("创建时间")
     private Date createTime;
 
     /**
      * 修改时间
      */
-    @ApiModelProperty( "修改时间")
+    @ApiModelProperty("修改时间")
     private Date modifyTime;
 
     /**
@@ -115,4 +120,8 @@ public class Campus implements Serializable {
     @ApiModelProperty("部门列表")
     @TableField(exist = false)
     private List<Dept> children;
+
+    @ApiModelProperty("业务范围：1-科技营；2-体适能")
+    @TableField(exist = false)
+    private String[] businessScopeArr;
 }
