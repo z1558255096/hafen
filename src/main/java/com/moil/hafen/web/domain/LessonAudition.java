@@ -45,7 +45,7 @@ public class LessonAudition implements Serializable {
     @ExcelProperty(value = "上课教师")
     @ApiModelProperty(value = "上课教师")
     private String teacher;
-    @ApiModelProperty(value = "教师id")
+    @ApiModelProperty(value = "员工id")
     private Integer staffId;
     @ExcelProperty(value = "上课学员数量")
     @ApiModelProperty(value = "上课学员数量")

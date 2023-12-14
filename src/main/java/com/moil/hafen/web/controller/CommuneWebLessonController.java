@@ -92,10 +92,13 @@ public class CommuneWebLessonController extends BaseController {
      */
     @PostMapping("/update")
     @ApiOperation("修改公社微官网课程信息")
-    public Result update(@RequestBody CommuneWebLesson communeWebLesson) throws FebsException {
+    public Result update(@RequestBody List<CommuneWebLesson> communeWebLesson) throws FebsException {
         try {
-            communeWebLesson.setModifyTime(new Date());
-            return Result.OK(communeWebLessonService.updateById(communeWebLesson));
+            communeWebLessonService.update(new LambdaUpdateWrapper<CommuneWebLesson>().set(CommuneWebLesson::getDelFlag, 1));
+            for (CommuneWebLesson lesson : communeWebLesson) {
+                lesson.setModifyTime(new Date());
+            }
+            return Result.OK(communeWebLessonService.saveBatch(communeWebLesson));
         } catch (Exception e) {
             message = "修改公社微官网课程信息失败";
             log.error(message, e);

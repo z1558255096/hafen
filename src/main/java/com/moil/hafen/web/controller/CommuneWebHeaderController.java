@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 管理后台/公社模块/公社微官网头部信息管理
@@ -53,16 +54,14 @@ public class CommuneWebHeaderController extends BaseController {
     }
 
     /**
-     * 通过ID获取公社微官网头部信息详情 - 管理后台/小程序
-     *
-     * @param id id
+     * 查询公社微官网头部信息详情 - 管理后台/小程序
      *
      * @return {@link Result}<{@link CommuneWebHeader}>
      */
     @GetMapping("/detail")
-    @ApiOperation("通过ID获取公社微官网头部信息详情")
-    public Result<CommuneWebHeader> detail(@RequestParam Integer id) {
-        return Result.OK(communeWebHeaderService.getById(id));
+    @ApiOperation("查询公社微官网头部信息详情")
+    public Result<List<CommuneWebHeader>> detail() {
+        return Result.OK(communeWebHeaderService.list());
     }
 
 }

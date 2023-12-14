@@ -22,21 +22,6 @@ public class LessonOffline implements Serializable {
     @ApiModelProperty(value = "课程名称")
     @ExcelProperty(value = "课程名称")
     private String name;
-    @ApiModelProperty(value = "课程类别")
-    @ExcelProperty(value = "课程类别")
-    private transient String categoryName;
-    @ApiModelProperty(value = "报价单数量")
-    @ExcelProperty(value = "报价单数量")
-    private transient Integer chapterCount;
-    @ApiModelProperty(value = "课程状态")
-    @ExcelProperty(value = "课程状态")
-    private transient String statusStr;
-    @ApiModelProperty(value = "上架推荐区")
-    @ExcelProperty(value = "上架推荐区")
-    private transient String recommendStatusStr;
-    @ApiModelProperty(value = "上架微官网")
-    @ExcelProperty(value = "上架微官网")
-    private transient String websiteStatusStr;
     @ApiModelProperty(value = "类别Id")
     private Integer categoryId;
     @ApiModelProperty(value = "上架推荐区 0否 1是")
@@ -57,14 +42,33 @@ public class LessonOffline implements Serializable {
     private Integer status;//0上架 1下架
     @ApiModelProperty(value = "课程类型 1科技营 2体适能")
     private Integer type;//课程类型 1科技营 2体适能
-    @ExcelProperty(value = "所属校区")
-    private transient String campus;
     @ApiModelProperty(value = "开课校区 0全部校区 1指定校区")
     private Integer campusType;//开课校区 0全部校区 1指定校区
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
     @ExcelProperty(value = "更新时间")
     private Date modifyTime;
+
+    @ApiModelProperty(value = "课程类别")
+    @ExcelProperty(value = "课程类别")
+    private transient String categoryName;
+    @ApiModelProperty(value = "报价单数量")
+    @ExcelProperty(value = "报价单数量")
+    private transient Integer chapterCount;
+    @ApiModelProperty(value = "课程状态")
+    @ExcelProperty(value = "课程状态")
+    private transient String statusStr;
+    @ApiModelProperty(value = "上架推荐区")
+    @ExcelProperty(value = "上架推荐区")
+    private transient String recommendStatusStr;
+    @ApiModelProperty(value = "上架微官网")
+    @ExcelProperty(value = "上架微官网")
+    private transient String websiteStatusStr;
+    @ExcelProperty(value = "所属校区")
+    private transient String campus;
+    @ApiModelProperty(value = "创建开始时间")
     private transient String createTimeFrom;
+    @ApiModelProperty(value = "创建结束时间")
     private transient String createTimeTo;
     @ApiModelProperty(value = "校区列表")
     private transient List<Integer> campusList;

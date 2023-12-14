@@ -40,7 +40,7 @@ public class CommuneWebBannerController extends BaseController {
     @GetMapping
     @ApiOperation("获取公社微官网banner列表")
     public Result<List<CommuneWebBanner>> list() {
-        List<CommuneWebBanner> list = communeWebBannerService.list(new LambdaQueryWrapper<>(new CommuneWebBanner()).eq(CommuneWebBanner::getDelFlag, 0).orderByAsc(CommuneWebBanner::getWeight));
+        List<CommuneWebBanner> list = communeWebBannerService.list(new LambdaQueryWrapper<>(new CommuneWebBanner()).eq(CommuneWebBanner::getDelFlag, 0).orderByAsc(CommuneWebBanner::getCreateTime));
         return Result.OK(list);
     }
 
@@ -94,10 +94,13 @@ public class CommuneWebBannerController extends BaseController {
      */
     @PostMapping("/update")
     @ApiOperation("修改公社微官网banner信息")
-    public Result update(@RequestBody CommuneWebBanner communeWebBanner) throws FebsException {
+    public Result update(@RequestBody List<CommuneWebBanner> communeWebBanner) throws FebsException {
         try {
-            communeWebBanner.setModifyTime(new Date());
-            return Result.OK(communeWebBannerService.updateById(communeWebBanner));
+            communeWebBannerService.update(new LambdaUpdateWrapper<CommuneWebBanner>().set(CommuneWebBanner::getDelFlag, 1));
+            for (CommuneWebBanner webBanner : communeWebBanner) {
+                webBanner.setModifyTime(new Date());
+            }
+            return Result.OK(communeWebBannerService.saveBatch(communeWebBanner));
         } catch (Exception e) {
             message = "修改公社微官网banner信息失败";
             log.error(message, e);

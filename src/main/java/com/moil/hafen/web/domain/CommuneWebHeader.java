@@ -19,6 +19,8 @@ public class CommuneWebHeader implements Serializable {
     private Integer id;
     @ApiModelProperty("媒体信息")
     private String media;
+    @ApiModelProperty("媒体信息地址")
+    private String mediaUrl;
     @ApiModelProperty("logo")
     private String logo;
     @ApiModelProperty("描述")
