@@ -123,5 +123,5 @@ public class Campus implements Serializable {
 
     @ApiModelProperty("业务范围：1-科技营；2-体适能")
     @TableField(exist = false)
-    private String[] businessScopeArr;
+    private List<String> businessScopeArr;
 }

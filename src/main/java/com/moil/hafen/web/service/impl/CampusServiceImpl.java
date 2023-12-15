@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class CampusServiceImpl extends ServiceImpl<CampusDao, Campus> implements
                 List<Dept> deptList = deptDao.selectList(queryWrapper);
                 campus.setChildren(deptList);
                 if (StringUtils.isNotBlank(campus.getBusinessScope())) {
-                    campus.setBusinessScopeArr(campus.getBusinessScope().split(","));
+                    campus.setBusinessScopeArr(Arrays.asList(campus.getBusinessScope().split(",")));
                 }
             }
         }

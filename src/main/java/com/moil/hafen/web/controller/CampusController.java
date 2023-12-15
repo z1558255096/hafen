@@ -1,5 +1,6 @@
 package com.moil.hafen.web.controller;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.moil.hafen.common.controller.BaseController;
@@ -85,6 +86,9 @@ public class CampusController extends BaseController {
         try {
             campus.setCreateTime(new Date());
             campus.setModifyTime(new Date());
+            if (CollectionUtil.isNotEmpty(campus.getBusinessScopeArr())) {
+                campus.setBusinessScope(String.join(",", campus.getBusinessScopeArr()));
+            }
             this.campusService.save(campus);
             deptService.saveDefaultDept(campus.getId());
             return Result.OK();
