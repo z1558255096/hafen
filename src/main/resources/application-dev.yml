@@ -98,7 +98,7 @@ febs:
         num: 1000
   shiro:
     # 后端免认证接口 url
-    anonUrl:  /projectInfo/export,/backend/oauth,/file/**,/honorManage/export,/backend/login,/logout/**,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/doc.html/**,/favicon.ico,/css/**,/js/**,/fonts/**,/img/**,/login.html,/honor/**
+    anonUrl: /projectInfo/export,/backend/oauth,/file/**,/honorManage/export,/backend/login,/logout/**,/swagger-resources/**,/webjars/**,/v2/**,/swagger-ui.html/**,/doc.html/**,/favicon.ico,/css/**,/js/**,/fonts/**,/img/**,/login.html,/honor/**,/communeWeb/**
     # token有效期，单位秒
     jwtTimeOut: 86400
   # Swagger相关配置
