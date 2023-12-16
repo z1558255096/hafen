@@ -45,8 +45,8 @@ public class CommuneLesson implements Serializable {
     private String endTime;
     @ApiModelProperty("课程描述")
     private String description;
-    @ApiModelProperty("是否微官网展示 0 展示 1展示")
-    private Integer isShow;//是否微官网展示 0 展示 1展示
+    @ApiModelProperty("是否微官网展示 0 展示 1不展示")
+    private Integer isShow;//是否微官网展示 0 展示 1不展示
     @ApiModelProperty("课程地址")
     private String address;
     @ApiModelProperty("课程详情")

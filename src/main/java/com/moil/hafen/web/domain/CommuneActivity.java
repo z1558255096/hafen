@@ -23,8 +23,8 @@ public class CommuneActivity implements Serializable {
     private String name;
     @ApiModelProperty("活动时间")
     private Date activityTime;
-    @ApiModelProperty("是否微官网展示 0 展示 1展示")
-    private Integer isShow;//是否微官网展示 0 展示 1展示
+    @ApiModelProperty("是否微官网展示 0 展示 1不展示")
+    private Integer isShow;//是否微官网展示 0 展示 1不展示
     @ApiModelProperty("权重")
     private Integer weight;
     @ApiModelProperty("封面")

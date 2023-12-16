@@ -41,8 +41,8 @@ public class CommuneTicket implements Serializable {
     private String lat;
     @ApiModelProperty("经度")
     private String lng;
-    @ApiModelProperty("是否微官网展示 0 展示 1展示")
-    private Integer isShow;//是否微官网展示 0 展示 1展示
+    @ApiModelProperty("是否微官网展示 0 展示 1不展示")
+    private Integer isShow;//是否微官网展示 0 展示 1不展示
     @ApiModelProperty("上架状态 0上架 1下架")
     private Integer status;//上架状态 0上架 1下架
     @ApiModelProperty("价格")
